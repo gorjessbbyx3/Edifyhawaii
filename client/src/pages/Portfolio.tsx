@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { Link } from "wouter";
-import { ExternalLink, Layout, Smartphone, Globe, Code, Gavel } from "lucide-react";
+import { ExternalLink, Layout, Smartphone, Globe, Code, Gavel, Car } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const fadeIn = {
@@ -63,6 +63,15 @@ const projects = [
     tags: ["React", "Legal", "Branding"],
     icon: <Gavel className="w-6 h-6" />,
     slug: "martin-law"
+  },
+  {
+    title: "Son Antique",
+    category: "Automotive Sales",
+    description: "A luxury vehicle marketplace featuring integrated financing and professional service scheduling for Hawaii's auto buyers.",
+    image: "/assets/IMG_6081.jpeg",
+    tags: ["React", "E-commerce", "Auto"],
+    icon: <Car className="w-6 h-6" />,
+    slug: "sons-auto"
   }
 ];
 
