@@ -68,7 +68,7 @@ export default function TowDispatch() {
             <motion.div variants={fadeIn} className="relative">
               <div className="rounded-2xl overflow-hidden shadow-2xl border border-border bg-white">
                 <img 
-                  src="https://images.unsplash.com/photo-1551288049-bbda38a5f971?w=800&auto=format&fit=crop&q=80" 
+                  src="/assets/IMG_6033.jpeg" 
                   alt="Dispatch Dashboard" 
                   className="w-full h-auto"
                 />
