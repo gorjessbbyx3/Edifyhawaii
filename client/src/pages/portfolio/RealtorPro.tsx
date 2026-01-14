@@ -51,17 +51,23 @@ export default function RealtorPro() {
               </motion.div>
             </div>
             
-            <motion.div variants={fadeIn} className="relative">
-              <div className="rounded-2xl overflow-hidden shadow-2xl border-8 border-slate-800 bg-slate-800 aspect-video relative">
-                <div className="absolute top-0 left-0 right-0 h-8 bg-slate-700 flex items-center px-4 space-x-2 z-20">
-                  <div className="w-3 h-3 rounded-full bg-red-500" />
-                  <div className="w-3 h-3 rounded-full bg-yellow-500" />
-                  <div className="w-3 h-3 rounded-full bg-green-500" />
-                  <div className="ml-4 flex-grow bg-slate-800 rounded px-3 py-0.5 text-[10px] text-slate-400 font-mono truncate">
-                    https://realtorpro.replit.app
-                  </div>
+            <motion.div 
+              variants={fadeIn}
+              className="rounded-2xl overflow-hidden shadow-2xl border-8 border-slate-800 bg-slate-800 aspect-[16/10] relative"
+            >
+              <div className="absolute top-0 left-0 right-0 h-8 bg-slate-700 flex items-center px-4 space-x-2 z-20">
+                <div className="w-3 h-3 rounded-full bg-red-500" />
+                <div className="w-3 h-3 rounded-full bg-yellow-500" />
+                <div className="w-3 h-3 rounded-full bg-green-500" />
+                <div className="ml-4 flex-grow bg-slate-800 rounded px-3 py-0.5 text-[10px] text-slate-400 font-mono truncate">
+                  https://realtorpro.replit.app
                 </div>
-                <div className="absolute inset-0 pt-8">
+              </div>
+              <div className="absolute inset-0 pt-8 overflow-hidden bg-slate-800">
+                <div 
+                  className="w-[1280px] h-[800px] origin-top-left"
+                  style={{ transform: 'scale(calc(100cqw / 1280))' }}
+                >
                   <iframe 
                     src="https://realtorpro.replit.app" 
                     className="w-full h-full bg-white"

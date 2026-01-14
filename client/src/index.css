@@ -95,6 +95,15 @@
   @apply bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent;
 }
 
+.aspect-video, .aspect-\[16\/10\] {
+  container-type: size;
+}
+
+:root {
+  --iframe-scale: 1;
+}
+
+
 .bg-gradient-primary {
   @apply bg-gradient-to-r from-primary to-[#0f4c81]; /* Deep ocean gradient */
 }

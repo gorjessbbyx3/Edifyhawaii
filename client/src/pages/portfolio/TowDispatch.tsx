@@ -56,7 +56,7 @@ export default function TowDispatch() {
             <motion.h2 variants={fadeIn} className="text-3xl font-display font-bold text-center">Live Website Preview</motion.h2>
             <motion.div 
               variants={fadeIn}
-              className="rounded-2xl overflow-hidden shadow-2xl border-8 border-slate-800 bg-slate-800 aspect-video relative"
+              className="rounded-2xl overflow-hidden shadow-2xl border-8 border-slate-800 bg-slate-800 aspect-[16/10] relative"
             >
               <div className="absolute top-0 left-0 right-0 h-8 bg-slate-700 flex items-center px-4 space-x-2 z-20">
                 <div className="w-3 h-3 rounded-full bg-red-500" />
@@ -66,13 +66,18 @@ export default function TowDispatch() {
                   https://www.poormantowing.com
                 </div>
               </div>
-              <div className="absolute inset-0 pt-8">
-                <iframe 
-                  src="https://www.poormantowing.com" 
-                  className="w-full h-full bg-white"
-                  title="Poorman Towing Live Website"
-                  loading="lazy"
-                />
+              <div className="absolute inset-0 pt-8 overflow-hidden bg-slate-800">
+                <div 
+                  className="w-[1280px] h-[800px] origin-top-left"
+                  style={{ transform: 'scale(calc(100cqw / 1280))' }}
+                >
+                  <iframe 
+                    src="https://www.poormantowing.com" 
+                    className="w-full h-full bg-white"
+                    title="Poorman Towing Live Website"
+                    loading="lazy"
+                  />
+                </div>
               </div>
             </motion.div>
             <div className="text-center">
