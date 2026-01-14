@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { Link } from "wouter";
-import { ExternalLink, Layout, Smartphone, Globe, Code, Gavel, Car, Shield } from "lucide-react";
+import { ExternalLink, Layout, Smartphone, Globe, Code, Gavel, Car, Shield, Camera } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const fadeIn = {
@@ -81,6 +81,15 @@ const projects = [
     tags: ["React", "Community", "Safety"],
     icon: <Shield className="w-6 h-6" />,
     slug: "street-patrol"
+  },
+  {
+    title: "Capture by Christian",
+    category: "Photography Portfolio",
+    description: "A high-performance photography portfolio designed to showcase breathtaking visual stories with an immersive user experience.",
+    image: "https://images.unsplash.com/photo-1452587925148-ce544e77e70d?w=800&auto=format&fit=crop&q=80",
+    tags: ["React", "Photography", "Vercel"],
+    icon: <Camera className="w-6 h-6" />,
+    slug: "capture-by-christian"
   }
 ];
 
