@@ -158,8 +158,8 @@ export default function Home() {
               {/* laptop computer screen displaying website mockup */}
               <div className="relative rounded-xl overflow-hidden shadow-2xl border-4 border-white transform rotate-1 hover:rotate-0 transition-transform duration-500">
                 <img 
-                  src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&auto=format&fit=crop&q=80"
-                  alt="Project Showcase"
+                  src="/assets/IMG_6077.jpeg"
+                  alt="Poorman Towing Project Showcase"
                   className="w-full"
                 />
               </div>
