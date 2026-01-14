@@ -35,7 +35,7 @@ const projects = [
     image: "/assets/IMG_6034.jpeg",
     tags: ["Real Estate", "CRM", "Listings"],
     icon: <Layout className="w-6 h-6" />,
-    url: "https://realtorpro.replit.app"
+    slug: "realtor-pro"
   },
   {
     title: "All-in-1 Bonding",
