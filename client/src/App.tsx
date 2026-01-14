@@ -13,6 +13,7 @@ import AllIn1Bonding from "@/pages/portfolio/AllIn1Bonding";
 import OahuEliteTours from "@/pages/portfolio/OahuEliteTours";
 import MartinLaw from "@/pages/portfolio/MartinLaw";
 import SonsAuto from "@/pages/portfolio/SonsAuto";
+import StreetPatrol from "@/pages/portfolio/StreetPatrol";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { useEffect } from "react";
@@ -42,6 +43,7 @@ function Router() {
           <Route path="/portfolio/oahu-elite-tours" component={OahuEliteTours} />
           <Route path="/portfolio/martin-law" component={MartinLaw} />
           <Route path="/portfolio/sons-auto" component={SonsAuto} />
+          <Route path="/portfolio/street-patrol" component={StreetPatrol} />
           <Route path="/contact" component={Contact} />
           <Route component={NotFound} />
         </Switch>

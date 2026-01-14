@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { Link } from "wouter";
-import { ExternalLink, Layout, Smartphone, Globe, Code, Gavel, Car } from "lucide-react";
+import { ExternalLink, Layout, Smartphone, Globe, Code, Gavel, Car, Shield } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const fadeIn = {
@@ -72,6 +72,15 @@ const projects = [
     tags: ["React", "E-commerce", "Auto"],
     icon: <Car className="w-6 h-6" />,
     slug: "sons-auto"
+  },
+  {
+    title: "Street Patrol",
+    category: "Community Safety",
+    description: "A community-focused platform designed to enhance neighborhood safety through real-time communication and resource sharing.",
+    image: "/assets/IMG_6082.jpeg",
+    tags: ["React", "Community", "Safety"],
+    icon: <Shield className="w-6 h-6" />,
+    slug: "street-patrol"
   }
 ];
 
