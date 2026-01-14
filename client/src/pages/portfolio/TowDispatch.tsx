@@ -104,7 +104,25 @@ export default function TowDispatch() {
             <p className="text-center text-muted-foreground max-w-2xl mx-auto -mt-8">
               Visuals of the proprietary dashboard we developed to manage complex dispatch workflows and real-time fleet operations.
             </p>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              <motion.div variants={fadeIn} className="space-y-4">
+                <div className="rounded-xl overflow-hidden shadow-lg border border-border aspect-[1.5/1]">
+                  <img src="/assets/IMG_6073.jpeg" alt="Job Management Dashboard" className="w-full h-full object-cover" />
+                </div>
+                <p className="text-center text-sm font-medium">Job Management Dashboard</p>
+              </motion.div>
+              <motion.div variants={fadeIn} className="space-y-4">
+                <div className="rounded-xl overflow-hidden shadow-lg border border-border aspect-[1.5/1]">
+                  <img src="/assets/IMG_6074.jpeg" alt="Financial Tracking" className="w-full h-full object-cover" />
+                </div>
+                <p className="text-center text-sm font-medium">Financial Tracking</p>
+              </motion.div>
+              <motion.div variants={fadeIn} className="space-y-4">
+                <div className="rounded-xl overflow-hidden shadow-lg border border-border aspect-[1.5/1]">
+                  <img src="/assets/IMG_6075.jpeg" alt="Invoicing & Statements" className="w-full h-full object-cover" />
+                </div>
+                <p className="text-center text-sm font-medium">Invoicing & Statements</p>
+              </motion.div>
               <motion.div variants={fadeIn} className="space-y-4">
                 <div className="rounded-xl overflow-hidden shadow-lg border border-border aspect-[9/16]">
                   <img src="/assets/IMG_6014.jpeg" alt="Mobile Dashboard Overview" className="w-full h-full object-cover" />
@@ -121,7 +139,7 @@ export default function TowDispatch() {
                 <div className="rounded-xl overflow-hidden shadow-lg border border-border aspect-[1.5/1]">
                   <img src="/assets/IMG_6020.jpeg" alt="Job Management Desktop" className="w-full h-full object-cover" />
                 </div>
-                <p className="text-center text-sm font-medium">Desktop Job Management</p>
+                <p className="text-center text-sm font-medium">Legacy Dispatch View</p>
               </motion.div>
             </div>
           </section>
