@@ -123,10 +123,10 @@ export default function TowDispatch() {
                 <p className="text-center text-sm font-medium">Dashboard Mobile View</p>
               </motion.div>
               <motion.div variants={fadeIn} className="space-y-4">
-                <div className="rounded-xl overflow-hidden shadow-lg border border-border aspect-[9/16]">
-                  <img src="/assets/IMG_6016.jpeg" alt="Side Navigation" className="w-full h-full object-cover" />
+                <div className="rounded-xl overflow-hidden shadow-lg border border-border aspect-[1.5/1]">
+                  <img src="/assets/IMG_6032.jpeg" alt="Fleet Command Center" className="w-full h-full object-cover" />
                 </div>
-                <p className="text-center text-sm font-medium">Internal Navigation System</p>
+                <p className="text-center text-sm font-medium">Fleet Command Center</p>
               </motion.div>
               <motion.div variants={fadeIn} className="space-y-4">
                 <div className="rounded-xl overflow-hidden shadow-lg border border-border aspect-[1.5/1]">
