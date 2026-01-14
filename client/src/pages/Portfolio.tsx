@@ -23,7 +23,7 @@ const projects = [
     title: "PoormanTowing.com",
     category: "Web Development & SEO",
     description: "A high-performance lead generation machine for a major Hawaii towing service. Includes custom dispatch integration and SEO strategies that dominate local search results.",
-    image: "/attached_assets/IMG_6014_1768353676737.jpeg",
+    image: "/assets/IMG_6014.jpeg",
     tags: ["React", "Node.js", "SEO", "Lead Gen"],
     icon: <Globe className="w-6 h-6" />,
     slug: "tow-dispatch"
