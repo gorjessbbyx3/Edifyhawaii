@@ -101,7 +101,7 @@ export default function Portfolio() {
                     <div className="pt-4">
                       <Link href={`/portfolio/${project.slug}`}>
                         <Button variant="link" className="p-0 h-auto text-primary font-bold group-hover:translate-x-1 transition-transform">
-                          View Case Study →
+                          View Project Details →
                         </Button>
                       </Link>
                     </div>

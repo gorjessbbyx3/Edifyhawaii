@@ -55,14 +55,14 @@ export default function TowDispatch() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div className="space-y-6">
               <motion.div variants={fadeIn} className="inline-flex items-center space-x-2 bg-primary/10 rounded-full px-4 py-1">
-                <span className="text-xs font-bold text-primary uppercase tracking-wider">Case Study</span>
+                <span className="text-xs font-bold text-primary uppercase tracking-wider">Project Example</span>
               </motion.div>
               <motion.h1 variants={fadeIn} className="text-4xl md:text-6xl font-display font-bold">
                 Poorman Towing <br />
-                <span className="text-primary">Dispatch System</span>
+                <span className="text-primary">Website & Dashboard</span>
               </motion.h1>
               <motion.p variants={fadeIn} className="text-lg text-muted-foreground leading-relaxed">
-                A comprehensive custom-built web application designed to streamline dispatch operations, track driver performance, and manage fleet logistics in real-time across Hawaii.
+                An example of the custom technical infrastructure Edify built for Poorman Towing. This includes a high-performance public website and a proprietary, custom-built dispatch dashboard for fleet management.
               </motion.p>
             </div>
             <motion.div variants={fadeIn} className="relative">
@@ -111,7 +111,10 @@ export default function TowDispatch() {
 
           {/* Screenshot Gallery Section */}
           <section className="py-16 space-y-12">
-            <motion.h2 variants={fadeIn} className="text-3xl font-display font-bold text-center">Mobile & Desktop Interface</motion.h2>
+            <motion.h2 variants={fadeIn} className="text-3xl font-display font-bold text-center">Custom Built Dispatch Dashboard</motion.h2>
+            <p className="text-center text-muted-foreground max-w-2xl mx-auto -mt-8">
+              Visuals of the proprietary dashboard we developed to manage complex dispatch workflows and real-time fleet operations.
+            </p>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               <motion.div variants={fadeIn} className="space-y-4">
                 <div className="rounded-xl overflow-hidden shadow-lg border border-border aspect-[9/16]">
