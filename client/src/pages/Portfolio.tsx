@@ -29,20 +29,13 @@ const projects = [
     slug: "tow-dispatch"
   },
   {
-    title: "Enterprise CRM Dashboard",
-    category: "Custom Software",
-    description: "A custom-built internal tool for a logistics company to manage clients, track deliveries in real-time, and automate billing cycles. Replaced a fragmented spreadsheet system.",
-    image: "https://images.unsplash.com/photo-1551288049-bbda38a5f971?w=800&auto=format&fit=crop&q=80",
-    tags: ["Dashboard", "Analytics", "Automation"],
-    icon: <Layout className="w-6 h-6" />
-  },
-  {
-    title: "Medical Clinic IT Overhaul",
-    category: "Managed IT Services",
-    description: "Complete network infrastructure redesign and security implementation for a multi-location clinic. HIPAA-compliant backups and 24/7 proactive monitoring.",
-    image: "https://images.unsplash.com/photo-1551076805-e1869033e561?w=800&auto=format&fit=crop&q=80",
-    tags: ["Infrastructure", "Security", "HIPAA"],
-    icon: <Code className="w-6 h-6" />
+    title: "RealtorPro",
+    category: "Real Estate Platform",
+    description: "A comprehensive platform for real estate professionals featuring property listings, client management, and automated marketing tools.",
+    image: "https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=800&auto=format&fit=crop&q=80",
+    tags: ["Real Estate", "CRM", "Listings"],
+    icon: <Layout className="w-6 h-6" />,
+    url: "https://realtorpro.replit.app"
   }
 ];
 
@@ -104,6 +97,15 @@ export default function Portfolio() {
                           View Project Details →
                         </Button>
                       </Link>
+                    </div>
+                  )}
+                  {project.url && (
+                    <div className="pt-4">
+                      <a href={project.url} target="_blank" rel="noopener noreferrer">
+                        <Button variant="link" className="p-0 h-auto text-primary font-bold group-hover:translate-x-1 transition-transform">
+                          Visit Website →
+                        </Button>
+                      </a>
                     </div>
                   )}
                 </div>
