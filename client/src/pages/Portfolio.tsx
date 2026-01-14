@@ -23,7 +23,7 @@ const projects = [
     title: "PoormanTowing.com",
     category: "Web Development & SEO",
     description: "A high-performance lead generation machine for a major Hawaii towing service. Includes custom dispatch integration and SEO strategies that dominate local search results.",
-    image: "/assets/IMG_6014.jpeg",
+    image: "/assets/IMG_6041.jpeg",
     tags: ["React", "Node.js", "SEO", "Lead Gen"],
     icon: <Globe className="w-6 h-6" />,
     slug: "tow-dispatch"
@@ -32,7 +32,7 @@ const projects = [
     title: "RealtorPro",
     category: "Real Estate Platform",
     description: "A comprehensive platform for real estate professionals featuring property listings, client management, and automated marketing tools.",
-    image: "https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=800&auto=format&fit=crop&q=80",
+    image: "/assets/IMG_6034.jpeg",
     tags: ["Real Estate", "CRM", "Listings"],
     icon: <Layout className="w-6 h-6" />,
     url: "https://realtorpro.replit.app"

@@ -65,11 +65,11 @@ export function Footer() {
               </li>
               <li className="flex items-center space-x-3">
                 <Mail className="w-5 h-5 text-accent shrink-0" />
-                <a href="mailto:aloha@edify.com" className="hover:text-white transition-colors">aloha@edify.com</a>
+                <a href="mailto:edifyhawaii@gmail.com" className="hover:text-white transition-colors">edifyhawaii@gmail.com</a>
               </li>
               <li className="flex items-center space-x-3">
                 <Phone className="w-5 h-5 text-accent shrink-0" />
-                <a href="tel:+18081234567" className="hover:text-white transition-colors">(808) 123-4567</a>
+                <a href="tel:+18087675460" className="hover:text-white transition-colors">(808) 767-5460</a>
               </li>
             </ul>
           </div>

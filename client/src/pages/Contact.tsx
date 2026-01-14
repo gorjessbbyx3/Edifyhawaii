@@ -69,8 +69,8 @@ export default function Contact() {
                   </div>
                   <div>
                     <p className="font-semibold text-white/60 mb-1">Phone</p>
-                    <a href="tel:+18081234567" className="text-lg hover:text-accent transition-colors">
-                      (808) 123-4567
+                    <a href="tel:+18087675460" className="text-lg hover:text-accent transition-colors">
+                      (808) 767-5460
                     </a>
                   </div>
                 </div>
@@ -81,8 +81,8 @@ export default function Contact() {
                   </div>
                   <div>
                     <p className="font-semibold text-white/60 mb-1">Email</p>
-                    <a href="mailto:aloha@edify.com" className="text-lg hover:text-accent transition-colors">
-                      aloha@edify.com
+                    <a href="mailto:edifyhawaii@gmail.com" className="text-lg hover:text-accent transition-colors">
+                      edifyhawaii@gmail.com
                     </a>
                   </div>
                 </div>
