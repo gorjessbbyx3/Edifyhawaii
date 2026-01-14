@@ -58,22 +58,11 @@ export default function TowDispatch() {
               variants={fadeIn}
               className="rounded-2xl overflow-hidden shadow-2xl border-8 border-slate-800 bg-slate-800 aspect-video relative"
             >
-              <div className="absolute top-0 left-0 right-0 h-8 bg-slate-700 flex items-center px-4 space-x-2">
-                <div className="w-3 h-3 rounded-full bg-red-500" />
-                <div className="w-3 h-3 rounded-full bg-yellow-500" />
-                <div className="w-3 h-3 rounded-full bg-green-500" />
-                <div className="ml-4 flex-grow bg-slate-800 rounded px-3 py-0.5 text-[10px] text-slate-400 font-mono truncate">
-                  https://www.poormantowing.com
-                </div>
-              </div>
-              <div className="absolute inset-0 pt-8">
-                <iframe 
-                  src="https://www.poormantowing.com" 
-                  className="w-full h-full bg-white"
-                  title="Poorman Towing Live Website"
-                  loading="lazy"
-                />
-              </div>
+              <img 
+                src="/assets/IMG_6041.jpeg" 
+                alt="Poorman Towing Website"
+                className="w-full h-full object-cover"
+              />
             </motion.div>
             <div className="text-center">
               <Link href="https://www.poormantowing.com" target="_blank">
