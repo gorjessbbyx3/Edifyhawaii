@@ -51,34 +51,9 @@ export default function TowDispatch() {
           }}
           className="space-y-16"
         >
-          {/* Header */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <div className="space-y-6">
-              <motion.div variants={fadeIn} className="inline-flex items-center space-x-2 bg-primary/10 rounded-full px-4 py-1">
-                <span className="text-xs font-bold text-primary uppercase tracking-wider">Project Example</span>
-              </motion.div>
-              <motion.h1 variants={fadeIn} className="text-4xl md:text-6xl font-display font-bold">
-                Poorman Towing <br />
-                <span className="text-primary">Website & Dashboard</span>
-              </motion.h1>
-              <motion.p variants={fadeIn} className="text-lg text-muted-foreground leading-relaxed">
-                An example of the custom technical infrastructure Edify built for Poorman Towing. This includes a high-performance public website and a proprietary, custom-built dispatch dashboard for fleet management.
-              </motion.p>
-            </div>
-            <motion.div variants={fadeIn} className="relative">
-              <div className="rounded-2xl overflow-hidden shadow-2xl border border-border bg-white">
-                <img 
-                  src="/assets/IMG_6033.jpeg" 
-                  alt="Dispatch Dashboard" 
-                  className="w-full h-auto"
-                />
-              </div>
-            </motion.div>
-          </div>
-
           {/* Web Frame Section */}
           <section className="py-16 space-y-8">
-            <motion.h2 variants={fadeIn} className="text-3xl font-display font-bold text-center">Live Preview</motion.h2>
+            <motion.h2 variants={fadeIn} className="text-3xl font-display font-bold text-center">Live Website Preview</motion.h2>
             <motion.div 
               variants={fadeIn}
               className="rounded-2xl overflow-hidden shadow-2xl border-8 border-slate-800 bg-slate-800 aspect-video relative"
@@ -108,6 +83,31 @@ export default function TowDispatch() {
               </Link>
             </div>
           </section>
+
+          {/* Header */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            <div className="space-y-6">
+              <motion.div variants={fadeIn} className="inline-flex items-center space-x-2 bg-primary/10 rounded-full px-4 py-1">
+                <span className="text-xs font-bold text-primary uppercase tracking-wider">Project Example</span>
+              </motion.div>
+              <motion.h1 variants={fadeIn} className="text-4xl md:text-6xl font-display font-bold">
+                Poorman Towing <br />
+                <span className="text-primary">Website & Dashboard</span>
+              </motion.h1>
+              <motion.p variants={fadeIn} className="text-lg text-muted-foreground leading-relaxed">
+                An example of the custom technical infrastructure Edify built for Poorman Towing. This includes a high-performance public website and a proprietary, custom-built dispatch dashboard for fleet management.
+              </motion.p>
+            </div>
+            <motion.div variants={fadeIn} className="relative">
+              <div className="rounded-2xl overflow-hidden shadow-2xl border border-border bg-white">
+                <img 
+                  src="/assets/IMG_6033.jpeg" 
+                  alt="Dispatch Dashboard" 
+                  className="w-full h-auto"
+                />
+              </div>
+            </motion.div>
+          </div>
 
           {/* Screenshot Gallery Section */}
           <section className="py-16 space-y-12">
