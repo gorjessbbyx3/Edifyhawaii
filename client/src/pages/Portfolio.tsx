@@ -23,9 +23,10 @@ const projects = [
     title: "PoormanTowing.com",
     category: "Web Development & SEO",
     description: "A high-performance lead generation machine for a major Hawaii towing service. Includes custom dispatch integration and SEO strategies that dominate local search results.",
-    image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&auto=format&fit=crop&q=80",
+    image: "/attached_assets/IMG_6014_1768353676737.jpeg",
     tags: ["React", "Node.js", "SEO", "Lead Gen"],
-    icon: <Globe className="w-6 h-6" />
+    icon: <Globe className="w-6 h-6" />,
+    slug: "tow-dispatch"
   },
   {
     title: "Enterprise CRM Dashboard",
@@ -96,6 +97,15 @@ export default function Portfolio() {
                       </span>
                     ))}
                   </div>
+                  {project.slug && (
+                    <div className="pt-4">
+                      <Link href={`/portfolio/${project.slug}`}>
+                        <Button variant="link" className="p-0 h-auto text-primary font-bold group-hover:translate-x-1 transition-transform">
+                          View Case Study →
+                        </Button>
+                      </Link>
+                    </div>
+                  )}
                 </div>
               </motion.div>
             ))}

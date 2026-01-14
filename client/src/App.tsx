@@ -8,6 +8,7 @@ import Home from "@/pages/Home";
 import Services from "@/pages/Services";
 import Contact from "@/pages/Contact";
 import Portfolio from "@/pages/Portfolio";
+import TowDispatch from "@/pages/portfolio/TowDispatch";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { useEffect } from "react";
@@ -32,6 +33,7 @@ function Router() {
           <Route path="/" component={Home} />
           <Route path="/services" component={Services} />
           <Route path="/portfolio" component={Portfolio} />
+          <Route path="/portfolio/tow-dispatch" component={TowDispatch} />
           <Route path="/contact" component={Contact} />
           <Route component={NotFound} />
         </Switch>
