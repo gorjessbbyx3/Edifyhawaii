@@ -186,7 +186,7 @@ export default function Home() {
               <div className="pt-4">
                 <Link href="/services">
                   <Button variant="outline" className="border-primary text-primary hover:bg-primary hover:text-white">
-                    View More Projects
+                    What We Do
                   </Button>
                 </Link>
               </div>
