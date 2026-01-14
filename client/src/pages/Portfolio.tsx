@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { Link } from "wouter";
-import { ExternalLink, Layout, Smartphone, Globe, Code } from "lucide-react";
+import { ExternalLink, Layout, Smartphone, Globe, Code, Gavel } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const fadeIn = {
@@ -54,6 +54,15 @@ const projects = [
     tags: ["React", "Tailwind", "Tourism"],
     icon: <Globe className="w-6 h-6" />,
     slug: "oahu-elite-tours"
+  },
+  {
+    title: "Mason Martin Law",
+    category: "Legal Services",
+    description: "A professional digital presence for a trusted Hawaii litigation attorney. Focused on authority, experience, and clear client communication.",
+    image: "/assets/IMG_6080.jpeg",
+    tags: ["React", "Legal", "Branding"],
+    icon: <Gavel className="w-6 h-6" />,
+    slug: "martin-law"
   }
 ];
 
