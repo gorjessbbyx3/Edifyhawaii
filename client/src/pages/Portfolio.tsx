@@ -45,6 +45,15 @@ const projects = [
     tags: ["Vercel", "React", "SEO"],
     icon: <Code className="w-6 h-6" />,
     slug: "all-in-1-bonding"
+  },
+  {
+    title: "Oahu Elite Tours",
+    category: "Tourism & Booking",
+    description: "A visually stunning tour booking platform for Hawaii's premier guided experiences. Built for high conversion and mobile speed.",
+    image: "/assets/IMG_6078.jpeg",
+    tags: ["React", "Tailwind", "Tourism"],
+    icon: <Globe className="w-6 h-6" />,
+    slug: "oahu-elite-tours"
   }
 ];
 
