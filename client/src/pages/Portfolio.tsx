@@ -36,6 +36,15 @@ const projects = [
     tags: ["Real Estate", "CRM", "Listings"],
     icon: <Layout className="w-6 h-6" />,
     url: "https://realtorpro.replit.app"
+  },
+  {
+    title: "All-in-1 Bonding",
+    category: "Web Development",
+    description: "A modern, high-conversion web presence for a premier bonding service. Optimized for local SEO and lead generation.",
+    image: "https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=800&auto=format&fit=crop&q=80",
+    tags: ["Vercel", "React", "SEO"],
+    icon: <Code className="w-6 h-6" />,
+    slug: "all-in-1-bonding"
   }
 ];
 
