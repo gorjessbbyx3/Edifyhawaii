@@ -11,6 +11,7 @@ import imgLaw from "@assets/IMG_6080_1768421566889.jpeg";
 import imgAuto from "@assets/IMG_6081_1768421794787.jpeg";
 import imgPatrol from "@assets/IMG_6082_1768422114148.jpeg";
 import imgCaptured from "@assets/IMG_6084_1768471472326.jpeg";
+import imgJadeRoyale from "@assets/IMG_6085_1768473306904.jpeg";
 
 const fadeInUp = {
   hidden: { opacity: 0, y: 40 },
@@ -113,6 +114,17 @@ const projects = [
     icon: <Camera className="w-5 h-5" />,
     slug: "captured-c-collective",
     gradient: "from-pink-500 to-fuchsia-400"
+  },
+  {
+    title: "Jade Royale",
+    category: "Gaming Platform",
+    description: "A premium online gaming platform featuring an immersive user experience with real-time cashout functionality, bonus systems, and sleek Asian-inspired design aesthetics.",
+    image: imgJadeRoyale,
+    tags: ["Gaming", "React", "Real-time"],
+    icon: <Sparkles className="w-5 h-5" />,
+    slug: "jade-royale",
+    gradient: "from-emerald-500 to-teal-400",
+    url: "https://cashout.realconnect.online"
   }
 ];
 
