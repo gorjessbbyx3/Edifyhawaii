@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { Link } from "wouter";
 import { ArrowRight, Server, Globe, ShieldCheck, Cpu, Layout, Terminal } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import heroVideo from "@assets/_users_9b25cb5e-ce71-4d7e-bbca-6899b4a7896f_generated_dcfe4f1d_1768470906588.mp4";
 
 // Animation variants
 const fadeIn = {
@@ -23,10 +24,21 @@ export default function Home() {
   return (
     <div className="flex flex-col min-h-screen">
       {/* Hero Section */}
-      <section className="relative pt-32 pb-20 md:pt-48 md:pb-32 overflow-hidden bg-background">
-        {/* Background Decorative Elements */}
-        <div className="absolute top-0 right-0 -mr-20 -mt-20 w-[600px] h-[600px] bg-secondary/30 rounded-full blur-3xl opacity-50 pointer-events-none" />
-        <div className="absolute bottom-0 left-0 -ml-20 -mb-20 w-[400px] h-[400px] bg-accent/10 rounded-full blur-3xl opacity-50 pointer-events-none" />
+      <section className="relative pt-32 pb-20 md:pt-48 md:pb-32 overflow-hidden bg-slate-950">
+        {/* Video Background */}
+        <div className="absolute inset-0 z-0">
+          <video
+            autoPlay
+            loop
+            muted
+            playsInline
+            className="w-full h-full object-cover"
+          >
+            <source src={heroVideo} type="video/mp4" />
+          </video>
+          {/* Dark Wash Overlay */}
+          <div className="absolute inset-0 bg-gradient-to-b from-slate-950/80 via-slate-950/60 to-slate-950/80" />
+        </div>
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
@@ -36,18 +48,18 @@ export default function Home() {
               variants={staggerContainer}
               className="space-y-8"
             >
-              <motion.div variants={fadeIn} className="inline-flex items-center space-x-2 bg-secondary/50 rounded-full px-4 py-1.5 border border-primary/10">
+              <motion.div variants={fadeIn} className="inline-flex items-center space-x-2 bg-white/10 backdrop-blur-sm rounded-full px-4 py-1.5 border border-white/20">
                 <span className="w-2 h-2 rounded-full bg-accent animate-pulse" />
-                <span className="text-xs font-semibold text-primary uppercase tracking-wide">Aloha from Edify</span>
+                <span className="text-xs font-semibold text-white uppercase tracking-wide">Aloha from Edify</span>
               </motion.div>
               
-              <motion.h1 variants={fadeIn} className="text-5xl md:text-6xl lg:text-7xl font-display font-bold leading-[1.1] text-foreground">
+              <motion.h1 variants={fadeIn} className="text-5xl md:text-6xl lg:text-7xl font-display font-bold leading-[1.1] text-white">
                 Your In-House <br />
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent">IT Department</span>, <br />
                 Outsourced.
               </motion.h1>
               
-              <motion.p variants={fadeIn} className="text-lg md:text-xl text-muted-foreground max-w-lg leading-relaxed">
+              <motion.p variants={fadeIn} className="text-lg md:text-xl text-white/80 max-w-lg leading-relaxed">
                 We empower Hawaii's small businesses with enterprise-grade IT support and custom software solutions. Focus on your business, we'll handle the tech.
               </motion.p>
               
@@ -59,7 +71,7 @@ export default function Home() {
                   </Button>
                 </Link>
                 <Link href="/services">
-                  <Button variant="outline" size="lg" className="border-2 border-border text-foreground hover:bg-secondary/50 text-base px-8 py-6 h-auto">
+                  <Button variant="outline" size="lg" className="border-2 border-white/20 text-white hover:bg-white/10 backdrop-blur-sm text-base px-8 py-6 h-auto">
                     Explore Services
                   </Button>
                 </Link>
@@ -67,21 +79,18 @@ export default function Home() {
             </motion.div>
 
             <motion.div 
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.8, delay: 0.3 }}
               className="relative hidden lg:block"
             >
-              {/* Abstract Tech Illustration placeholder - using Unsplash for relevant vibe */}
-              <div className="relative rounded-2xl overflow-hidden shadow-2xl shadow-primary/20 border border-border bg-white aspect-[4/3]">
-                {/* Descriptive comment for Unsplash image */}
-                {/* modern minimal office desk with computer code setup tech startup hawaii vibes */}
+              <div className="relative rounded-2xl overflow-hidden shadow-2xl border border-white/10 bg-slate-900/50 backdrop-blur-md aspect-[4/3]">
                 <img 
                   src="https://images.unsplash.com/photo-1497215728101-856f4ea42174?w=800&auto=format&fit=crop&q=80" 
                   alt="Modern office technology setup" 
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-cover opacity-80"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent flex items-end p-8">
+                <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 to-transparent flex items-end p-8">
                   <div className="text-white">
                     <p className="font-bold text-lg">Simplifying Complexity</p>
                     <p className="text-white/80 text-sm">Custom solutions built for your needs.</p>
@@ -89,18 +98,17 @@ export default function Home() {
                 </div>
               </div>
               
-              {/* Floating Badge */}
               <motion.div 
                 initial={{ y: 20, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ delay: 1, duration: 0.5 }}
-                className="absolute -bottom-6 -left-6 bg-white p-6 rounded-xl shadow-xl border border-border max-w-xs"
+                className="absolute -bottom-6 -left-6 bg-slate-900/90 backdrop-blur-md p-6 rounded-xl shadow-xl border border-white/10 max-w-xs"
               >
                 <div className="flex items-center gap-3 mb-2">
                   <div className="w-3 h-3 rounded-full bg-green-500" />
-                  <p className="font-bold text-foreground">System Operational</p>
+                  <p className="font-bold text-white">System Operational</p>
                 </div>
-                <p className="text-xs text-muted-foreground">24/7 Monitoring & Support for your peace of mind.</p>
+                <p className="text-xs text-white/60">24/7 Monitoring & Support for your peace of mind.</p>
               </motion.div>
             </motion.div>
           </div>
