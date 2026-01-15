@@ -46,24 +46,24 @@ export default function Home() {
               initial="hidden"
               animate="visible"
               variants={staggerContainer}
-              className="space-y-8"
+              className="space-y-8 text-center lg:text-left"
             >
               <motion.div variants={fadeIn} className="inline-flex items-center space-x-2 bg-white/10 backdrop-blur-sm rounded-full px-4 py-1.5 border border-white/20">
                 <span className="w-2 h-2 rounded-full bg-accent animate-pulse" />
                 <span className="text-xs font-semibold text-white uppercase tracking-wide">Aloha from Edify</span>
               </motion.div>
               
-              <motion.h1 variants={fadeIn} className="text-5xl md:text-6xl lg:text-7xl font-display font-bold leading-[1.1] text-white">
+              <motion.h1 variants={fadeIn} className="text-5xl md:text-6xl lg:text-8xl font-display font-bold leading-[1.1] text-white">
                 Your In-House <br />
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent">IT Department</span>, <br />
                 Outsourced.
               </motion.h1>
               
-              <motion.p variants={fadeIn} className="text-lg md:text-xl text-white/80 max-w-lg leading-relaxed">
+              <motion.p variants={fadeIn} className="text-lg md:text-xl text-white/80 max-w-lg leading-relaxed mx-auto lg:mx-0">
                 We empower Hawaii's small businesses with enterprise-grade IT support and custom software solutions. Focus on your business, we'll handle the tech.
               </motion.p>
               
-              <motion.div variants={fadeIn} className="flex flex-col sm:flex-row gap-4">
+              <motion.div variants={fadeIn} className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
                 <Link href="/contact">
                   <Button size="lg" className="bg-primary hover:bg-primary/90 text-white shadow-lg shadow-primary/25 hover:shadow-xl hover:shadow-primary/30 transition-all text-base px-8 py-6 h-auto">
                     Get a Free Consultation
@@ -78,49 +78,17 @@ export default function Home() {
               </motion.div>
             </motion.div>
 
-            <motion.div 
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.8, delay: 0.3 }}
-              className="relative hidden lg:block"
-            >
-              <div className="relative rounded-2xl overflow-hidden shadow-2xl border border-white/10 bg-slate-900/50 backdrop-blur-md aspect-[4/3]">
-                <img 
-                  src="https://images.unsplash.com/photo-1497215728101-856f4ea42174?w=800&auto=format&fit=crop&q=80" 
-                  alt="Modern office technology setup" 
-                  className="w-full h-full object-cover opacity-80"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 to-transparent flex items-end p-8">
-                  <div className="text-white">
-                    <p className="font-bold text-lg">Simplifying Complexity</p>
-                    <p className="text-white/80 text-sm">Custom solutions built for your needs.</p>
-                  </div>
-                </div>
-              </div>
-              
-              <motion.div 
-                initial={{ y: 20, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                transition={{ delay: 1, duration: 0.5 }}
-                className="absolute -bottom-6 -left-6 bg-slate-900/90 backdrop-blur-md p-6 rounded-xl shadow-xl border border-white/10 max-w-xs"
-              >
-                <div className="flex items-center gap-3 mb-2">
-                  <div className="w-3 h-3 rounded-full bg-green-500" />
-                  <p className="font-bold text-white">System Operational</p>
-                </div>
-                <p className="text-xs text-white/60">24/7 Monitoring & Support for your peace of mind.</p>
-              </motion.div>
-            </motion.div>
+            <div className="hidden lg:block" />
           </div>
         </div>
       </section>
 
       {/* Services Overview */}
-      <section className="py-24 bg-white relative">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="py-24 relative overflow-hidden">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="text-center max-w-2xl mx-auto mb-16">
-            <h2 className="text-3xl md:text-4xl font-display font-bold mb-4">Comprehensive Tech Solutions</h2>
-            <p className="text-muted-foreground">Whether you need someone to fix the printer or build a custom CRM, we are your one-stop technical partner.</p>
+            <h2 className="text-3xl md:text-4xl font-display font-bold mb-4 text-white">Comprehensive Tech Solutions</h2>
+            <p className="text-slate-400">Whether you need someone to fix the printer or build a custom CRM, we are your one-stop technical partner.</p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -159,12 +127,12 @@ export default function Home() {
       </section>
 
       {/* Portfolio Highlight */}
-      <section className="py-24 bg-muted/30">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="py-24 bg-slate-900/50 relative">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             <div className="order-2 lg:order-1">
               {/* laptop computer screen displaying website mockup */}
-              <div className="relative rounded-xl overflow-hidden shadow-2xl border-4 border-white transform rotate-1 hover:rotate-0 transition-transform duration-500">
+              <div className="relative rounded-xl overflow-hidden shadow-2xl border-4 border-slate-800 transform rotate-1 hover:rotate-0 transition-transform duration-500">
                 <img 
                   src="/assets/IMG_6077.jpeg"
                   alt="Poorman Towing Project Showcase"
@@ -173,22 +141,22 @@ export default function Home() {
               </div>
             </div>
             <div className="order-1 lg:order-2 space-y-6">
-              <h2 className="text-3xl md:text-4xl font-display font-bold">Featured Project: <br/><span className="text-primary">PoormanTowing.com</span></h2>
-              <p className="text-muted-foreground leading-relaxed">
+              <h2 className="text-3xl md:text-4xl font-display font-bold text-white">Featured Project: <br/><span className="text-primary">PoormanTowing.com</span></h2>
+              <p className="text-slate-400 leading-relaxed">
                 We don't just fix computers; we build businesses online. For Poorman Towing, we developed a high-performance, SEO-optimized website that drives leads and integrates directly with their dispatch system.
               </p>
               <ul className="space-y-3">
                 <li className="flex items-center gap-3">
                   <div className="w-6 h-6 rounded-full bg-accent/20 flex items-center justify-center text-accent">✓</div>
-                  <span className="font-medium text-foreground">Custom Design & Branding</span>
+                  <span className="font-medium text-slate-200">Custom Design & Branding</span>
                 </li>
                 <li className="flex items-center gap-3">
                   <div className="w-6 h-6 rounded-full bg-accent/20 flex items-center justify-center text-accent">✓</div>
-                  <span className="font-medium text-foreground">SEO Optimization</span>
+                  <span className="font-medium text-slate-200">SEO Optimization</span>
                 </li>
                 <li className="flex items-center gap-3">
                   <div className="w-6 h-6 rounded-full bg-accent/20 flex items-center justify-center text-accent">✓</div>
-                  <span className="font-medium text-foreground">Mobile Responsive</span>
+                  <span className="font-medium text-slate-200">Mobile Responsive</span>
                 </li>
               </ul>
               <div className="pt-4">
@@ -205,16 +173,16 @@ export default function Home() {
 
       {/* CTA Section */}
       <section className="py-24 relative overflow-hidden">
-        <div className="absolute inset-0 bg-primary" />
-        <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10" />
+        <div className="absolute inset-0 bg-primary/20 backdrop-blur-sm" />
+        <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-5" />
         
         <div className="max-w-4xl mx-auto px-4 text-center relative z-10 space-y-8">
           <h2 className="text-3xl md:text-5xl font-display font-bold text-white">Ready to upgrade your IT?</h2>
-          <p className="text-primary-foreground/80 text-lg md:text-xl max-w-2xl mx-auto">
+          <p className="text-slate-300 text-lg md:text-xl max-w-2xl mx-auto">
             Stop worrying about downtime and start focusing on growth. Let Edify be your partner in technology.
           </p>
           <Link href="/contact">
-            <Button size="lg" className="bg-white text-primary hover:bg-white/90 font-bold text-lg px-8 py-6 h-auto shadow-xl">
+            <Button size="lg" className="bg-primary text-white hover:bg-primary/90 font-bold text-lg px-8 py-6 h-auto shadow-xl shadow-primary/20 transition-all">
               Schedule Your Free Audit
             </Button>
           </Link>
@@ -228,13 +196,13 @@ function ServiceCard({ icon, title, description }: { icon: React.ReactNode, titl
   return (
     <motion.div 
       whileHover={{ y: -5 }}
-      className="p-8 rounded-2xl bg-white border border-border shadow-lg shadow-black/5 hover:shadow-xl hover:border-primary/20 transition-all duration-300 group"
+      className="p-8 rounded-2xl bg-slate-900/40 border border-white/5 shadow-lg backdrop-blur-sm hover:border-primary/50 transition-all duration-300 group"
     >
-      <div className="mb-6 p-3 bg-secondary/30 rounded-xl w-fit group-hover:bg-primary/10 transition-colors">
+      <div className="mb-6 p-3 bg-white/5 rounded-xl w-fit group-hover:bg-primary/10 transition-colors">
         {icon}
       </div>
-      <h3 className="text-xl font-bold font-display mb-3 text-foreground group-hover:text-primary transition-colors">{title}</h3>
-      <p className="text-muted-foreground leading-relaxed">
+      <h3 className="text-xl font-bold font-display mb-3 text-white group-hover:text-primary transition-colors">{title}</h3>
+      <p className="text-slate-400 leading-relaxed">
         {description}
       </p>
     </motion.div>
