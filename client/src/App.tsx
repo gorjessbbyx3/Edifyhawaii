@@ -16,6 +16,7 @@ import MartinLaw from "@/pages/portfolio/MartinLaw";
 import SonsAuto from "@/pages/portfolio/SonsAuto";
 import StreetPatrol from "@/pages/portfolio/StreetPatrol";
 import CaptureByChristian from "@/pages/portfolio/CaptureByChristian";
+import CapturedCCollective from "@/pages/portfolio/CapturedCCollective";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { useEffect } from "react";
@@ -48,6 +49,7 @@ function Router() {
           <Route path="/portfolio/sons-auto" component={SonsAuto} />
           <Route path="/portfolio/street-patrol" component={StreetPatrol} />
           <Route path="/portfolio/capture-by-christian" component={CaptureByChristian} />
+          <Route path="/portfolio/captured-c-collective" component={CapturedCCollective} />
           <Route path="/contact" component={Contact} />
           <Route component={NotFound} />
         </Switch>

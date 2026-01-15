@@ -90,6 +90,15 @@ const projects = [
     tags: ["React", "Photography", "Vercel"],
     icon: <Camera className="w-6 h-6" />,
     slug: "capture-by-christian"
+  },
+  {
+    title: "Captured C Collective",
+    category: "Media Production",
+    description: "A premium cinematic media team platform specializing in high-impact content for real estate, events, and branded visual content.",
+    image: "/assets/IMG_6084_1768471472326.jpeg",
+    tags: ["Cinematic", "Media", "Branding"],
+    icon: <Globe className="w-6 h-6" />,
+    slug: "captured-c-collective"
   }
 ];
 
