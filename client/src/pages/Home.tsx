@@ -36,8 +36,8 @@ export default function Home() {
           >
             <source src={heroVideo} type="video/mp4" />
           </video>
-          {/* Dark Wash Overlay */}
-          <div className="absolute inset-0 bg-gradient-to-b from-slate-950/80 via-slate-950/60 to-slate-950/80" />
+          {/* Lighter Dark Wash Overlay for better visibility */}
+          <div className="absolute inset-0 bg-gradient-to-b from-slate-950/60 via-slate-950/40 to-slate-950/60" />
         </div>
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
