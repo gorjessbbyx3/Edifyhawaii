@@ -1,5 +1,6 @@
 import { Link } from "wouter";
-import { Code, MapPin, Mail, Phone } from "lucide-react";
+import { MapPin, Mail, Phone } from "lucide-react";
+import logoImage from "@assets/9538FA01-20E4-4643-BCF9-025719F0F037_1768472217370.png";
 
 export function Footer() {
   return (
@@ -10,9 +11,11 @@ export function Footer() {
           {/* Brand Column */}
           <div className="col-span-1 md:col-span-1">
             <Link href="/" data-testid="link-footer-logo" className="flex items-center space-x-3 mb-6 text-white group">
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary via-blue-500 to-accent flex items-center justify-center shadow-lg shadow-primary/20 transition-all">
-                <Code className="w-5 h-5 text-white" />
-              </div>
+              <img 
+                src={logoImage} 
+                alt="Edify Limited Logo" 
+                className="w-10 h-10 rounded-xl shadow-lg shadow-primary/20 transition-all"
+              />
               <span className="font-display font-bold text-xl tracking-tight">EDIFY</span>
             </Link>
             <p data-testid="text-footer-description" className="text-sm leading-relaxed text-slate-400 mb-6">

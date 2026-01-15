@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { ArrowLeft, ExternalLink, Globe, Camera, Zap, Film } from "lucide-react";
 import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
+import imgCaptured from "@assets/IMG_6084_1768471472326.jpeg";
 
 const fadeIn = {
   hidden: { opacity: 0, y: 20 },

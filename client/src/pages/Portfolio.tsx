@@ -3,6 +3,15 @@ import { Link } from "wouter";
 import { ExternalLink, Layout, Globe, Code, Gavel, Car, Shield, Camera, ArrowRight, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
+import imgTowing from "@assets/IMG_6041_1768357867879.jpeg";
+import imgRealtor from "@assets/IMG_6034_1768357795603.jpeg";
+import imgBonding from "@assets/IMG_6083_1768422171688.jpeg";
+import imgTours from "@assets/IMG_6078_1768421334511.jpeg";
+import imgLaw from "@assets/IMG_6080_1768421566889.jpeg";
+import imgAuto from "@assets/IMG_6081_1768421794787.jpeg";
+import imgPatrol from "@assets/IMG_6082_1768422114148.jpeg";
+import imgCaptured from "@assets/IMG_6084_1768471472326.jpeg";
+
 const fadeInUp = {
   hidden: { opacity: 0, y: 40 },
   visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } }
@@ -29,7 +38,7 @@ const projects = [
     title: "PoormanTowing.com",
     category: "Web Development & SEO",
     description: "A high-performance lead generation machine for a major Hawaii towing service. Includes custom dispatch integration and SEO strategies that dominate local search results.",
-    image: "/assets/IMG_6041.jpeg",
+    image: imgTowing,
     tags: ["React", "Node.js", "SEO", "Lead Gen"],
     icon: <Globe className="w-5 h-5" />,
     slug: "tow-dispatch",
@@ -39,7 +48,7 @@ const projects = [
     title: "RealtorPro",
     category: "Real Estate Platform",
     description: "A comprehensive platform for real estate professionals featuring property listings, client management, and automated marketing tools.",
-    image: "/assets/IMG_6034.jpeg",
+    image: imgRealtor,
     tags: ["Real Estate", "CRM", "Listings"],
     icon: <Layout className="w-5 h-5" />,
     slug: "realtor-pro",
@@ -49,7 +58,7 @@ const projects = [
     title: "All-in-1 Bonding",
     category: "Web Development",
     description: "A modern, high-conversion web presence for a premier bonding service. Optimized for local SEO and lead generation.",
-    image: "/assets/IMG_6083.jpeg",
+    image: imgBonding,
     tags: ["Vercel", "React", "SEO"],
     icon: <Code className="w-5 h-5" />,
     slug: "all-in-1-bonding",
@@ -59,7 +68,7 @@ const projects = [
     title: "Oahu Elite Tours",
     category: "Tourism & Booking",
     description: "A visually stunning tour booking platform for Hawaii's premier guided experiences. Built for high conversion and mobile speed.",
-    image: "/assets/IMG_6078.jpeg",
+    image: imgTours,
     tags: ["React", "Tailwind", "Tourism"],
     icon: <Globe className="w-5 h-5" />,
     slug: "oahu-elite-tours",
@@ -69,7 +78,7 @@ const projects = [
     title: "Mason Martin Law",
     category: "Legal Services",
     description: "A professional digital presence for a trusted Hawaii litigation attorney. Focused on authority, experience, and clear client communication.",
-    image: "/assets/IMG_6080.jpeg",
+    image: imgLaw,
     tags: ["React", "Legal", "Branding"],
     icon: <Gavel className="w-5 h-5" />,
     slug: "martin-law",
@@ -79,7 +88,7 @@ const projects = [
     title: "Son Antique",
     category: "Automotive Sales",
     description: "A luxury vehicle marketplace featuring integrated financing and professional service scheduling for Hawaii's auto buyers.",
-    image: "/assets/IMG_6081.jpeg",
+    image: imgAuto,
     tags: ["React", "E-commerce", "Auto"],
     icon: <Car className="w-5 h-5" />,
     slug: "sons-auto",
@@ -89,31 +98,21 @@ const projects = [
     title: "Street Patrol",
     category: "Community Safety",
     description: "A community-focused platform designed to enhance neighborhood safety through real-time communication and resource sharing.",
-    image: "/assets/IMG_6082.jpeg",
+    image: imgPatrol,
     tags: ["React", "Community", "Safety"],
     icon: <Shield className="w-5 h-5" />,
     slug: "street-patrol",
     gradient: "from-indigo-500 to-violet-400"
   },
   {
-    title: "Capture by Christian",
-    category: "Photography Portfolio",
-    description: "A high-performance photography portfolio designed to showcase breathtaking visual stories with an immersive user experience.",
-    image: "https://images.unsplash.com/photo-1452587925148-ce544e77e70d?w=800&auto=format&fit=crop&q=80",
-    tags: ["React", "Photography", "Vercel"],
-    icon: <Camera className="w-5 h-5" />,
-    slug: "capture-by-christian",
-    gradient: "from-pink-500 to-fuchsia-400"
-  },
-  {
     title: "Captured C Collective",
-    category: "Media Production",
-    description: "A premium cinematic media team platform specializing in high-impact content for real estate, events, and branded visual content.",
-    image: "/assets/IMG_6084_1768471472326.jpeg",
-    tags: ["Cinematic", "Media", "Branding"],
-    icon: <Globe className="w-5 h-5" />,
+    category: "Photography & Media",
+    description: "A premium photography and cinematic media platform by Christian, specializing in high-impact content for real estate, events, and branded visual storytelling.",
+    image: imgCaptured,
+    tags: ["Photography", "Cinematic", "Branding"],
+    icon: <Camera className="w-5 h-5" />,
     slug: "captured-c-collective",
-    gradient: "from-cyan-500 to-blue-400"
+    gradient: "from-pink-500 to-fuchsia-400"
   }
 ];
 

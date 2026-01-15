@@ -1,8 +1,9 @@
 import { Link, useLocation } from "wouter";
-import { Menu, X, Code } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { motion, AnimatePresence } from "framer-motion";
+import logoImage from "@assets/9538FA01-20E4-4643-BCF9-025719F0F037_1768472217370.png";
 
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -22,9 +23,11 @@ export function Navbar() {
           
           {/* Logo */}
           <Link href="/" data-testid="link-logo" className="flex items-center space-x-3 group">
-            <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-primary via-blue-500 to-accent flex items-center justify-center text-white shadow-lg shadow-primary/20 transition-all duration-300">
-              <Code className="w-6 h-6" />
-            </div>
+            <img 
+              src={logoImage} 
+              alt="Edify Limited Logo" 
+              className="w-11 h-11 rounded-xl shadow-lg shadow-primary/20 transition-all duration-300"
+            />
             <div className="flex flex-col">
               <span className="font-display font-bold text-xl leading-none text-white tracking-tight">
                 EDIFY

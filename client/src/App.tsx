@@ -19,6 +19,7 @@ import CaptureByChristian from "@/pages/portfolio/CaptureByChristian";
 import CapturedCCollective from "@/pages/portfolio/CapturedCCollective";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
+import { BackToTop } from "@/components/BackToTop";
 import { useEffect } from "react";
 import { useLocation } from "wouter";
 
@@ -55,6 +56,7 @@ function Router() {
         </Switch>
       </main>
       <Footer />
+      <BackToTop />
     </div>
   );
 }
