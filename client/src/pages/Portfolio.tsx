@@ -1,11 +1,11 @@
 import { motion } from "framer-motion";
 import { Link } from "wouter";
-import { ExternalLink, Layout, Smartphone, Globe, Code, Gavel, Car, Shield, Camera } from "lucide-react";
+import { ExternalLink, Layout, Globe, Code, Gavel, Car, Shield, Camera, ArrowRight, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
-const fadeIn = {
-  hidden: { opacity: 0, y: 20 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.6 } }
+const fadeInUp = {
+  hidden: { opacity: 0, y: 40 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } }
 };
 
 const staggerContainer = {
@@ -13,9 +13,15 @@ const staggerContainer = {
   visible: {
     opacity: 1,
     transition: {
-      staggerChildren: 0.2
+      staggerChildren: 0.1,
+      delayChildren: 0.1
     }
   }
+};
+
+const scaleIn = {
+  hidden: { opacity: 0, scale: 0.9 },
+  visible: { opacity: 1, scale: 1, transition: { duration: 0.5, ease: "easeOut" } }
 };
 
 const projects = [
@@ -25,8 +31,9 @@ const projects = [
     description: "A high-performance lead generation machine for a major Hawaii towing service. Includes custom dispatch integration and SEO strategies that dominate local search results.",
     image: "/assets/IMG_6041.jpeg",
     tags: ["React", "Node.js", "SEO", "Lead Gen"],
-    icon: <Globe className="w-6 h-6" />,
-    slug: "tow-dispatch"
+    icon: <Globe className="w-5 h-5" />,
+    slug: "tow-dispatch",
+    gradient: "from-blue-500 to-cyan-400"
   },
   {
     title: "RealtorPro",
@@ -34,8 +41,9 @@ const projects = [
     description: "A comprehensive platform for real estate professionals featuring property listings, client management, and automated marketing tools.",
     image: "/assets/IMG_6034.jpeg",
     tags: ["Real Estate", "CRM", "Listings"],
-    icon: <Layout className="w-6 h-6" />,
-    slug: "realtor-pro"
+    icon: <Layout className="w-5 h-5" />,
+    slug: "realtor-pro",
+    gradient: "from-emerald-500 to-teal-400"
   },
   {
     title: "All-in-1 Bonding",
@@ -43,8 +51,9 @@ const projects = [
     description: "A modern, high-conversion web presence for a premier bonding service. Optimized for local SEO and lead generation.",
     image: "/assets/IMG_6083.jpeg",
     tags: ["Vercel", "React", "SEO"],
-    icon: <Code className="w-6 h-6" />,
-    slug: "all-in-1-bonding"
+    icon: <Code className="w-5 h-5" />,
+    slug: "all-in-1-bonding",
+    gradient: "from-purple-500 to-pink-400"
   },
   {
     title: "Oahu Elite Tours",
@@ -52,8 +61,9 @@ const projects = [
     description: "A visually stunning tour booking platform for Hawaii's premier guided experiences. Built for high conversion and mobile speed.",
     image: "/assets/IMG_6078.jpeg",
     tags: ["React", "Tailwind", "Tourism"],
-    icon: <Globe className="w-6 h-6" />,
-    slug: "oahu-elite-tours"
+    icon: <Globe className="w-5 h-5" />,
+    slug: "oahu-elite-tours",
+    gradient: "from-orange-500 to-amber-400"
   },
   {
     title: "Mason Martin Law",
@@ -61,8 +71,9 @@ const projects = [
     description: "A professional digital presence for a trusted Hawaii litigation attorney. Focused on authority, experience, and clear client communication.",
     image: "/assets/IMG_6080.jpeg",
     tags: ["React", "Legal", "Branding"],
-    icon: <Gavel className="w-6 h-6" />,
-    slug: "martin-law"
+    icon: <Gavel className="w-5 h-5" />,
+    slug: "martin-law",
+    gradient: "from-slate-500 to-slate-400"
   },
   {
     title: "Son Antique",
@@ -70,8 +81,9 @@ const projects = [
     description: "A luxury vehicle marketplace featuring integrated financing and professional service scheduling for Hawaii's auto buyers.",
     image: "/assets/IMG_6081.jpeg",
     tags: ["React", "E-commerce", "Auto"],
-    icon: <Car className="w-6 h-6" />,
-    slug: "sons-auto"
+    icon: <Car className="w-5 h-5" />,
+    slug: "sons-auto",
+    gradient: "from-red-500 to-rose-400"
   },
   {
     title: "Street Patrol",
@@ -79,8 +91,9 @@ const projects = [
     description: "A community-focused platform designed to enhance neighborhood safety through real-time communication and resource sharing.",
     image: "/assets/IMG_6082.jpeg",
     tags: ["React", "Community", "Safety"],
-    icon: <Shield className="w-6 h-6" />,
-    slug: "street-patrol"
+    icon: <Shield className="w-5 h-5" />,
+    slug: "street-patrol",
+    gradient: "from-indigo-500 to-violet-400"
   },
   {
     title: "Capture by Christian",
@@ -88,8 +101,9 @@ const projects = [
     description: "A high-performance photography portfolio designed to showcase breathtaking visual stories with an immersive user experience.",
     image: "https://images.unsplash.com/photo-1452587925148-ce544e77e70d?w=800&auto=format&fit=crop&q=80",
     tags: ["React", "Photography", "Vercel"],
-    icon: <Camera className="w-6 h-6" />,
-    slug: "capture-by-christian"
+    icon: <Camera className="w-5 h-5" />,
+    slug: "capture-by-christian",
+    gradient: "from-pink-500 to-fuchsia-400"
   },
   {
     title: "Captured C Collective",
@@ -97,102 +111,157 @@ const projects = [
     description: "A premium cinematic media team platform specializing in high-impact content for real estate, events, and branded visual content.",
     image: "/assets/IMG_6084_1768471472326.jpeg",
     tags: ["Cinematic", "Media", "Branding"],
-    icon: <Globe className="w-6 h-6" />,
-    slug: "captured-c-collective"
+    icon: <Globe className="w-5 h-5" />,
+    slug: "captured-c-collective",
+    gradient: "from-cyan-500 to-blue-400"
   }
 ];
 
 export default function Portfolio() {
   return (
-    <div className="pt-32 pb-20">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <motion.div 
-          initial="hidden"
-          animate="visible"
-          variants={staggerContainer}
-          className="space-y-16"
-        >
-          {/* Header */}
-          <div className="text-center max-w-3xl mx-auto">
-            <motion.h1 variants={fadeIn} className="text-4xl md:text-6xl font-display font-bold mb-6">
-              Our <span className="text-primary">Portfolio</span>
+    <div className="min-h-screen">
+      {/* Hero Section */}
+      <section className="pt-32 pb-20 relative overflow-hidden">
+        {/* Background elements */}
+        <div className="absolute top-0 left-1/4 w-96 h-96 bg-primary/10 rounded-full blur-[128px] pointer-events-none" />
+        <div className="absolute bottom-0 right-1/4 w-80 h-80 bg-accent/10 rounded-full blur-[100px] pointer-events-none" />
+        
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <motion.div 
+            initial="hidden"
+            animate="visible"
+            variants={staggerContainer}
+            className="text-center space-y-6"
+          >
+            <motion.div variants={scaleIn} className="inline-flex items-center gap-2 bg-primary/10 border border-primary/20 rounded-full px-5 py-2">
+              <Sparkles className="w-4 h-4 text-primary" />
+              <span className="text-sm font-medium text-primary">Our Work Speaks for Itself</span>
+            </motion.div>
+            
+            <motion.h1 variants={fadeInUp} className="text-5xl md:text-6xl lg:text-7xl font-display font-bold text-white leading-tight">
+              Crafted with <br />
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary via-blue-400 to-accent animate-gradient-x">
+                Precision & Purpose
+              </span>
             </motion.h1>
-            <motion.p variants={fadeIn} className="text-lg text-muted-foreground">
-              From high-traffic websites to complex internal software systems, we build technical solutions that solve real business problems.
+            
+            <motion.p variants={fadeInUp} className="text-xl text-slate-400 max-w-2xl mx-auto">
+              Every project is a testament to our commitment to excellence. Explore the digital experiences we've built for businesses across Hawaii.
             </motion.p>
-          </div>
+          </motion.div>
+        </div>
+      </section>
 
-          {/* Projects Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      {/* Projects Grid */}
+      <section className="pb-32">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div 
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-50px" }}
+            variants={staggerContainer}
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+          >
             {projects.map((project, index) => (
               <motion.div
                 key={index}
-                variants={fadeIn}
-                className="group relative bg-white rounded-2xl border border-border overflow-hidden hover:shadow-2xl transition-all duration-500"
+                variants={fadeInUp}
+                whileHover={{ y: -8 }}
+                className="group relative rounded-2xl overflow-hidden bg-slate-900/50 border border-white/5 backdrop-blur-sm hover:border-white/20 transition-all duration-500"
               >
-                <div className="aspect-video overflow-hidden">
+                {/* Glow effect */}
+                <div className={`absolute inset-0 bg-gradient-to-br ${project.gradient} opacity-0 group-hover:opacity-10 transition-opacity duration-500`} />
+                
+                {/* Image */}
+                <div className="aspect-video overflow-hidden relative">
                   <img 
                     src={project.image} 
                     alt={project.title}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                   />
-                </div>
-                <div className="p-8 space-y-4">
-                  <div className="flex items-center gap-3 text-primary">
-                    {project.icon}
-                    <span className="text-xs font-bold uppercase tracking-widest">{project.category}</span>
+                  <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent to-transparent opacity-60" />
+                  
+                  {/* Category badge */}
+                  <div className="absolute top-4 left-4">
+                    <div className={`inline-flex items-center gap-2 bg-gradient-to-r ${project.gradient} rounded-full px-3 py-1.5`}>
+                      <span className="text-white">{project.icon}</span>
+                      <span className="text-xs font-bold text-white uppercase tracking-wider">{project.category}</span>
+                    </div>
                   </div>
-                  <h3 className="text-2xl font-bold font-display">{project.title}</h3>
-                  <p className="text-muted-foreground text-sm leading-relaxed">
+                </div>
+                
+                {/* Content */}
+                <div className="p-6 space-y-4">
+                  <h3 className="text-2xl font-bold font-display text-white group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-white group-hover:to-slate-300 transition-all duration-300">
+                    {project.title}
+                  </h3>
+                  <p className="text-slate-400 text-sm leading-relaxed line-clamp-3">
                     {project.description}
                   </p>
-                  <div className="flex flex-wrap gap-2 pt-2">
+                  
+                  {/* Tags */}
+                  <div className="flex flex-wrap gap-2">
                     {project.tags.map(tag => (
-                      <span key={tag} className="px-3 py-1 bg-secondary/50 rounded-full text-[10px] font-bold text-primary uppercase tracking-wider">
+                      <span key={tag} className="px-3 py-1 bg-white/5 border border-white/10 rounded-full text-[10px] font-bold text-slate-300 uppercase tracking-wider">
                         {tag}
                       </span>
                     ))}
                   </div>
+                  
+                  {/* Link */}
                   {project.slug && (
-                    <div className="pt-4">
-                      <Link href={`/portfolio/${project.slug}`}>
-                        <Button variant="link" className="p-0 h-auto text-primary font-bold group-hover:translate-x-1 transition-transform">
-                          View Project Details →
-                        </Button>
-                      </Link>
-                    </div>
-                  )}
-                  {project.url && (
-                    <div className="pt-4">
-                      <a href={project.url} target="_blank" rel="noopener noreferrer">
-                        <Button variant="link" className="p-0 h-auto text-primary font-bold group-hover:translate-x-1 transition-transform">
-                          Visit Website →
-                        </Button>
-                      </a>
-                    </div>
+                    <Link href={`/portfolio/${project.slug}`}>
+                      <Button 
+                        variant="ghost" 
+                        data-testid={`button-view-project-${project.slug}`}
+                        className="group/btn p-0 h-auto text-primary font-semibold"
+                      >
+                        View Project
+                        <ArrowRight className="ml-2 w-4 h-4 group-hover/btn:translate-x-1 transition-transform" />
+                      </Button>
+                    </Link>
                   )}
                 </div>
               </motion.div>
             ))}
-          </div>
-
-          {/* Call to Action */}
-          <motion.div 
-            variants={fadeIn}
-            className="bg-secondary/30 rounded-3xl p-12 text-center max-w-4xl mx-auto border border-primary/10"
-          >
-            <h2 className="text-3xl font-display font-bold mb-4">Have a project in mind?</h2>
-            <p className="text-muted-foreground mb-8">
-              Let's build something great together. Whether it's a new website or a custom internal tool, we have the expertise to bring it to life.
-            </p>
-            <Link href="/contact">
-              <Button size="lg" className="px-8 h-auto py-4 text-base">
-                Start Your Project
-              </Button>
-            </Link>
           </motion.div>
-        </motion.div>
-      </div>
+        </div>
+      </section>
+
+      {/* CTA Section */}
+      <section className="py-24 relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-r from-primary/10 via-accent/5 to-primary/10" />
+        <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-primary/50 to-transparent" />
+        
+        <div className="max-w-4xl mx-auto px-4 text-center relative z-10">
+          <motion.div 
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            variants={staggerContainer}
+            className="space-y-8"
+          >
+            <motion.h2 variants={fadeInUp} className="text-4xl md:text-5xl font-display font-bold text-white">
+              Ready to Join This List?
+            </motion.h2>
+            <motion.p variants={fadeInUp} className="text-xl text-slate-400 max-w-2xl mx-auto">
+              Let's create something extraordinary together. Your project could be our next masterpiece.
+            </motion.p>
+            <motion.div variants={fadeInUp}>
+              <Link href="/contact" data-testid="link-start-project-portfolio">
+                <Button 
+                  size="lg" 
+                  data-testid="button-start-project-portfolio"
+                  className="group bg-gradient-to-r from-primary to-blue-500 text-white font-semibold rounded-xl shadow-2xl shadow-primary/30"
+                >
+                  Start Your Project
+                  <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                </Button>
+              </Link>
+            </motion.div>
+          </motion.div>
+        </div>
+      </section>
     </div>
   );
 }
