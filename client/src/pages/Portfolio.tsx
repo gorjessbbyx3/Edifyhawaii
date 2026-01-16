@@ -11,7 +11,7 @@ import imgLaw from "@assets/IMG_6080_1768421566889.jpeg";
 import imgAuto from "@assets/IMG_6081_1768421794787.jpeg";
 import imgPatrol from "@assets/IMG_6082_1768422114148.jpeg";
 import imgCaptured from "@assets/IMG_6084_1768471472326.jpeg";
-import imgJadeRoyale from "@assets/IMG_6085_1768473306904.jpeg";
+import imgDashboard from "@assets/IMG_6090_1768554040490.jpeg";
 
 const fadeInUp = {
   hidden: { opacity: 0, y: 40 },
@@ -38,12 +38,22 @@ const projects = [
   {
     title: "PoormanTowing.com",
     category: "Web Development & SEO",
-    description: "A high-performance lead generation machine for a major Hawaii towing service. Includes custom dispatch integration and SEO strategies that dominate local search results.",
+    description: "A high-performance marketing website for Hawaii's trusted towing service. Optimized for local SEO and lead generation with mobile-first design.",
     image: imgTowing,
-    tags: ["React", "Node.js", "SEO", "Lead Gen"],
+    tags: ["React", "SEO", "Lead Gen"],
     icon: <Globe className="w-5 h-5" />,
-    slug: "tow-dispatch",
+    slug: "poorman-website",
     gradient: "from-blue-500 to-cyan-400"
+  },
+  {
+    title: "Poorman808 Dashboard",
+    category: "Custom Software",
+    description: "A proprietary dispatch management system with real-time fleet tracking, job queue management, invoicing, and live map integration for towing operations.",
+    image: imgDashboard,
+    tags: ["Dashboard", "Real-time", "Fleet Management"],
+    icon: <Layout className="w-5 h-5" />,
+    slug: "poorman-dashboard",
+    gradient: "from-orange-500 to-red-400"
   },
   {
     title: "RealtorPro",
@@ -114,17 +124,6 @@ const projects = [
     icon: <Camera className="w-5 h-5" />,
     slug: "captured-c-collective",
     gradient: "from-pink-500 to-fuchsia-400"
-  },
-  {
-    title: "Jade Royale",
-    category: "Gaming Platform",
-    description: "A premium online gaming platform featuring an immersive user experience with real-time cashout functionality, bonus systems, and sleek Asian-inspired design aesthetics.",
-    image: imgJadeRoyale,
-    tags: ["Gaming", "React", "Real-time"],
-    icon: <Sparkles className="w-5 h-5" />,
-    slug: "jade-royale",
-    gradient: "from-emerald-500 to-teal-400",
-    url: "https://cashout.realconnect.online"
   }
 ];
 
