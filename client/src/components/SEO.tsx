@@ -94,20 +94,20 @@ export function SEO({
 
 export const seoConfig = {
   home: {
-    title: "Hawaii Web Design & IT Services | Edify Limited",
-    description: "Professional web design for Hawaii businesses. We build conversion-focused websites that turn visitors into customers. Free strategy audit available."
+    title: "Edify, Ltd. | Premium Hawaii Web Design & Digital Growth Foundations",
+    description: "Stop paying the 'silent tax' of a website that loses local leads. Partner with Edify to build the digital authority your Hawaii business deserves. Book your free audit today."
   },
   services: {
-    title: "Small Business Web Design & IT Services | Edify Limited",
-    description: "Full-service technology partner for Hawaii businesses. Custom web development, managed IT, and digital marketing solutions that drive growth."
+    title: "Hawaii Small Business Web Design & IT Services | Edify Limited",
+    description: "Is your current website costing you Hawaii market share? Edify provides premium web design, managed IT, and digital growth solutions for local businesses."
   },
   portfolio: {
-    title: "Our Work - Web Design Portfolio | Edify Limited",
-    description: "See real results from Hawaii businesses we've helped grow. Custom websites, dashboards, and digital solutions with proven ROI."
+    title: "Hawaii Client Transformations - Web Design Case Studies | Edify",
+    description: "Real growth stories from Hawaii businesses. See how Edify helped local companies increase leads, revenue, and digital authority through strategic web design."
   },
   contact: {
-    title: "Free Strategy Audit - Contact Us | Edify Limited",
-    description: "Schedule your free strategy audit. We'll identify growth opportunities and technical issues holding your Hawaii business back. No obligation."
+    title: "Free Growth Audit for Hawaii Businesses | Edify Limited",
+    description: "Discover what's costing your Hawaii business leads and revenue. Book your free digital audit—we'll identify $5k+ in hidden growth opportunities or the session is free."
   }
 };
 

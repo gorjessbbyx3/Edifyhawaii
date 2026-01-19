@@ -154,14 +154,14 @@ export default function Portfolio() {
             </motion.div>
             
             <motion.h1 variants={fadeInUp} className="text-5xl md:text-6xl lg:text-7xl font-display font-bold text-white leading-tight">
-              Web Design Portfolio <br />
+              Hawaii Client <br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary via-blue-400 to-accent animate-gradient-x">
-                Real Results for Hawaii Businesses
+                Growth Stories
               </span>
             </motion.h1>
             
             <motion.p variants={fadeInUp} className="text-xl text-slate-400 max-w-2xl mx-auto">
-              See how we've helped local businesses grow with websites and custom software that drive real results. Every project showcases our commitment to excellence.
+              Real transformations from Hawaii businesses. See how Edify helped local companies increase leads, revenue, and digital authority through strategic web design.
             </motion.p>
           </motion.div>
         </div>
@@ -191,7 +191,7 @@ export default function Portfolio() {
                 <div className="aspect-video overflow-hidden relative">
                   <img 
                     src={project.image} 
-                    alt={project.title}
+                    alt={`${project.title} - Hawaii business website design showcasing increased lead generation and digital growth`}
                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent to-transparent opacity-60" />

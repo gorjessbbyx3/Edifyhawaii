@@ -74,9 +74,9 @@ export default function Services() {
             </motion.div>
             
             <motion.h1 variants={fadeInUp} className="text-5xl md:text-6xl lg:text-7xl font-display font-bold text-white leading-tight">
-              Small Business Web Design <br />
+              Is Your Website Costing You <br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary via-blue-400 to-accent animate-gradient-x">
-                & IT Services in Hawaii
+                Hawaii Market Share?
               </span>
             </motion.h1>
             

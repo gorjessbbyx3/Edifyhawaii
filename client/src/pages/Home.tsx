@@ -99,15 +99,15 @@ export default function Home() {
               <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
             </motion.div>
             
-            {/* SEO-Optimized H1 - Identity Appeal Headline */}
+            {/* SEO-Optimized H1 - Identity Appeal + Local Keywords */}
             <motion.h1 
               variants={fadeIn}
               className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-display font-extrabold leading-[0.95] tracking-tight"
             >
-              <span className="text-white">Web Design That Helps</span>
+              <span className="text-white">The Digital Foundation for</span>
               <br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary via-blue-400 to-accent animate-gradient-x">
-                Hawaii Businesses Grow
+                Hawaii's Market Leaders
               </span>
             </motion.h1>
             
@@ -395,7 +395,7 @@ export default function Home() {
             <div className="text-center space-y-6">
               <motion.div variants={fadeInUp} className="inline-flex items-center gap-2 bg-green-500/10 border border-green-500/20 rounded-full px-4 py-1.5">
                 <TrendingUp className="w-4 h-4 text-green-400" />
-                <span className="text-sm font-medium text-green-400">Real Transformations</span>
+                <span className="text-sm font-medium text-green-400">Honolulu Client Transformations</span>
               </motion.div>
               <motion.h2 variants={fadeInUp} className="text-4xl md:text-5xl lg:text-6xl font-display font-bold text-white">
                 From Struggling to
@@ -604,7 +604,7 @@ function CaseStory({ company, roadblock, strategy, result, resultLabel, image, l
       
       {image && (
         <div className="w-full md:w-48 h-32 md:h-auto rounded-xl overflow-hidden border border-white/10">
-          <img src={image} alt={company} className="w-full h-full object-cover" />
+          <img src={image} alt={`Hawaii business ${company} viewing increased lead generation metrics on Edify dashboard`} className="w-full h-full object-cover" />
         </div>
       )}
     </div>
