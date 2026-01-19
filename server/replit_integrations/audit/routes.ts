@@ -2,9 +2,10 @@ import type { Express, Request, Response } from "express";
 import OpenAI from "openai";
 
 const openai = new OpenAI({
-  apiKey: process.env.AI_INTEGRATIONS_OPENAI_API_KEY,
-  baseURL: process.env.AI_INTEGRATIONS_OPENAI_BASE_URL,
+  apiKey: process.env.OPENAI_API_KEY,
 });
+
+const OPENAI_MODEL = process.env.OPENAI_MODEL || "gpt-4o";
 
 const EDIFY_SYSTEM_PROMPT = `You are the Edify AI Assistant, a friendly and knowledgeable digital growth strategist for Edify Limited, a Hawaii-based IT services and web development company. Your role is to help Hawaii business owners identify hidden growth opportunities and technical roadblocks in their digital presence.
 
@@ -61,10 +62,10 @@ export function registerAuditRoutes(app: Express): void {
       ];
 
       const stream = await openai.chat.completions.create({
-        model: "gpt-5",
+        model: OPENAI_MODEL,
         messages: chatMessages,
         stream: true,
-        max_completion_tokens: 1024,
+        max_tokens: 1024,
       });
 
       let fullResponse = "";
@@ -109,12 +110,12 @@ Provide:
 Be specific, actionable, and frame insights in terms of business outcomes. This is a Hawaii local business.`;
 
       const response = await openai.chat.completions.create({
-        model: "gpt-5",
+        model: OPENAI_MODEL,
         messages: [
           { role: "system", content: EDIFY_SYSTEM_PROMPT },
           { role: "user", content: analysisPrompt },
         ],
-        max_completion_tokens: 1024,
+        max_tokens: 1024,
       });
 
       const analysis = response.choices[0]?.message?.content || "";
