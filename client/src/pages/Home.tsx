@@ -1,9 +1,10 @@
 import { motion, useInView } from "framer-motion";
 import { Link } from "wouter";
-import { ArrowRight, TrendingUp, AlertTriangle, CheckCircle2, Shield, Zap, Target, DollarSign, Clock, Users, Star, ChevronRight } from "lucide-react";
+import { ArrowRight, TrendingUp, AlertTriangle, CheckCircle2, Shield, Zap, Target, DollarSign, Clock, Users, Star, ChevronRight, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useRef, useEffect, useState } from "react";
 import { SEO, seoConfig, generateLocalBusinessSchema, generateOrganizationSchema, generateCaseStudySchema } from "@/components/SEO";
+import { AuditChat } from "@/components/AuditChat";
 import heroVideo from "@assets/_users_9b25cb5e-ce71-4d7e-bbca-6899b4a7896f_generated_dcfe4f1d_1768470906588.mp4";
 import imgPoormanWebsite from "@assets/IMG_6122_1768864416866.jpeg";
 
@@ -83,6 +84,8 @@ const combinedSchema = {
 };
 
 export default function Home() {
+  const [auditChatOpen, setAuditChatOpen] = useState(false);
+  
   return (
     <div className="flex flex-col min-h-screen overflow-x-hidden">
       <SEO 
@@ -153,18 +156,18 @@ export default function Home() {
               variants={fadeIn}
               className="flex flex-col sm:flex-row gap-4 justify-center pt-4"
             >
-              <Link href="/contact" data-testid="link-audit-hero">
-                <Button 
-                  size="lg" 
-                  data-testid="button-audit-hero"
-                  className="group relative bg-gradient-to-r from-primary to-blue-500 text-white font-semibold rounded-xl shadow-2xl shadow-primary/30"
-                >
-                  <span className="relative z-10 flex items-center">
-                    Audit Your Growth Potential
-                    <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                  </span>
-                </Button>
-              </Link>
+              <Button 
+                size="lg" 
+                onClick={() => setAuditChatOpen(true)}
+                data-testid="button-audit-hero"
+                className="group relative bg-gradient-to-r from-primary to-blue-500 text-white font-semibold rounded-xl shadow-2xl shadow-primary/30"
+              >
+                <Sparkles className="mr-2 w-5 h-5" />
+                <span className="relative z-10 flex items-center">
+                  Start Your AI Audit
+                  <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                </span>
+              </Button>
               <Link href="/portfolio" data-testid="link-view-work-hero">
                 <Button 
                   variant="outline" 
@@ -526,18 +529,18 @@ export default function Home() {
             </motion.div>
             
             <motion.div variants={fadeInUp} className="pt-4">
-              <Link href="/contact" data-testid="link-free-audit-cta">
-                <Button 
-                  size="lg" 
-                  data-testid="button-free-audit-cta"
-                  className="group relative bg-gradient-to-r from-primary via-blue-500 to-accent text-white font-bold rounded-2xl shadow-2xl shadow-primary/40"
-                >
-                  <span className="relative z-10 flex items-center">
-                    Get Your Free Strategy Audit
-                    <ArrowRight className="ml-3 w-6 h-6 group-hover:translate-x-2 transition-transform" />
-                  </span>
-                </Button>
-              </Link>
+              <Button 
+                size="lg" 
+                onClick={() => setAuditChatOpen(true)}
+                data-testid="button-free-audit-cta"
+                className="group relative bg-gradient-to-r from-primary via-blue-500 to-accent text-white font-bold rounded-2xl shadow-2xl shadow-primary/40"
+              >
+                <Sparkles className="mr-2 w-5 h-5" />
+                <span className="relative z-10 flex items-center">
+                  Start Your AI Audit
+                  <ArrowRight className="ml-3 w-6 h-6 group-hover:translate-x-2 transition-transform" />
+                </span>
+              </Button>
             </motion.div>
             
             <motion.p variants={fadeInUp} className="text-sm text-slate-500">
@@ -546,6 +549,8 @@ export default function Home() {
           </motion.div>
         </div>
       </section>
+      
+      <AuditChat isOpen={auditChatOpen} onClose={() => setAuditChatOpen(false)} />
     </div>
   );
 }

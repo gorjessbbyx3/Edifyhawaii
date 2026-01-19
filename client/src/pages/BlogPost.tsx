@@ -1,9 +1,11 @@
+import { useState } from "react";
 import { motion } from "framer-motion";
 import { Link, useParams } from "wouter";
 import { useQuery } from "@tanstack/react-query";
-import { Calendar, Clock, ArrowLeft, User, RefreshCw } from "lucide-react";
+import { Calendar, Clock, ArrowLeft, User, RefreshCw, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { SEO } from "@/components/SEO";
+import { AuditChat } from "@/components/AuditChat";
 import type { BlogPost as BlogPostType } from "@shared/schema";
 
 const fadeIn = {
@@ -66,6 +68,7 @@ function renderContent(content: string) {
 }
 
 export default function BlogPost() {
+  const [auditChatOpen, setAuditChatOpen] = useState(false);
   const params = useParams();
   const slug = params.slug;
 
@@ -199,15 +202,19 @@ export default function BlogPost() {
                   More Articles
                 </Button>
               </Link>
-              <Link href="/contact">
-                <Button data-testid="button-cta-blog">
-                  Get Your Free Audit
-                </Button>
-              </Link>
+              <Button 
+                onClick={() => setAuditChatOpen(true)} 
+                data-testid="button-cta-blog"
+              >
+                <Sparkles className="mr-2 w-4 h-4" />
+                Start Your AI Audit
+              </Button>
             </div>
           </motion.div>
         </div>
       </article>
+      
+      <AuditChat isOpen={auditChatOpen} onClose={() => setAuditChatOpen(false)} />
     </div>
   );
 }
