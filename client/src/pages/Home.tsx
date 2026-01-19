@@ -1,9 +1,10 @@
 import { motion, useInView } from "framer-motion";
 import { Link } from "wouter";
-import { ArrowRight, Server, Globe, ShieldCheck, Cpu, Layout, Terminal, Sparkles, Zap, TrendingUp, Users, CheckCircle2 } from "lucide-react";
+import { ArrowRight, TrendingUp, AlertTriangle, CheckCircle2, Shield, Zap, Target, DollarSign, Clock, Users, Star, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useRef, useEffect, useState } from "react";
 import heroVideo from "@assets/_users_9b25cb5e-ce71-4d7e-bbca-6899b4a7896f_generated_dcfe4f1d_1768470906588.mp4";
+import imgDashboard from "@assets/IMG_6090_1768554040490.jpeg";
 
 const fadeIn = {
   hidden: { opacity: 0, y: 30 },
@@ -31,7 +32,7 @@ const scaleIn = {
   visible: { opacity: 1, scale: 1, transition: { duration: 0.5, ease: "easeOut" } }
 };
 
-function AnimatedCounter({ end, duration = 2, suffix = "" }: { end: number, duration?: number, suffix?: string }) {
+function AnimatedCounter({ end, duration = 2, suffix = "", prefix = "" }: { end: number, duration?: number, suffix?: string, prefix?: string }) {
   const [count, setCount] = useState(0);
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true });
@@ -51,15 +52,14 @@ function AnimatedCounter({ end, duration = 2, suffix = "" }: { end: number, dura
     }
   }, [isInView, end, duration]);
 
-  return <span ref={ref}>{count}{suffix}</span>;
+  return <span ref={ref}>{prefix}{count.toLocaleString()}{suffix}</span>;
 }
 
 export default function Home() {
   return (
     <div className="flex flex-col min-h-screen overflow-x-hidden">
-      {/* Hero Section - Full Impact */}
+      {/* 1. HERO SECTION - Identity & Immediate Trust */}
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-        {/* Video Background */}
         <div className="absolute inset-0 z-0">
           <video
             autoPlay
@@ -70,12 +70,10 @@ export default function Home() {
           >
             <source src={heroVideo} type="video/mp4" />
           </video>
-          {/* Premium gradient overlay */}
-          <div className="absolute inset-0 bg-gradient-to-b from-slate-950/70 via-slate-950/50 to-slate-950" />
+          <div className="absolute inset-0 bg-gradient-to-b from-slate-950/80 via-slate-950/60 to-slate-950" />
           <div className="absolute inset-0 bg-gradient-to-r from-primary/10 via-transparent to-accent/10" />
         </div>
 
-        {/* Animated gradient orbs */}
         <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/20 rounded-full blur-[128px] animate-pulse pointer-events-none" />
         <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-accent/15 rounded-full blur-[100px] animate-pulse pointer-events-none" style={{ animationDelay: "1s" }} />
 
@@ -86,51 +84,51 @@ export default function Home() {
             variants={staggerContainer}
             className="text-center space-y-8"
           >
-            {/* Premium Badge */}
             <motion.div 
               variants={scaleIn}
               className="inline-flex items-center gap-3 bg-white/5 backdrop-blur-xl rounded-full px-6 py-2.5 border border-white/10 shadow-2xl shadow-primary/10"
             >
-              <Sparkles className="w-4 h-4 text-accent" />
-              <span className="text-sm font-medium text-white/90 tracking-wide">Hawaii's Premier IT & Web Development Partner</span>
+              <Shield className="w-4 h-4 text-accent" />
+              <span className="text-sm font-medium text-white/90 tracking-wide">Hawaii's Trusted Technology Partner</span>
               <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
             </motion.div>
             
-            {/* Main Headline - Bold & Impactful */}
+            {/* Identity Appeal Headline */}
             <motion.h1 
               variants={fadeIn}
-              className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-display font-extrabold leading-[0.95] tracking-tight"
+              className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-display font-extrabold leading-[0.95] tracking-tight"
             >
-              <span className="text-white">We Build</span>
+              <span className="text-white">The Digital Foundation</span>
               <br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary via-blue-400 to-accent animate-gradient-x">
-                Digital Empires
+                Your Business Has Earned
               </span>
             </motion.h1>
             
-            {/* Subheadline */}
+            {/* Loss Aversion Subheadline */}
             <motion.p 
               variants={fadeIn}
               className="text-xl md:text-2xl text-white/70 max-w-3xl mx-auto leading-relaxed font-light"
             >
-              Enterprise-grade websites. Custom software. IT infrastructure. 
+              An outdated website isn't just embarrassing—it's a 
+              <span className="text-red-400 font-medium"> silent tax on your growth</span>.
               <br className="hidden md:block" />
-              <span className="text-white font-medium">One team. Unlimited potential.</span>
+              <span className="text-white font-medium">Stop losing customers to competitors with better digital presence.</span>
             </motion.p>
             
-            {/* CTA Buttons */}
+            {/* Low-Friction CTA */}
             <motion.div 
               variants={fadeIn}
               className="flex flex-col sm:flex-row gap-4 justify-center pt-4"
             >
-              <Link href="/contact" data-testid="link-start-project-hero">
+              <Link href="/contact" data-testid="link-audit-hero">
                 <Button 
                   size="lg" 
-                  data-testid="button-start-project-hero"
+                  data-testid="button-audit-hero"
                   className="group relative bg-gradient-to-r from-primary to-blue-500 text-white font-semibold rounded-xl shadow-2xl shadow-primary/30"
                 >
                   <span className="relative z-10 flex items-center">
-                    Start Your Project
+                    Audit Your Growth Potential
                     <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
                   </span>
                 </Button>
@@ -142,39 +140,13 @@ export default function Home() {
                   data-testid="button-view-work-hero"
                   className="border-2 border-white/20 text-white backdrop-blur-sm font-semibold rounded-xl"
                 >
-                  View Our Work
+                  See Real Results
                 </Button>
               </Link>
-            </motion.div>
-
-            {/* Quick Stats */}
-            <motion.div 
-              variants={fadeIn}
-              className="flex flex-wrap justify-center gap-8 md:gap-16 pt-12"
-            >
-              <div className="text-center">
-                <div data-testid="text-stat-projects" className="text-4xl md:text-5xl font-display font-bold text-white">
-                  <AnimatedCounter end={50} suffix="+" />
-                </div>
-                <p className="text-sm text-white/50 mt-1 uppercase tracking-wider">Projects Delivered</p>
-              </div>
-              <div className="text-center">
-                <div data-testid="text-stat-satisfaction" className="text-4xl md:text-5xl font-display font-bold text-white">
-                  <AnimatedCounter end={100} suffix="%" />
-                </div>
-                <p className="text-sm text-white/50 mt-1 uppercase tracking-wider">Client Satisfaction</p>
-              </div>
-              <div className="text-center">
-                <div data-testid="text-stat-support" className="text-4xl md:text-5xl font-display font-bold text-white">
-                  <AnimatedCounter end={24} suffix="/7" />
-                </div>
-                <p className="text-sm text-white/50 mt-1 uppercase tracking-wider">Support Available</p>
-              </div>
             </motion.div>
           </motion.div>
         </div>
 
-        {/* Scroll indicator */}
         <motion.div 
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
@@ -191,11 +163,88 @@ export default function Home() {
         </motion.div>
       </section>
 
-      {/* Services Section - Premium Cards */}
-      <section className="py-32 relative overflow-hidden">
-        {/* Background elements */}
-        <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-primary/50 to-transparent" />
-        <div className="absolute -top-40 left-1/2 w-80 h-80 bg-primary/10 rounded-full blur-[100px] pointer-events-none" />
+      {/* 2. SOCIAL PROOF BAR - Instant Validation */}
+      <section className="py-12 border-y border-white/5 bg-slate-900/50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div 
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            variants={fadeIn}
+            className="text-center space-y-6"
+          >
+            <p className="text-sm text-slate-500 uppercase tracking-widest font-medium">Trusted by Hawaii Businesses</p>
+            <div className="flex flex-wrap justify-center items-center gap-8 md:gap-16 opacity-60 grayscale">
+              <div className="text-xl font-display font-bold text-slate-400">Poorman Towing</div>
+              <div className="text-xl font-display font-bold text-slate-400">Mason Martin Law</div>
+              <div className="text-xl font-display font-bold text-slate-400">Oahu Elite Tours</div>
+              <div className="text-xl font-display font-bold text-slate-400">All-in-1 Bonding</div>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* 3. AGITATION SECTION - Problem-Agitate-Solve */}
+      <section className="py-24 relative overflow-hidden">
+        <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-red-500/30 to-transparent" />
+        
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div 
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-100px" }}
+            variants={staggerContainer}
+            className="space-y-16"
+          >
+            <div className="text-center space-y-6">
+              <motion.div variants={fadeInUp} className="inline-flex items-center gap-2 bg-red-500/10 border border-red-500/20 rounded-full px-4 py-1.5">
+                <AlertTriangle className="w-4 h-4 text-red-400" />
+                <span className="text-sm font-medium text-red-400">The Hard Truth</span>
+              </motion.div>
+              <motion.h2 variants={fadeInUp} className="text-4xl md:text-5xl lg:text-6xl font-display font-bold text-white">
+                Is Your Website Costing You
+                <br />
+                <span className="text-red-400">Local Market Share?</span>
+              </motion.h2>
+              <motion.p variants={fadeInUp} className="text-lg text-slate-400 max-w-3xl mx-auto">
+                While you're stuck with a template site that "does the job," your competitors are capturing the high-value customers who judged you in the first 3 seconds.
+              </motion.p>
+            </div>
+
+            {/* Inaction Math */}
+            <motion.div variants={fadeInUp} className="max-w-4xl mx-auto">
+              <div className="bg-slate-900/80 border border-red-500/20 rounded-2xl p-8 md:p-12">
+                <h3 className="text-2xl font-display font-bold text-white mb-8 text-center">The Cost of Doing Nothing</h3>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+                  <div className="space-y-2">
+                    <div className="text-5xl font-display font-bold text-red-400">1</div>
+                    <p className="text-slate-400">Lost lead per month</p>
+                  </div>
+                  <div className="space-y-2 flex flex-col items-center justify-center">
+                    <div className="text-3xl text-slate-500">×</div>
+                    <div className="text-5xl font-display font-bold text-orange-400">$2,500</div>
+                    <p className="text-slate-400">Average customer value</p>
+                  </div>
+                  <div className="space-y-2">
+                    <div className="text-3xl text-slate-500">=</div>
+                    <div className="text-5xl font-display font-bold text-white">
+                      <AnimatedCounter end={30000} prefix="$" suffix="" />
+                    </div>
+                    <p className="text-slate-400">Lost annually</p>
+                  </div>
+                </div>
+                <p className="text-center text-slate-500 mt-8 text-sm">
+                  Every month you wait, you're paying a tax to your competitors.
+                </p>
+              </div>
+            </motion.div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* 4. SIGNATURE SYSTEM - The Guide's Plan */}
+      <section className="py-24 relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-primary/5 to-transparent" />
         
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <motion.div 
@@ -205,69 +254,129 @@ export default function Home() {
             variants={staggerContainer}
             className="space-y-16"
           >
-            <div className="text-center space-y-4">
+            <div className="text-center space-y-6">
               <motion.div variants={fadeInUp} className="inline-flex items-center gap-2 bg-primary/10 border border-primary/20 rounded-full px-4 py-1.5">
-                <Zap className="w-4 h-4 text-primary" />
-                <span className="text-sm font-medium text-primary">Full-Stack Capabilities</span>
+                <Target className="w-4 h-4 text-primary" />
+                <span className="text-sm font-medium text-primary">Your Path to Growth</span>
               </motion.div>
               <motion.h2 variants={fadeInUp} className="text-4xl md:text-5xl lg:text-6xl font-display font-bold text-white">
-                Everything You Need.
+                A Simple 3-Step Plan
                 <br />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent">Nothing You Don't.</span>
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent">Built for Your Success</span>
               </motion.h2>
               <motion.p variants={fadeInUp} className="text-lg text-slate-400 max-w-2xl mx-auto">
-                From network infrastructure to pixel-perfect websites, we handle the entire tech stack so you can focus on what matters most.
+                No confusing tech jargon. No endless meetings. Just a clear path from where you are to where you want to be.
               </motion.p>
             </div>
 
-            <motion.div 
-              variants={staggerContainer}
-              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
-            >
-              <ServiceCard 
-                icon={<Globe className="w-7 h-7" />}
-                title="Web Development"
-                description="Stunning, high-performance websites that captivate visitors and convert them into loyal customers."
+            <motion.div variants={staggerContainer} className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              <ProcessStep 
+                number="1"
+                title="Decode Roadblocks"
+                description="We analyze what's holding your business back—hidden technical issues, missed opportunities, and growth blockers."
                 gradient="from-blue-500 to-cyan-400"
               />
-              <ServiceCard 
-                icon={<Terminal className="w-7 h-7" />}
-                title="Custom Software"
-                description="Bespoke applications and dashboards tailored to your exact business workflows and requirements."
+              <ProcessStep 
+                number="2"
+                title="Rebuild the Foundation"
+                description="We create a digital presence that commands attention, builds trust, and turns visitors into customers."
                 gradient="from-purple-500 to-pink-400"
               />
-              <ServiceCard 
-                icon={<Server className="w-7 h-7" />}
-                title="IT Infrastructure"
-                description="Enterprise-grade network setup, monitoring, and maintenance that keeps your operations running smoothly."
+              <ProcessStep 
+                number="3"
+                title="Scale the Results"
+                description="We optimize for local discoverability and continuous improvement so your growth compounds over time."
                 gradient="from-orange-500 to-amber-400"
-              />
-              <ServiceCard 
-                icon={<ShieldCheck className="w-7 h-7" />}
-                title="Cybersecurity"
-                description="Military-grade protection for your data with advanced threat detection and prevention systems."
-                gradient="from-red-500 to-rose-400"
-              />
-              <ServiceCard 
-                icon={<Layout className="w-7 h-7" />}
-                title="CRM Systems"
-                description="Custom-built dashboards that give you real-time insights and automate your customer relationships."
-                gradient="from-green-500 to-emerald-400"
-              />
-              <ServiceCard 
-                icon={<Cpu className="w-7 h-7" />}
-                title="Hardware Solutions"
-                description="Complete procurement, setup, and management of all your technology hardware needs."
-                gradient="from-indigo-500 to-violet-400"
               />
             </motion.div>
           </motion.div>
         </div>
       </section>
 
-      {/* Why Choose Us - Impact Section */}
-      <section className="py-32 relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-primary/5 to-transparent" />
+      {/* 5. STRATEGIC SERVICE TIERS - Anchoring */}
+      <section className="py-24 relative overflow-hidden">
+        <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-primary/50 to-transparent" />
+        
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div 
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-100px" }}
+            variants={staggerContainer}
+            className="space-y-16"
+          >
+            <div className="text-center space-y-6">
+              <motion.div variants={fadeInUp} className="inline-flex items-center gap-2 bg-accent/10 border border-accent/20 rounded-full px-4 py-1.5">
+                <DollarSign className="w-4 h-4 text-accent" />
+                <span className="text-sm font-medium text-accent">Investment Options</span>
+              </motion.div>
+              <motion.h2 variants={fadeInUp} className="text-4xl md:text-5xl lg:text-6xl font-display font-bold text-white">
+                Choose Your Level of
+                <br />
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent to-cyan-400">Digital Transformation</span>
+              </motion.h2>
+            </div>
+
+            <motion.div variants={staggerContainer} className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              {/* VIP Tier - Anchor */}
+              <PricingTier 
+                name="VIP"
+                tagline="Full Digital Dominance"
+                price="15,000"
+                description="Complete digital ecosystem with custom software, ongoing optimization, and priority support."
+                features={[
+                  "Custom web application",
+                  "Proprietary dashboard/CRM",
+                  "Full IT infrastructure setup",
+                  "24/7 priority support",
+                  "Quarterly strategy reviews"
+                ]}
+                highlighted={false}
+              />
+              
+              {/* Pro Tier - Best Value */}
+              <PricingTier 
+                name="Pro"
+                tagline="Best Value"
+                price="7,500"
+                description="High-performance website with local SEO domination and ongoing maintenance."
+                features={[
+                  "Premium responsive website",
+                  "Local SEO optimization",
+                  "Lead generation setup",
+                  "Monthly maintenance",
+                  "Analytics & reporting"
+                ]}
+                highlighted={true}
+              />
+              
+              {/* Core Tier */}
+              <PricingTier 
+                name="Core"
+                tagline="Essential Foundation"
+                price="3,500"
+                description="Professional website that establishes your credibility and captures leads."
+                features={[
+                  "Modern responsive website",
+                  "Mobile optimization",
+                  "Contact form integration",
+                  "Basic SEO setup",
+                  "30-day support"
+                ]}
+                highlighted={false}
+              />
+            </motion.div>
+
+            <motion.p variants={fadeInUp} className="text-center text-slate-500 text-sm">
+              All packages include free consultation. Custom solutions available upon request.
+            </motion.p>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* 6. NARRATIVE CASE STORIES - The Proof */}
+      <section className="py-24 relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-accent/5 to-transparent" />
         
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <motion.div 
@@ -275,98 +384,57 @@ export default function Home() {
             whileInView="visible"
             viewport={{ once: true, margin: "-100px" }}
             variants={staggerContainer}
-            className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center"
+            className="space-y-16"
           >
-            <div className="space-y-8">
-              <motion.div variants={fadeInUp} className="inline-flex items-center gap-2 bg-accent/10 border border-accent/20 rounded-full px-4 py-1.5">
-                <TrendingUp className="w-4 h-4 text-accent" />
-                <span className="text-sm font-medium text-accent">Proven Results</span>
+            <div className="text-center space-y-6">
+              <motion.div variants={fadeInUp} className="inline-flex items-center gap-2 bg-green-500/10 border border-green-500/20 rounded-full px-4 py-1.5">
+                <TrendingUp className="w-4 h-4 text-green-400" />
+                <span className="text-sm font-medium text-green-400">Real Transformations</span>
               </motion.div>
-              <motion.h2 variants={fadeInUp} className="text-4xl md:text-5xl font-display font-bold text-white leading-tight">
-                We Don't Just Build Websites.
+              <motion.h2 variants={fadeInUp} className="text-4xl md:text-5xl lg:text-6xl font-display font-bold text-white">
+                From Struggling to
                 <br />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent to-cyan-400">We Build Success Stories.</span>
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-emerald-400">Thriving</span>
               </motion.h2>
-              <motion.p variants={fadeInUp} className="text-lg text-slate-400 leading-relaxed">
-                Every project we take on is treated like our own business. We obsess over the details because we know that's what separates good from exceptional.
-              </motion.p>
-              
-              <motion.div variants={staggerContainer} className="space-y-4">
-                {[
-                  "Lightning-fast performance that ranks higher on Google",
-                  "Mobile-first design for today's on-the-go customers",
-                  "SEO-optimized from the ground up",
-                  "24/7 support when you need us most"
-                ].map((item, i) => (
-                  <motion.div key={i} variants={fadeInUp} className="flex items-center gap-4">
-                    <div className="w-8 h-8 rounded-full bg-gradient-to-r from-primary to-accent flex items-center justify-center flex-shrink-0">
-                      <CheckCircle2 className="w-4 h-4 text-white" />
-                    </div>
-                    <span className="text-slate-300 font-medium">{item}</span>
-                  </motion.div>
-                ))}
-              </motion.div>
-
-              <motion.div variants={fadeInUp}>
-                <Link href="/portfolio" data-testid="link-see-portfolio">
-                  <Button 
-                    size="lg" 
-                    variant="outline"
-                    data-testid="button-see-portfolio"
-                    className="group bg-white/10 text-white border-white/20 backdrop-blur-sm font-semibold rounded-xl"
-                  >
-                    See Our Portfolio
-                    <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                  </Button>
-                </Link>
-              </motion.div>
             </div>
 
-            {/* Featured Project Preview */}
-            <motion.div variants={scaleIn} className="relative">
-              <div className="absolute -inset-4 bg-gradient-to-r from-primary/30 via-accent/30 to-primary/30 rounded-3xl blur-2xl opacity-50" />
-              <div className="relative rounded-2xl overflow-hidden border border-white/10 shadow-2xl">
-                <div className="bg-slate-800 px-4 py-3 flex items-center gap-2">
-                  <div className="flex gap-2">
-                    <div className="w-3 h-3 rounded-full bg-red-500" />
-                    <div className="w-3 h-3 rounded-full bg-yellow-500" />
-                    <div className="w-3 h-3 rounded-full bg-green-500" />
-                  </div>
-                  <div className="flex-1 bg-slate-700 rounded-lg px-4 py-1 text-xs text-slate-400 font-mono text-center">
-                    poormantowing.com
-                  </div>
-                </div>
-                <img 
-                  src="/assets/IMG_6077.jpeg"
-                  alt="Featured Project Showcase"
-                  className="w-full"
-                />
-              </div>
-              <motion.div 
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: 0.3 }}
-                className="absolute -bottom-6 -right-6 bg-slate-900/95 backdrop-blur-xl border border-white/10 rounded-xl p-4 shadow-2xl"
-              >
-                <div className="flex items-center gap-3">
-                  <div className="w-12 h-12 rounded-full bg-gradient-to-r from-green-500 to-emerald-400 flex items-center justify-center">
-                    <TrendingUp className="w-6 h-6 text-white" />
-                  </div>
-                  <div>
-                    <p className="text-2xl font-bold text-white">300%</p>
-                    <p className="text-xs text-slate-400">Increase in Leads</p>
-                  </div>
-                </div>
-              </motion.div>
+            <motion.div variants={staggerContainer} className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+              <CaseStory 
+                company="Poorman Towing"
+                roadblock="Losing 5+ calls daily to competitors with better online presence. Their old site looked outdated and wasn't showing up in local searches."
+                strategy="Built a high-performance website with local SEO domination strategy. Added custom dispatch dashboard for operations efficiency."
+                result="+300%"
+                resultLabel="Increase in monthly leads"
+                image={imgDashboard}
+              />
+              <CaseStory 
+                company="Mason Martin Law"
+                roadblock="Professional reputation didn't match their generic website template. Potential clients were bouncing to firms with stronger digital presence."
+                strategy="Created an authoritative, trust-building website that positions them as the premier litigation firm in Hawaii."
+                result="+45%"
+                resultLabel="More consultation requests"
+              />
+            </motion.div>
+
+            <motion.div variants={fadeInUp} className="text-center">
+              <Link href="/portfolio" data-testid="link-all-stories">
+                <Button 
+                  variant="outline" 
+                  size="lg" 
+                  data-testid="button-all-stories"
+                  className="group border-white/20 text-white backdrop-blur-sm"
+                >
+                  See All Success Stories
+                  <ChevronRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                </Button>
+              </Link>
             </motion.div>
           </motion.div>
         </div>
       </section>
 
-      {/* Final CTA - Maximum Impact */}
+      {/* 7. FINAL CONVERSION & RISK REVERSAL */}
       <section className="py-32 relative overflow-hidden">
-        {/* Animated background */}
         <div className="absolute inset-0 bg-gradient-to-r from-primary/20 via-accent/10 to-primary/20" />
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-primary/20 via-transparent to-transparent" />
         <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-primary/50 to-transparent" />
@@ -380,31 +448,37 @@ export default function Home() {
             className="space-y-8"
           >
             <motion.div variants={scaleIn} className="inline-flex items-center gap-2 bg-white/5 backdrop-blur-sm border border-white/10 rounded-full px-6 py-2">
-              <Users className="w-4 h-4 text-primary" />
-              <span className="text-sm font-medium text-white/80">Join Our Growing List of Happy Clients</span>
+              <Shield className="w-4 h-4 text-green-400" />
+              <span className="text-sm font-medium text-white/80">Risk-Free Guarantee</span>
             </motion.div>
             
             <motion.h2 variants={fadeInUp} className="text-4xl md:text-6xl lg:text-7xl font-display font-bold text-white leading-tight">
-              Ready to Stand Out?
+              Ready to Stop Losing
               <br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary via-blue-400 to-accent">
-                Let's Build Something Epic.
+                Customers to Your Competition?
               </span>
             </motion.h2>
             
-            <motion.p variants={fadeInUp} className="text-xl text-slate-300 max-w-2xl mx-auto">
-              Schedule a free consultation and discover how we can transform your digital presence into a competitive advantage.
-            </motion.p>
+            {/* Risk Reversal */}
+            <motion.div variants={fadeInUp} className="bg-slate-900/80 border border-green-500/20 rounded-2xl p-8 max-w-2xl mx-auto">
+              <p className="text-lg text-white font-medium mb-4">
+                Our Guarantee
+              </p>
+              <p className="text-slate-300 leading-relaxed">
+                If we can't identify at least <span className="text-green-400 font-bold">$5,000 in hidden technical debt or lost lead potential</span> during your free strategy audit, the session is on us—no strings attached.
+              </p>
+            </motion.div>
             
             <motion.div variants={fadeInUp} className="pt-4">
-              <Link href="/contact" data-testid="link-get-consultation-cta">
+              <Link href="/contact" data-testid="link-free-audit-cta">
                 <Button 
                   size="lg" 
-                  data-testid="button-get-consultation-cta"
+                  data-testid="button-free-audit-cta"
                   className="group relative bg-gradient-to-r from-primary via-blue-500 to-accent text-white font-bold rounded-2xl shadow-2xl shadow-primary/40"
                 >
                   <span className="relative z-10 flex items-center">
-                    Get Your Free Consultation
+                    Get Your Free Strategy Audit
                     <ArrowRight className="ml-3 w-6 h-6 group-hover:translate-x-2 transition-transform" />
                   </span>
                 </Button>
@@ -412,7 +486,7 @@ export default function Home() {
             </motion.div>
             
             <motion.p variants={fadeInUp} className="text-sm text-slate-500">
-              No commitment required. Let's just talk about your goals.
+              No pressure. No commitment. Just honest insights about your growth potential.
             </motion.p>
           </motion.div>
         </div>
@@ -421,27 +495,105 @@ export default function Home() {
   );
 }
 
-function ServiceCard({ icon, title, description, gradient }: { icon: React.ReactNode, title: string, description: string, gradient: string }) {
+function ProcessStep({ number, title, description, gradient }: { number: string, title: string, description: string, gradient: string }) {
   return (
     <motion.div 
       variants={fadeInUp}
-      whileHover={{ y: -8, scale: 1.02 }}
-      className="group relative p-8 rounded-2xl bg-slate-900/50 border border-white/5 backdrop-blur-sm overflow-hidden transition-all duration-500 hover:border-white/20"
+      className="relative p-8 rounded-2xl bg-slate-900/50 border border-white/5 backdrop-blur-sm text-center"
     >
-      {/* Glow effect on hover */}
-      <div className={`absolute inset-0 bg-gradient-to-br ${gradient} opacity-0 group-hover:opacity-10 transition-opacity duration-500`} />
-      <div className={`absolute -inset-px bg-gradient-to-br ${gradient} opacity-0 group-hover:opacity-20 blur-xl transition-opacity duration-500`} />
-      
-      <div className="relative z-10">
-        <div className={`mb-6 p-4 rounded-xl bg-gradient-to-br ${gradient} w-fit shadow-lg`}>
-          <div className="text-white">{icon}</div>
+      <div className={`mx-auto mb-6 w-16 h-16 rounded-full bg-gradient-to-br ${gradient} flex items-center justify-center text-3xl font-display font-bold text-white shadow-lg`}>
+        {number}
+      </div>
+      <h3 className="text-xl font-bold font-display mb-3 text-white">{title}</h3>
+      <p className="text-slate-400 leading-relaxed">{description}</p>
+    </motion.div>
+  );
+}
+
+function PricingTier({ name, tagline, price, description, features, highlighted }: { name: string, tagline: string, price: string, description: string, features: string[], highlighted: boolean }) {
+  return (
+    <motion.div 
+      variants={fadeInUp}
+      className={`relative p-8 rounded-2xl border backdrop-blur-sm ${
+        highlighted 
+          ? "bg-gradient-to-b from-primary/20 to-slate-900/80 border-primary/50 shadow-2xl shadow-primary/20 scale-105" 
+          : "bg-slate-900/50 border-white/10"
+      }`}
+    >
+      {highlighted && (
+        <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-gradient-to-r from-primary to-accent px-4 py-1 rounded-full text-xs font-bold text-white uppercase tracking-wider">
+          Most Popular
         </div>
-        <h3 className="text-xl font-bold font-display mb-3 text-white group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-white group-hover:to-slate-300 transition-all duration-300">
-          {title}
-        </h3>
-        <p className="text-slate-400 leading-relaxed group-hover:text-slate-300 transition-colors duration-300">
-          {description}
-        </p>
+      )}
+      <div className="text-center mb-6">
+        <p className={`text-sm font-medium mb-2 ${highlighted ? "text-primary" : "text-slate-500"}`}>{tagline}</p>
+        <h3 className="text-2xl font-display font-bold text-white mb-2">{name}</h3>
+        <div className="flex items-baseline justify-center gap-1">
+          <span className="text-4xl font-display font-bold text-white">${price}</span>
+          <span className="text-slate-500">starting</span>
+        </div>
+      </div>
+      <p className="text-slate-400 text-sm text-center mb-6">{description}</p>
+      <ul className="space-y-3 mb-8">
+        {features.map((feature, i) => (
+          <li key={i} className="flex items-center gap-3 text-slate-300">
+            <CheckCircle2 className={`w-5 h-5 flex-shrink-0 ${highlighted ? "text-primary" : "text-slate-500"}`} />
+            <span className="text-sm">{feature}</span>
+          </li>
+        ))}
+      </ul>
+      <Link href="/contact" data-testid={`link-tier-${name.toLowerCase()}`}>
+        <Button 
+          className={`w-full ${highlighted ? "bg-gradient-to-r from-primary to-blue-500" : ""}`}
+          variant={highlighted ? "default" : "outline"}
+          data-testid={`button-tier-${name.toLowerCase()}`}
+        >
+          Get Started
+        </Button>
+      </Link>
+    </motion.div>
+  );
+}
+
+function CaseStory({ company, roadblock, strategy, result, resultLabel, image }: { company: string, roadblock: string, strategy: string, result: string, resultLabel: string, image?: string }) {
+  return (
+    <motion.div 
+      variants={fadeInUp}
+      className="p-8 rounded-2xl bg-slate-900/50 border border-white/10 backdrop-blur-sm"
+    >
+      <div className="flex flex-col md:flex-row gap-8">
+        <div className="flex-1 space-y-6">
+          <h3 className="text-2xl font-display font-bold text-white">{company}</h3>
+          
+          <div className="space-y-4">
+            <div>
+              <p className="text-xs text-red-400 uppercase tracking-wider font-medium mb-1">The Roadblock</p>
+              <p className="text-slate-400 text-sm">{roadblock}</p>
+            </div>
+            <div>
+              <p className="text-xs text-primary uppercase tracking-wider font-medium mb-1">The Strategy</p>
+              <p className="text-slate-400 text-sm">{strategy}</p>
+            </div>
+          </div>
+          
+          <div className="pt-4 border-t border-white/10">
+            <div className="flex items-center gap-4">
+              <div className="w-14 h-14 rounded-full bg-gradient-to-r from-green-500 to-emerald-400 flex items-center justify-center">
+                <TrendingUp className="w-7 h-7 text-white" />
+              </div>
+              <div>
+                <p className="text-3xl font-display font-bold text-green-400">{result}</p>
+                <p className="text-xs text-slate-500">{resultLabel}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        {image && (
+          <div className="w-full md:w-48 h-32 md:h-auto rounded-xl overflow-hidden border border-white/10">
+            <img src={image} alt={company} className="w-full h-full object-cover" />
+          </div>
+        )}
       </div>
     </motion.div>
   );
