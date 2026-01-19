@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { useRef, useEffect, useState } from "react";
 import { SEO, seoConfig, generateLocalBusinessSchema, generateOrganizationSchema, generateCaseStudySchema } from "@/components/SEO";
 import heroVideo from "@assets/_users_9b25cb5e-ce71-4d7e-bbca-6899b4a7896f_generated_dcfe4f1d_1768470906588.mp4";
-import imgDashboard from "@assets/IMG_6090_1768554040490.jpeg";
+import imgPoormanWebsite from "@assets/IMG_6122_1768864416866.jpeg";
 
 const fadeIn = {
   hidden: { opacity: 0, y: 30 },
@@ -458,7 +458,7 @@ export default function Home() {
                 strategy="Built a high-performance website with local SEO domination strategy. Added custom dispatch dashboard for operations efficiency."
                 result="+300%"
                 resultLabel="Increase in monthly leads"
-                image={imgDashboard}
+                image={imgPoormanWebsite}
                 link="/portfolio/poorman-website"
               />
               <CaseStory 
