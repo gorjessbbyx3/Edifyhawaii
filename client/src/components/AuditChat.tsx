@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Send, Bot, User, Loader2, Sparkles, X, MessageCircle, ArrowRight } from "lucide-react";
+import { Send, Bot, User, Loader2, Sparkles, X, MessageCircle, ArrowRight, TrendingUp, AlertTriangle, Users, Globe } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Link } from "wouter";
@@ -10,10 +10,30 @@ interface Message {
   content: string;
 }
 
+interface QuickOption {
+  label: string;
+  value: string;
+  icon: typeof TrendingUp;
+}
+
 interface AuditChatProps {
   isOpen: boolean;
   onClose: () => void;
 }
+
+const INITIAL_OPTIONS: QuickOption[] = [
+  { label: "I need more local leads", value: "I need more local leads for my Hawaii business", icon: TrendingUp },
+  { label: "My website looks outdated", value: "My website looks outdated and doesn't reflect my business quality", icon: Globe },
+  { label: "I'm losing customers to competitors", value: "I feel like I'm losing customers to my competitors online", icon: AlertTriangle },
+  { label: "I want to grow but don't know how", value: "I want to grow my business but I'm not sure where to start with digital", icon: Users },
+];
+
+const PROBLEM_OPTIONS: QuickOption[] = [
+  { label: "Confusing website navigation", value: "My biggest bottleneck is confusing website navigation - visitors leave quickly", icon: AlertTriangle },
+  { label: "Not showing up in local search", value: "My biggest bottleneck is not showing up when people search for my services locally", icon: Globe },
+  { label: "No system for capturing leads", value: "My biggest bottleneck is I have no system for capturing and following up with leads", icon: Users },
+  { label: "Site doesn't convert visitors", value: "My biggest bottleneck is my site gets traffic but doesn't convert visitors into customers", icon: TrendingUp },
+];
 
 export function AuditChat({ isOpen, onClose }: AuditChatProps) {
   const [messages, setMessages] = useState<Message[]>([]);
@@ -21,6 +41,7 @@ export function AuditChat({ isOpen, onClose }: AuditChatProps) {
   const [isLoading, setIsLoading] = useState(false);
   const [showProgress, setShowProgress] = useState(false);
   const [progress, setProgress] = useState(0);
+  const [conversationStage, setConversationStage] = useState(0);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
@@ -38,6 +59,7 @@ export function AuditChat({ isOpen, onClose }: AuditChatProps) {
     setIsLoading(true);
     setShowProgress(true);
     setProgress(0);
+    setConversationStage(1);
 
     const progressInterval = setInterval(() => {
       setProgress((prev) => Math.min(prev + Math.random() * 15, 90));
@@ -47,7 +69,7 @@ export function AuditChat({ isOpen, onClose }: AuditChatProps) {
       const response = await fetch("/api/audit-chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ messages: [] }),
+        body: JSON.stringify({ messages: [], stage: 1 }),
       });
 
       clearInterval(progressInterval);
@@ -89,28 +111,31 @@ export function AuditChat({ isOpen, onClose }: AuditChatProps) {
       console.error("Error starting conversation:", error);
       setMessages([{
         role: "assistant",
-        content: "Aloha! I'm the Edify AI assistant. I'm here to help identify growth opportunities for your Hawaii business. What's your biggest digital challenge right now?"
+        content: "Aloha! I'm the Edify AI strategist. I'm here to help identify what's holding your Hawaii business back from its full growth potential.\n\nLet's start simple - what brings you here today?"
       }]);
     } finally {
       setIsLoading(false);
     }
   };
 
-  const sendMessage = async () => {
-    if (!input.trim() || isLoading) return;
+  const sendMessage = async (messageText?: string) => {
+    const userMessage = messageText || input.trim();
+    if (!userMessage || isLoading) return;
 
-    const userMessage = input.trim();
     setInput("");
     
     const newMessages: Message[] = [...messages, { role: "user", content: userMessage }];
     setMessages(newMessages);
     setIsLoading(true);
+    
+    const newStage = conversationStage + 1;
+    setConversationStage(newStage);
 
     try {
       const response = await fetch("/api/audit-chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ messages: newMessages }),
+        body: JSON.stringify({ messages: newMessages, stage: newStage }),
       });
 
       if (!response.ok) throw new Error("Failed to send message");
@@ -152,6 +177,10 @@ export function AuditChat({ isOpen, onClose }: AuditChatProps) {
     }
   };
 
+  const handleQuickOption = (option: QuickOption) => {
+    sendMessage(option.value);
+  };
+
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
@@ -159,7 +188,21 @@ export function AuditChat({ isOpen, onClose }: AuditChatProps) {
     }
   };
 
+  const getCurrentOptions = (): QuickOption[] | null => {
+    if (isLoading) return null;
+    if (conversationStage === 1) return INITIAL_OPTIONS;
+    if (conversationStage === 2) return PROBLEM_OPTIONS;
+    return null;
+  };
+
+  const getAuditProgress = () => {
+    const stages = 5;
+    return Math.min((conversationStage / stages) * 100, 100);
+  };
+
   if (!isOpen) return null;
+
+  const quickOptions = getCurrentOptions();
 
   return (
     <AnimatePresence>
@@ -183,8 +226,8 @@ export function AuditChat({ isOpen, onClose }: AuditChatProps) {
                 <Bot className="w-5 h-5 text-white" />
               </div>
               <div>
-                <h3 className="font-display font-bold text-white">Edify AI Assistant</h3>
-                <p className="text-xs text-slate-400">AI-Powered Growth Audit</p>
+                <h3 className="font-display font-bold text-white">Edify AI Strategist</h3>
+                <p className="text-xs text-slate-400">Growth Audit for Hawaii Businesses</p>
               </div>
             </div>
             <Button
@@ -198,11 +241,28 @@ export function AuditChat({ isOpen, onClose }: AuditChatProps) {
             </Button>
           </div>
 
+          {conversationStage > 0 && (
+            <div className="px-4 py-2 bg-slate-800/30 border-b border-white/5">
+              <div className="flex items-center justify-between text-xs text-slate-400 mb-1">
+                <span>Audit Progress</span>
+                <span>{Math.round(getAuditProgress())}%</span>
+              </div>
+              <div className="h-1.5 bg-slate-700 rounded-full overflow-hidden">
+                <motion.div
+                  className="h-full bg-gradient-to-r from-primary to-accent"
+                  initial={{ width: 0 }}
+                  animate={{ width: `${getAuditProgress()}%` }}
+                  transition={{ duration: 0.5 }}
+                />
+              </div>
+            </div>
+          )}
+
           {showProgress && (
             <div className="px-4 py-3 bg-slate-800/50">
               <div className="flex items-center gap-3">
                 <Sparkles className="w-4 h-4 text-primary animate-pulse" />
-                <span className="text-sm text-slate-300">Initializing AI assistant...</span>
+                <span className="text-sm text-slate-300">Initializing AI strategist...</span>
               </div>
               <div className="mt-2 h-1.5 bg-slate-700 rounded-full overflow-hidden">
                 <motion.div
@@ -252,6 +312,31 @@ export function AuditChat({ isOpen, onClose }: AuditChatProps) {
                 </div>
               </motion.div>
             ))}
+            
+            {quickOptions && !isLoading && messages.length > 0 && (
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="pt-2"
+              >
+                <p className="text-xs text-slate-500 mb-3 text-center">Quick responses:</p>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                  {quickOptions.map((option, index) => (
+                    <Button
+                      key={index}
+                      variant="outline"
+                      onClick={() => handleQuickOption(option)}
+                      data-testid={`button-quick-option-${index}`}
+                      className="h-auto py-3 px-4 text-left justify-start gap-3 bg-slate-800/50 border-white/10 text-slate-300 text-sm"
+                    >
+                      <option.icon className="w-4 h-4 text-primary shrink-0" />
+                      <span>{option.label}</span>
+                    </Button>
+                  ))}
+                </div>
+              </motion.div>
+            )}
+            
             <div ref={messagesEndRef} />
           </div>
 
@@ -262,13 +347,13 @@ export function AuditChat({ isOpen, onClose }: AuditChatProps) {
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 onKeyDown={handleKeyDown}
-                placeholder="Type your message..."
+                placeholder={conversationStage <= 2 ? "Or type your own response..." : "Type your message..."}
                 data-testid="input-chat-message"
                 className="min-h-[48px] max-h-32 resize-none bg-slate-800 border-white/10 text-white placeholder:text-slate-500"
                 disabled={isLoading}
               />
               <Button
-                onClick={sendMessage}
+                onClick={() => sendMessage()}
                 disabled={!input.trim() || isLoading}
                 data-testid="button-send-message"
                 className="shrink-0 bg-gradient-to-r from-primary to-blue-500"

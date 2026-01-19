@@ -1,0 +1,29 @@
+For the AI-powered audit on Edify’s website, you should implement a hybrid approach: use multiple-choice answers to capture interest and reduce friction initially, then transition to open-ended text responses for deeper discovery and agitation of pain points.
+This strategy respects the Behavioral Architecture of Conversion by capturing "System 1" (instinctive) interest before engaging "System 2" (logical) processing.
+1. Start with Multiple Choice to Reduce Friction
+The initial stage of your audit should focus on Cognitive Ease and reducing the visitor's mental effort.
+• Leverage Hick’s Law: Every additional choice increases decision time; by providing clear, pre-set buttons, you prevent "analysis paralysis" and guide the user through the start of the funnel.
+• Enable Self-Segmentation: Use multiple-choice buttons to let the Hawaii SMB owner self-identify their needs (e.g., "I need more local leads" or "My site looks outdated"). This allows the AI to tailor the rest of the experience to their specific business model.
+• The Zeigarnik Effect: By using a "micro-commitment" approach where they just have to click a button, you build momentum. Once they start, they feel a psychological compulsion to finish the process.
+2. Transition to Text Responses for Diagnostic Depth
+Once the prospect is "invested" in the audit, you should use text-based inputs to uncover their specific motivations through the SPIN Selling framework.
+• Uncover Hidden Pain: Multiple-choice options can be limiting. Allowing users to respond in text lets them articulate nuanced objections and specific growth bottlenecks they might not have a button for.
+• Prove You Are a "Guide": In the Hawaii market, being a "trusted advisor" is critical [511, Turn 8]. Asking an open-ended question like, "What is the one thing your current site isn't doing that is costing you the most money?" forces the prospect to emotionally connect with their pain.
+• Listen to Understand: The sources emphasize that the more a prospect talks, the easier it is to diagnose their problem. In a digital sense, a text response acts as the prospect "talking," which builds Emotional Trust because the AI (and later your human team) can reflect their exact language back to them.
+3. Practical Implementation for Edify
+Audit Stage
+Input Type
+Psychological Goal
+Step 1: The Warmer
+Multiple Choice
+Capture System 1; establish immediate relevance without effort.
+Step 2: Problem Identification
+Multiple Choice
+Use Loss Aversion to let them select which revenue leak they want to plug first.
+Step 3: The Agitation
+Text Box
+Ask an open-ended Implication Question (e.g., "How is this bottleneck affecting your team's morale?") to deepen the emotional impact.
+Step 4: The Need-Payoff
+Text Box
+Let them visualize success (e.g., "If we automated your leads, what would your business look like in 12 months?").
+Use this today: Start your audit with 3–4 simple buttons to get the user moving. Once they reach the 50% mark on your progress bar, ask one critical open-ended question to capture their unique business vision before asking them to book the final strategy session.
