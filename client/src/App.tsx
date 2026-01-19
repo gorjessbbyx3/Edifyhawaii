@@ -23,6 +23,7 @@ import CapturedCCollective from "@/pages/portfolio/CapturedCCollective";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { BackToTop } from "@/components/BackToTop";
+import { FloatingAuditButton } from "@/components/AuditChat";
 import { useEffect } from "react";
 import { useLocation } from "wouter";
 
@@ -63,6 +64,7 @@ function Router() {
       </main>
       <Footer />
       <BackToTop />
+      <FloatingAuditButton />
     </div>
   );
 }

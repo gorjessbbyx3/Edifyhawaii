@@ -1,8 +1,9 @@
 import { motion } from "framer-motion";
-import { CheckCircle2, Server, Code, BarChart, Lock, Phone, Globe, Shield, Cpu, ArrowRight, Sparkles, Zap, HelpCircle } from "lucide-react";
+import { CheckCircle2, Server, Code, BarChart, Lock, Phone, Globe, Shield, Cpu, ArrowRight, Sparkles, Zap, HelpCircle, Bot, MessageCircle } from "lucide-react";
 import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import { SEO, seoConfig, generateFAQSchema, generateServiceOfferingSchema } from "@/components/SEO";
+import { AuditChatTrigger } from "@/components/AuditChat";
 
 const faqs = [
   {
@@ -284,6 +285,118 @@ export default function Services() {
                   <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
                 </Button>
               </Link>
+            </motion.div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* AI Audit Section */}
+      <section className="py-24 relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-transparent to-blue-500/10" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-primary/5 rounded-full blur-[150px] pointer-events-none" />
+        
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <motion.div 
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            variants={staggerContainer}
+            className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center"
+          >
+            <div className="space-y-8">
+              <motion.div variants={fadeInUp} className="inline-flex items-center gap-2 bg-primary/10 border border-primary/20 rounded-full px-4 py-1.5">
+                <Bot className="w-4 h-4 text-primary" />
+                <span className="text-sm font-medium text-primary">AI-Powered Analysis</span>
+              </motion.div>
+              
+              <motion.h2 variants={fadeInUp} className="text-4xl md:text-5xl font-display font-bold text-white leading-tight">
+                Discover Your Growth Potential
+                <br />
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-blue-400">
+                  In 2 Minutes
+                </span>
+              </motion.h2>
+              
+              <motion.p variants={fadeInUp} className="text-lg text-slate-400 leading-relaxed">
+                Our AI assistant analyzes your digital presence and identifies hidden opportunities. Get instant insights about your website's conversion potential, local SEO gaps, and technical roadblocks—all for free.
+              </motion.p>
+              
+              <motion.div variants={staggerContainer} className="space-y-4">
+                <motion.div variants={fadeInUp} className="flex items-start gap-3">
+                  <div className="w-6 h-6 rounded-full bg-gradient-to-r from-primary to-blue-500 flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <CheckCircle2 className="w-3.5 h-3.5 text-white" />
+                  </div>
+                  <div>
+                    <span className="text-white font-medium">Instant Analysis</span>
+                    <p className="text-sm text-slate-400">Get actionable insights in real-time, not days</p>
+                  </div>
+                </motion.div>
+                
+                <motion.div variants={fadeInUp} className="flex items-start gap-3">
+                  <div className="w-6 h-6 rounded-full bg-gradient-to-r from-primary to-blue-500 flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <CheckCircle2 className="w-3.5 h-3.5 text-white" />
+                  </div>
+                  <div>
+                    <span className="text-white font-medium">Hawaii Market Focus</span>
+                    <p className="text-sm text-slate-400">Tailored recommendations for local business success</p>
+                  </div>
+                </motion.div>
+                
+                <motion.div variants={fadeInUp} className="flex items-start gap-3">
+                  <div className="w-6 h-6 rounded-full bg-gradient-to-r from-primary to-blue-500 flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <CheckCircle2 className="w-3.5 h-3.5 text-white" />
+                  </div>
+                  <div>
+                    <span className="text-white font-medium">No Commitment</span>
+                    <p className="text-sm text-slate-400">Free insights with no pressure to purchase</p>
+                  </div>
+                </motion.div>
+              </motion.div>
+              
+              <motion.div variants={fadeInUp}>
+                <AuditChatTrigger />
+              </motion.div>
+              
+              <motion.p variants={fadeInUp} className="text-sm text-slate-500">
+                <MessageCircle className="w-4 h-4 inline mr-1" />
+                AI-powered by Edify. For in-depth strategy, our human team is ready to help.
+              </motion.p>
+            </div>
+            
+            <motion.div variants={scaleIn} className="relative">
+              <div className="absolute -inset-4 bg-gradient-to-r from-primary/40 to-blue-500/40 rounded-3xl blur-2xl opacity-50" />
+              <div className="relative rounded-2xl overflow-hidden border border-white/10 shadow-2xl bg-slate-900 p-8">
+                <div className="flex items-center gap-3 mb-6">
+                  <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary to-blue-500 flex items-center justify-center">
+                    <Bot className="w-5 h-5 text-white" />
+                  </div>
+                  <div>
+                    <h4 className="font-display font-bold text-white">Edify AI Assistant</h4>
+                    <p className="text-xs text-slate-400">AI-Powered Growth Audit</p>
+                  </div>
+                </div>
+                
+                <div className="space-y-4">
+                  <div className="bg-slate-800 rounded-2xl rounded-tl-none px-4 py-3 max-w-[85%]">
+                    <p className="text-sm text-slate-200">Aloha! I'm the Edify AI assistant. I help Hawaii business owners identify growth opportunities. What's your biggest digital challenge right now?</p>
+                  </div>
+                  
+                  <div className="bg-primary rounded-2xl rounded-tr-none px-4 py-3 max-w-[85%] ml-auto">
+                    <p className="text-sm text-white">My website isn't generating enough leads...</p>
+                  </div>
+                  
+                  <div className="bg-slate-800 rounded-2xl rounded-tl-none px-4 py-3 max-w-[85%]">
+                    <p className="text-sm text-slate-200">That's a common challenge! Let me ask a few questions to identify what might be holding your website back...</p>
+                  </div>
+                </div>
+                
+                <div className="mt-6 pt-4 border-t border-white/10">
+                  <div className="flex items-center gap-2 text-xs text-slate-500">
+                    <Sparkles className="w-3 h-3 text-primary" />
+                    AI-powered by Replit's Agent technology
+                  </div>
+                </div>
+              </div>
             </motion.div>
           </motion.div>
         </div>
