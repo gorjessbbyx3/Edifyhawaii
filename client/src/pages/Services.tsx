@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 import { CheckCircle2, Server, Code, BarChart, Lock, Phone, Globe, Shield, Cpu, ArrowRight, Sparkles, Zap, HelpCircle } from "lucide-react";
 import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
-import { SEO, seoConfig, generateFAQSchema } from "@/components/SEO";
+import { SEO, seoConfig, generateFAQSchema, generateServiceOfferingSchema } from "@/components/SEO";
 
 const faqs = [
   {
@@ -48,13 +48,21 @@ const scaleIn = {
   visible: { opacity: 1, scale: 1, transition: { duration: 0.5, ease: "easeOut" } }
 };
 
+const servicesSchema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    generateFAQSchema(faqs, false),
+    generateServiceOfferingSchema(false)
+  ]
+};
+
 export default function Services() {
   return (
     <div className="min-h-screen">
       <SEO 
         title={seoConfig.services.title}
         description={seoConfig.services.description}
-        structuredData={generateFAQSchema(faqs)}
+        structuredData={servicesSchema}
       />
       {/* Hero Section - SEO Optimized */}
       <section className="pt-32 pb-20 relative overflow-hidden">

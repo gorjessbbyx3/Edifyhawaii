@@ -3,7 +3,7 @@ import { Link } from "wouter";
 import { ArrowRight, TrendingUp, AlertTriangle, CheckCircle2, Shield, Zap, Target, DollarSign, Clock, Users, Star, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useRef, useEffect, useState } from "react";
-import { SEO, seoConfig, generateLocalBusinessSchema } from "@/components/SEO";
+import { SEO, seoConfig, generateLocalBusinessSchema, generateOrganizationSchema, generateCaseStudySchema } from "@/components/SEO";
 import heroVideo from "@assets/_users_9b25cb5e-ce71-4d7e-bbca-6899b4a7896f_generated_dcfe4f1d_1768470906588.mp4";
 import imgDashboard from "@assets/IMG_6090_1768554040490.jpeg";
 
@@ -56,13 +56,39 @@ function AnimatedCounter({ end, duration = 2, suffix = "", prefix = "" }: { end:
   return <span ref={ref}>{prefix}{count.toLocaleString()}{suffix}</span>;
 }
 
+const caseStudies = [
+  {
+    name: "Poorman Towing Website Redesign",
+    client: "Poorman Towing",
+    result: "+300%",
+    metric: "Increase in monthly leads",
+    description: "Hawaii towing company transformed from losing 5+ calls daily to competitors into local market leader through high-performance website and local SEO strategy."
+  },
+  {
+    name: "Mason Martin Law Digital Presence",
+    client: "Mason Martin Law",
+    result: "+45%",
+    metric: "More consultation requests",
+    description: "Hawaii litigation attorney's outdated template replaced with authoritative, trust-building website that positions them as the premier litigation firm."
+  }
+];
+
+const combinedSchema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    generateLocalBusinessSchema(false),
+    generateOrganizationSchema(false),
+    generateCaseStudySchema(caseStudies, false)
+  ]
+};
+
 export default function Home() {
   return (
     <div className="flex flex-col min-h-screen overflow-x-hidden">
       <SEO 
         title={seoConfig.home.title}
         description={seoConfig.home.description}
-        structuredData={generateLocalBusinessSchema()}
+        structuredData={combinedSchema}
       />
       {/* 1. HERO SECTION - Identity & Immediate Trust */}
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
@@ -169,17 +195,38 @@ export default function Home() {
         </motion.div>
       </section>
 
-      {/* 2. SOCIAL PROOF BAR - Instant Validation */}
-      <section className="py-12 border-y border-white/5 bg-slate-900/50">
+      {/* 2. SOCIAL PROOF BAR - Instant Validation with LLM-Ready Metrics */}
+      <section className="py-12 border-y border-white/5 bg-slate-900/50" aria-label="Client Results and Social Proof">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div 
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true }}
             variants={fadeIn}
-            className="text-center space-y-6"
+            className="text-center space-y-8"
           >
             <p className="text-sm text-slate-500 uppercase tracking-widest font-medium">Trusted by Hawaii Businesses</p>
+            
+            {/* LLM-Ready Outcome Metrics - Clear data for AI crawling */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto" role="list" aria-label="Key business outcomes and metrics">
+              <div className="text-center" role="listitem">
+                <div className="text-3xl font-display font-bold text-primary">300%</div>
+                <p className="text-xs text-slate-500 mt-1">Average Lead Increase</p>
+              </div>
+              <div className="text-center" role="listitem">
+                <div className="text-3xl font-display font-bold text-green-400">45%</div>
+                <p className="text-xs text-slate-500 mt-1">More Consultation Requests</p>
+              </div>
+              <div className="text-center" role="listitem">
+                <div className="text-3xl font-display font-bold text-accent">9+</div>
+                <p className="text-xs text-slate-500 mt-1">Hawaii Businesses Served</p>
+              </div>
+              <div className="text-center" role="listitem">
+                <div className="text-3xl font-display font-bold text-white">100%</div>
+                <p className="text-xs text-slate-500 mt-1">Client Ownership Guarantee</p>
+              </div>
+            </div>
+            
             <div className="flex flex-wrap justify-center items-center gap-8 md:gap-16 opacity-60 grayscale">
               <div className="text-xl font-display font-bold text-slate-400">Poorman Towing</div>
               <div className="text-xl font-display font-bold text-slate-400">Mason Martin Law</div>
