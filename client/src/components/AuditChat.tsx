@@ -281,7 +281,7 @@ export function AuditChat({ isOpen, onClose }: AuditChatProps) {
               </Button>
             </div>
             <p className="text-xs text-slate-500 mt-2 text-center">
-              AI-powered insights. For personalized strategy, <Link href="/contact" className="text-primary">book a call</Link> with our team.
+              AI-powered insights. For personalized strategy, <Link href="/contact" className="text-primary" data-testid="link-book-call">book a call</Link> with our team.
             </p>
           </div>
         </motion.div>
@@ -320,9 +320,7 @@ export function FloatingAuditButton() {
         data-testid="button-floating-audit"
         initial={{ scale: 0 }}
         animate={{ scale: 1 }}
-        whileHover={{ scale: 1.1 }}
-        whileTap={{ scale: 0.95 }}
-        className="fixed bottom-6 right-6 z-40 w-14 h-14 rounded-full bg-gradient-to-r from-primary to-blue-500 text-white shadow-xl shadow-primary/40 flex items-center justify-center"
+        className="fixed bottom-6 right-6 z-40 w-14 h-14 rounded-full bg-gradient-to-r from-primary to-blue-500 text-white shadow-xl shadow-primary/40 flex items-center justify-center hover-elevate active-elevate-2 transition-shadow"
       >
         <MessageCircle className="w-6 h-6" />
       </motion.button>
