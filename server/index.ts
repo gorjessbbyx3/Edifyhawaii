@@ -3,9 +3,12 @@ import { registerRoutes } from "./routes";
 import { serveStatic } from "./static";
 import { createServer } from "http";
 import { registerAuditRoutes } from "./replit_integrations/audit";
+import path from "path";
 
 const app = express();
 const httpServer = createServer(app);
+
+app.use("/attached_assets", express.static(path.resolve(process.cwd(), "attached_assets")));
 
 declare module "http" {
   interface IncomingMessage {

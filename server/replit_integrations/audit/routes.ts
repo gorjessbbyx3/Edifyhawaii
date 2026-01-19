@@ -1,11 +1,16 @@
 import type { Express, Request, Response } from "express";
 import OpenAI from "openai";
 
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-});
-
 const OPENAI_MODEL = process.env.OPENAI_MODEL || "gpt-4o";
+
+function getOpenAIClient(): OpenAI {
+  if (!process.env.OPENAI_API_KEY) {
+    throw new Error("OPENAI_API_KEY is not configured. Please add your API key.");
+  }
+  return new OpenAI({
+    apiKey: process.env.OPENAI_API_KEY,
+  });
+}
 
 const EDIFY_SYSTEM_PROMPT = `You are the Edify AI Assistant, a friendly and knowledgeable digital growth strategist for Edify Limited, a Hawaii-based IT services and web development company. Your role is to help Hawaii business owners identify hidden growth opportunities and technical roadblocks in their digital presence.
 
@@ -61,6 +66,7 @@ export function registerAuditRoutes(app: Express): void {
         })),
       ];
 
+      const openai = getOpenAIClient();
       const stream = await openai.chat.completions.create({
         model: OPENAI_MODEL,
         messages: chatMessages,
@@ -109,6 +115,7 @@ Provide:
 
 Be specific, actionable, and frame insights in terms of business outcomes. This is a Hawaii local business.`;
 
+      const openai = getOpenAIClient();
       const response = await openai.chat.completions.create({
         model: OPENAI_MODEL,
         messages: [
@@ -120,9 +127,13 @@ Be specific, actionable, and frame insights in terms of business outcomes. This 
 
       const analysis = response.choices[0]?.message?.content || "";
       res.json({ analysis });
-    } catch (error) {
+    } catch (error: any) {
       console.error("Error in audit analysis:", error);
-      res.status(500).json({ error: "Failed to analyze" });
+      if (error.message?.includes("OPENAI_API_KEY")) {
+        res.status(503).json({ error: "AI service not configured. Please add your OpenAI API key." });
+      } else {
+        res.status(500).json({ error: "Failed to analyze" });
+      }
     }
   });
 }
