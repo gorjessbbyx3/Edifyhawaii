@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { insertContactSchema, contactSubmissions } from './schema';
+import { insertContactSchema, contactSubmissions, blogPosts } from './schema';
 
 export const errorSchemas = {
   validation: z.object({
@@ -20,6 +20,25 @@ export const api = {
       responses: {
         201: z.custom<typeof contactSubmissions.$inferSelect>(),
         400: errorSchemas.validation,
+        500: errorSchemas.internal,
+      },
+    },
+  },
+  blog: {
+    list: {
+      method: 'GET' as const,
+      path: '/api/blog',
+      responses: {
+        200: z.array(z.custom<typeof blogPosts.$inferSelect>()),
+        500: errorSchemas.internal,
+      },
+    },
+    get: {
+      method: 'GET' as const,
+      path: '/api/blog/:slug',
+      responses: {
+        200: z.custom<typeof blogPosts.$inferSelect>(),
+        404: errorSchemas.internal,
         500: errorSchemas.internal,
       },
     },

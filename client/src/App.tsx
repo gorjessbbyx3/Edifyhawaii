@@ -8,6 +8,8 @@ import Home from "@/pages/Home";
 import Services from "@/pages/Services";
 import Contact from "@/pages/Contact";
 import Portfolio from "@/pages/Portfolio";
+import Blog from "@/pages/Blog";
+import BlogPost from "@/pages/BlogPost";
 import PoormanWebsite from "@/pages/portfolio/PoormanWebsite";
 import PoormanDashboard from "@/pages/portfolio/PoormanDashboard";
 import RealtorPro from "@/pages/portfolio/RealtorPro";
@@ -53,6 +55,8 @@ function Router() {
           <Route path="/portfolio/street-patrol" component={StreetPatrol} />
           <Route path="/portfolio/capture-by-christian" component={CaptureByChristian} />
           <Route path="/portfolio/captured-c-collective" component={CapturedCCollective} />
+          <Route path="/blog" component={Blog} />
+          <Route path="/blog/:slug" component={BlogPost} />
           <Route path="/contact" component={Contact} />
           <Route component={NotFound} />
         </Switch>

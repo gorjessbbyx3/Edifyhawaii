@@ -56,6 +56,9 @@ export function Footer() {
                 <Link href="/services" data-testid="link-footer-process" className="text-slate-300 transition-colors">Our Process</Link>
               </li>
               <li>
+                <Link href="/blog" data-testid="link-footer-blog" className="text-slate-300 transition-colors">Insights & Blog</Link>
+              </li>
+              <li>
                 <Link href="/contact" data-testid="link-footer-contact" className="text-slate-300 transition-colors">Free Strategy Audit</Link>
               </li>
             </ul>
