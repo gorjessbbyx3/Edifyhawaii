@@ -1,0 +1,112 @@
+Each service page must include:
+	•	H1 with intent
+	•	Clear explanation of the problem
+	•	Your process
+	•	Outcomes
+	•	FAQ (huge SEO boost)
+	•	CTA
+
+⸻
+
+5️⃣ FAQ SCHEMA (ADVANCED, EASY WIN)
+
+Add FAQs that match real questions people search:
+
+Examples:
+	•	“How much does a small business website cost?”
+	•	“How long does it take to build a website?”
+	•	“Do I own my website?”
+
+These:
+	•	Rank for long-tail searches
+	•	Trigger rich results
+	•	Build trust
+
+If you want, I can write FAQ schema code for you.
+
+⸻
+
+6️⃣ INTERNAL LINKING (SILENT POWER)
+
+Every page should link to:
+	•	1 service page
+	•	1 authority page (About / Process)
+	•	1 conversion page (Contact)
+
+Example:
+
+“Learn more about our small business web design process.”
+
+Google uses this to understand site hierarchy.
+
+⸻
+
+7️⃣ CONTENT THAT ACTUALLY RANKS (NOT BLOG FLUFF)
+
+Instead of generic blogs, write buyer-intent content:
+
+High-value article ideas
+	•	“How Much Should a Small Business Website Cost in 2026?”
+	•	“Why Most Business Websites Don’t Convert”
+	•	“Website Redesign vs New Website: What’s Right for You?”
+
+Each article should:
+	•	Answer the question clearly
+	•	Funnel to a service page
+	•	Position Edify as the guide
+
+⸻
+
+8️⃣ LOCAL SEO (IF YOU WANT CLIENTS FAST)
+
+If you serve a location:
+
+Must-haves
+	•	Google Business Profile
+	•	Same business name, phone, site everywhere
+	•	Location page (even if remote)
+
+Example page:
+
+Web Design for Small Businesses in [City]
+
+⸻
+
+9️⃣ TECH SEO (KEEP IT CLEAN)
+
+Make sure:
+	•	Fast load times (Vercel helps here)
+	•	Mobile-first layout
+	•	Clean URLs
+	•	Alt text on images
+	•	Semantic HTML (header, main, section)
+
+You don’t need fancy tools — just clean structure.
+
+⸻
+
+🔟 EEAT (WHAT GOOGLE REALLY CARES ABOUT)
+
+Experience. Expertise. Authority. Trust.
+
+Add:
+	•	Real about page (who you are + why you do this)
+	•	Process transparency
+	•	Clear contact info
+	•	Real examples (even small ones)
+	•	Honest language
+
+This is huge for service businesses.
+
+⸻
+
+🧠 PRO MOVE (EDIFY-LEVEL)
+
+Add a page called:
+
+“How We Design Websites That Convert”
+
+This:
+	•	Builds authority
+	•	Ranks for informational queries
+	•	Pre-sells clients before the call

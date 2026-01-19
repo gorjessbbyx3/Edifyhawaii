@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { ArrowLeft, ExternalLink, Globe, Search, Smartphone, Zap } from "lucide-react";
 import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
+import { SEO } from "@/components/SEO";
 
 const fadeIn = {
   hidden: { opacity: 0, y: 20 },
@@ -11,6 +12,10 @@ const fadeIn = {
 export default function PoormanWebsite() {
   return (
     <div className="pt-32 pb-20">
+      <SEO 
+        title="Poorman Towing Website - Case Study | Edify Limited"
+        description="See how we helped Poorman Towing increase leads by 300% with a high-performance website and local SEO strategy. Hawaii web design case study."
+      />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <Link href="/portfolio">
           <Button variant="ghost" className="mb-8" data-testid="button-back-portfolio">

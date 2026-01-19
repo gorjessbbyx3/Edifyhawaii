@@ -1,7 +1,31 @@
 import { motion } from "framer-motion";
-import { CheckCircle2, Server, Code, BarChart, Lock, Phone, Globe, Shield, Cpu, ArrowRight, Sparkles, Zap } from "lucide-react";
+import { CheckCircle2, Server, Code, BarChart, Lock, Phone, Globe, Shield, Cpu, ArrowRight, Sparkles, Zap, HelpCircle } from "lucide-react";
 import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
+import { SEO, seoConfig, generateFAQSchema } from "@/components/SEO";
+
+const faqs = [
+  {
+    question: "How much does a small business website cost in Hawaii?",
+    answer: "Our website packages start at $3,500 for essential business websites and go up to $15,000+ for full custom solutions with software development. We provide transparent pricing with no hidden fees, and every project includes a free strategy consultation."
+  },
+  {
+    question: "How long does it take to build a professional website?",
+    answer: "Most business websites are completed within 4-6 weeks from start to launch. Custom software projects may take 8-12 weeks depending on complexity. We provide a detailed timeline during your free consultation."
+  },
+  {
+    question: "Do I own my website after it's built?",
+    answer: "Yes, absolutely. You own 100% of your website, all content, and any custom code we develop. We provide full access to all files, hosting accounts, and domain registrations."
+  },
+  {
+    question: "Can you help my business show up in Google searches?",
+    answer: "Yes! Every website we build is optimized for local search visibility. We focus on helping Hawaii businesses rank for relevant local searches, driving qualified leads directly to your door."
+  },
+  {
+    question: "Do you provide ongoing support and maintenance?",
+    answer: "We offer flexible support packages including 24/7 monitoring, regular updates, security patches, and priority technical support. Our Pro and VIP packages include ongoing maintenance as standard."
+  }
+];
 
 const fadeInUp = {
   hidden: { opacity: 0, y: 40 },
@@ -27,7 +51,12 @@ const scaleIn = {
 export default function Services() {
   return (
     <div className="min-h-screen">
-      {/* Hero Section */}
+      <SEO 
+        title={seoConfig.services.title}
+        description={seoConfig.services.description}
+        structuredData={generateFAQSchema(faqs)}
+      />
+      {/* Hero Section - SEO Optimized */}
       <section className="pt-32 pb-20 relative overflow-hidden">
         <div className="absolute top-0 left-1/4 w-96 h-96 bg-primary/10 rounded-full blur-[128px] pointer-events-none" />
         <div className="absolute bottom-0 right-1/4 w-80 h-80 bg-accent/10 rounded-full blur-[100px] pointer-events-none" />
@@ -45,14 +74,14 @@ export default function Services() {
             </motion.div>
             
             <motion.h1 variants={fadeInUp} className="text-5xl md:text-6xl lg:text-7xl font-display font-bold text-white leading-tight">
-              Technology That <br />
+              Small Business Web Design <br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary via-blue-400 to-accent animate-gradient-x">
-                Drives Growth
+                & IT Services in Hawaii
               </span>
             </motion.h1>
             
             <motion.p variants={fadeInUp} className="text-xl text-slate-400 max-w-2xl mx-auto">
-              From infrastructure to innovation, we deliver complete technology solutions that power Hawaii's most successful businesses.
+              Edify delivers complete technology solutions—from high-converting websites to managed IT—that help Hawaii businesses grow and thrive.
             </motion.p>
           </motion.div>
         </div>
@@ -251,7 +280,63 @@ export default function Services() {
           </motion.div>
         </div>
       </section>
+
+      {/* FAQ Section - SEO Rich Results */}
+      <section className="py-24 relative">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div 
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            variants={staggerContainer}
+            className="space-y-12"
+          >
+            <div className="text-center">
+              <motion.div variants={fadeInUp} className="inline-flex items-center gap-2 bg-accent/10 border border-accent/20 rounded-full px-4 py-1.5 mb-4">
+                <HelpCircle className="w-4 h-4 text-accent" />
+                <span className="text-sm font-medium text-accent">Frequently Asked Questions</span>
+              </motion.div>
+              <motion.h2 variants={fadeInUp} className="text-4xl md:text-5xl font-display font-bold text-white mb-4">
+                Common Questions About
+                <br />
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent to-cyan-400">Our Services</span>
+              </motion.h2>
+            </div>
+
+            <motion.div variants={staggerContainer} className="space-y-4">
+              {faqs.map((faq, index) => (
+                <FAQItem key={index} question={faq.question} answer={faq.answer} />
+              ))}
+            </motion.div>
+
+            <motion.div variants={fadeInUp} className="text-center pt-4">
+              <p className="text-slate-400 mb-4">Have a question we didn't answer?</p>
+              <Link href="/contact" data-testid="link-ask-question">
+                <Button variant="outline" data-testid="button-ask-question" className="border-white/20 text-white">
+                  Ask Us Directly
+                  <ArrowRight className="ml-2 w-4 h-4" />
+                </Button>
+              </Link>
+            </motion.div>
+          </motion.div>
+        </div>
+      </section>
     </div>
+  );
+}
+
+function FAQItem({ question, answer }: { question: string; answer: string }) {
+  return (
+    <motion.div 
+      variants={fadeInUp}
+      className="p-6 rounded-xl bg-slate-900/50 border border-white/10"
+    >
+      <h3 className="text-lg font-semibold text-white mb-3 flex items-start gap-3">
+        <HelpCircle className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
+        {question}
+      </h3>
+      <p className="text-slate-400 leading-relaxed pl-8">{answer}</p>
+    </motion.div>
   );
 }
 

@@ -3,6 +3,7 @@ import { Link } from "wouter";
 import { ArrowRight, TrendingUp, AlertTriangle, CheckCircle2, Shield, Zap, Target, DollarSign, Clock, Users, Star, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useRef, useEffect, useState } from "react";
+import { SEO, seoConfig, generateLocalBusinessSchema } from "@/components/SEO";
 import heroVideo from "@assets/_users_9b25cb5e-ce71-4d7e-bbca-6899b4a7896f_generated_dcfe4f1d_1768470906588.mp4";
 import imgDashboard from "@assets/IMG_6090_1768554040490.jpeg";
 
@@ -58,6 +59,11 @@ function AnimatedCounter({ end, duration = 2, suffix = "", prefix = "" }: { end:
 export default function Home() {
   return (
     <div className="flex flex-col min-h-screen overflow-x-hidden">
+      <SEO 
+        title={seoConfig.home.title}
+        description={seoConfig.home.description}
+        structuredData={generateLocalBusinessSchema()}
+      />
       {/* 1. HERO SECTION - Identity & Immediate Trust */}
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 z-0">
@@ -93,27 +99,27 @@ export default function Home() {
               <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
             </motion.div>
             
-            {/* Identity Appeal Headline */}
+            {/* SEO-Optimized H1 - Identity Appeal Headline */}
             <motion.h1 
               variants={fadeIn}
               className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-display font-extrabold leading-[0.95] tracking-tight"
             >
-              <span className="text-white">The Digital Foundation</span>
+              <span className="text-white">Web Design That Helps</span>
               <br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary via-blue-400 to-accent animate-gradient-x">
-                Your Business Has Earned
+                Hawaii Businesses Grow
               </span>
             </motion.h1>
             
-            {/* Loss Aversion Subheadline */}
+            {/* SEO Subheadline - Clear outcome */}
             <motion.p 
               variants={fadeIn}
               className="text-xl md:text-2xl text-white/70 max-w-3xl mx-auto leading-relaxed font-light"
             >
-              An outdated website isn't just embarrassing—it's a 
-              <span className="text-red-400 font-medium"> silent tax on your growth</span>.
+              Edify builds clear, conversion-focused websites that 
+              <span className="text-white font-medium"> turn visitors into customers</span>.
               <br className="hidden md:block" />
-              <span className="text-white font-medium">Stop losing customers to competitors with better digital presence.</span>
+              An outdated site is a <span className="text-red-400 font-medium">silent tax on your growth</span>—stop losing leads.
             </motion.p>
             
             {/* Low-Friction CTA */}
@@ -406,6 +412,7 @@ export default function Home() {
                 result="+300%"
                 resultLabel="Increase in monthly leads"
                 image={imgDashboard}
+                link="/portfolio/poorman-website"
               />
               <CaseStory 
                 company="Mason Martin Law"
@@ -413,6 +420,7 @@ export default function Home() {
                 strategy="Created an authoritative, trust-building website that positions them as the premier litigation firm in Hawaii."
                 result="+45%"
                 resultLabel="More consultation requests"
+                link="/portfolio/martin-law"
               />
             </motion.div>
 
@@ -555,46 +563,59 @@ function PricingTier({ name, tagline, price, description, features, highlighted 
   );
 }
 
-function CaseStory({ company, roadblock, strategy, result, resultLabel, image }: { company: string, roadblock: string, strategy: string, result: string, resultLabel: string, image?: string }) {
+function CaseStory({ company, roadblock, strategy, result, resultLabel, image, link }: { company: string, roadblock: string, strategy: string, result: string, resultLabel: string, image?: string, link?: string }) {
+  const content = (
+    <div className="flex flex-col md:flex-row gap-8">
+      <div className="flex-1 space-y-6">
+        <h3 className="text-2xl font-display font-bold text-white">{company}</h3>
+        
+        <div className="space-y-4">
+          <div>
+            <p className="text-xs text-red-400 uppercase tracking-wider font-medium mb-1">The Roadblock</p>
+            <p className="text-slate-400 text-sm">{roadblock}</p>
+          </div>
+          <div>
+            <p className="text-xs text-primary uppercase tracking-wider font-medium mb-1">The Strategy</p>
+            <p className="text-slate-400 text-sm">{strategy}</p>
+          </div>
+        </div>
+        
+        <div className="pt-4 border-t border-white/10">
+          <div className="flex items-center gap-4">
+            <div className="w-14 h-14 rounded-full bg-gradient-to-r from-green-500 to-emerald-400 flex items-center justify-center">
+              <TrendingUp className="w-7 h-7 text-white" />
+            </div>
+            <div>
+              <p className="text-3xl font-display font-bold text-green-400">{result}</p>
+              <p className="text-xs text-slate-500">{resultLabel}</p>
+            </div>
+          </div>
+        </div>
+        
+        {link && (
+          <Link href={link} data-testid={`link-case-${company.toLowerCase().replace(/\s+/g, '-')}`}>
+            <span className="text-sm text-primary flex items-center gap-1 group">
+              View full case study
+              <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+            </span>
+          </Link>
+        )}
+      </div>
+      
+      {image && (
+        <div className="w-full md:w-48 h-32 md:h-auto rounded-xl overflow-hidden border border-white/10">
+          <img src={image} alt={company} className="w-full h-full object-cover" />
+        </div>
+      )}
+    </div>
+  );
+
   return (
     <motion.div 
       variants={fadeInUp}
       className="p-8 rounded-2xl bg-slate-900/50 border border-white/10 backdrop-blur-sm"
     >
-      <div className="flex flex-col md:flex-row gap-8">
-        <div className="flex-1 space-y-6">
-          <h3 className="text-2xl font-display font-bold text-white">{company}</h3>
-          
-          <div className="space-y-4">
-            <div>
-              <p className="text-xs text-red-400 uppercase tracking-wider font-medium mb-1">The Roadblock</p>
-              <p className="text-slate-400 text-sm">{roadblock}</p>
-            </div>
-            <div>
-              <p className="text-xs text-primary uppercase tracking-wider font-medium mb-1">The Strategy</p>
-              <p className="text-slate-400 text-sm">{strategy}</p>
-            </div>
-          </div>
-          
-          <div className="pt-4 border-t border-white/10">
-            <div className="flex items-center gap-4">
-              <div className="w-14 h-14 rounded-full bg-gradient-to-r from-green-500 to-emerald-400 flex items-center justify-center">
-                <TrendingUp className="w-7 h-7 text-white" />
-              </div>
-              <div>
-                <p className="text-3xl font-display font-bold text-green-400">{result}</p>
-                <p className="text-xs text-slate-500">{resultLabel}</p>
-              </div>
-            </div>
-          </div>
-        </div>
-        
-        {image && (
-          <div className="w-full md:w-48 h-32 md:h-auto rounded-xl overflow-hidden border border-white/10">
-            <img src={image} alt={company} className="w-full h-full object-cover" />
-          </div>
-        )}
-      </div>
+      {content}
     </motion.div>
   );
 }

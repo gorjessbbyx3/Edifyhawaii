@@ -50,10 +50,13 @@ export function Footer() {
                 <Link href="/" data-testid="link-footer-about" className="text-slate-300 transition-colors">About Us</Link>
               </li>
               <li>
-                <Link href="/portfolio" data-testid="link-footer-portfolio" className="text-slate-300 transition-colors">Portfolio</Link>
+                <Link href="/portfolio" data-testid="link-footer-portfolio" className="text-slate-300 transition-colors">Our Work</Link>
               </li>
               <li>
-                <Link href="/contact" data-testid="link-footer-contact" className="text-slate-300 transition-colors">Contact</Link>
+                <Link href="/services" data-testid="link-footer-process" className="text-slate-300 transition-colors">Our Process</Link>
+              </li>
+              <li>
+                <Link href="/contact" data-testid="link-footer-contact" className="text-slate-300 transition-colors">Free Strategy Audit</Link>
               </li>
             </ul>
           </div>
@@ -78,11 +81,18 @@ export function Footer() {
           </div>
         </div>
 
+        {/* Local SEO Footer */}
+        <div className="border-t border-white/5 pt-8 mb-8">
+          <p className="text-sm text-slate-400 text-center max-w-3xl mx-auto">
+            Edify Limited provides professional <strong className="text-slate-300">web design</strong>, <strong className="text-slate-300">IT services</strong>, and <strong className="text-slate-300">custom software development</strong> for small businesses throughout Hawaii, including Honolulu, Maui, Kauai, and the Big Island.
+          </p>
+        </div>
+
         <div className="border-t border-white/5 pt-8 flex flex-col md:flex-row justify-between items-center text-sm text-slate-500">
           <p data-testid="text-copyright">&copy; {new Date().getFullYear()} Edify, Limited. All rights reserved.</p>
           <div className="flex space-x-6 mt-4 md:mt-0">
             <span className="flex items-center gap-2">
-              Built with <span className="text-primary font-semibold">passion</span> in Hawaii
+              Hawaii's Trusted Technology Partner
             </span>
           </div>
         </div>

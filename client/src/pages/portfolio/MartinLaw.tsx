@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { ArrowLeft, ExternalLink, Shield, Gavel, Scale, Briefcase } from "lucide-react";
 import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
+import { SEO } from "@/components/SEO";
 
 const fadeIn = {
   hidden: { opacity: 0, y: 20 },
@@ -11,6 +12,10 @@ const fadeIn = {
 export default function MartinLaw() {
   return (
     <div className="pt-32 pb-20">
+      <SEO 
+        title="Mason Martin Law Website - Case Study | Edify Limited"
+        description="How we created an authoritative legal website for Mason Martin Law that increased consultation requests by 45%. Hawaii attorney web design."
+      />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <Link href="/portfolio">
           <Button variant="ghost" className="mb-8 hover:bg-secondary">

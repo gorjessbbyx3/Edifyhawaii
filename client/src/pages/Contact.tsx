@@ -15,6 +15,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Loader2, Mail, MapPin, Phone, Sparkles, ArrowRight, Clock, Send } from "lucide-react";
 import { motion } from "framer-motion";
+import { SEO, seoConfig } from "@/components/SEO";
 
 const fadeInUp = {
   hidden: { opacity: 0, y: 40 },
@@ -59,6 +60,10 @@ export default function Contact() {
 
   return (
     <div className="min-h-screen">
+      <SEO 
+        title={seoConfig.contact.title}
+        description={seoConfig.contact.description}
+      />
       {/* Hero Section */}
       <section className="pt-32 pb-20 relative overflow-hidden">
         <div className="absolute top-0 left-1/4 w-96 h-96 bg-primary/10 rounded-full blur-[128px] pointer-events-none" />
@@ -77,14 +82,14 @@ export default function Contact() {
             </motion.div>
             
             <motion.h1 variants={fadeInUp} className="text-5xl md:text-6xl lg:text-7xl font-display font-bold text-white leading-tight">
-              Get in <br />
+              Free Strategy Audit <br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary via-blue-400 to-accent animate-gradient-x">
-                Touch
+                for Hawaii Businesses
               </span>
             </motion.h1>
             
             <motion.p variants={fadeInUp} className="text-xl text-slate-400 max-w-2xl mx-auto">
-              Ready to transform your business? Let's start a conversation about your goals and how we can help you achieve them.
+              Schedule your no-obligation consultation. We'll identify growth opportunities and technical issues holding your business back.
             </motion.p>
           </motion.div>
         </div>

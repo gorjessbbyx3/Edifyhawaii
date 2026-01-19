@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { Link } from "wouter";
 import { ExternalLink, Layout, Globe, Code, Gavel, Car, Shield, Camera, ArrowRight, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { SEO, seoConfig } from "@/components/SEO";
 
 import imgTowing from "@assets/IMG_6041_1768357867879.jpeg";
 import imgRealtor from "@assets/IMG_6034_1768357795603.jpeg";
@@ -130,6 +131,10 @@ const projects = [
 export default function Portfolio() {
   return (
     <div className="min-h-screen">
+      <SEO 
+        title={seoConfig.portfolio.title}
+        description={seoConfig.portfolio.description}
+      />
       {/* Hero Section */}
       <section className="pt-32 pb-20 relative overflow-hidden">
         {/* Background elements */}
@@ -149,14 +154,14 @@ export default function Portfolio() {
             </motion.div>
             
             <motion.h1 variants={fadeInUp} className="text-5xl md:text-6xl lg:text-7xl font-display font-bold text-white leading-tight">
-              Crafted with <br />
+              Web Design Portfolio <br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary via-blue-400 to-accent animate-gradient-x">
-                Precision & Purpose
+                Real Results for Hawaii Businesses
               </span>
             </motion.h1>
             
             <motion.p variants={fadeInUp} className="text-xl text-slate-400 max-w-2xl mx-auto">
-              Every project is a testament to our commitment to excellence. Explore the digital experiences we've built for businesses across Hawaii.
+              See how we've helped local businesses grow with websites and custom software that drive real results. Every project showcases our commitment to excellence.
             </motion.p>
           </motion.div>
         </div>
