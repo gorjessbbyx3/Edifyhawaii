@@ -131,8 +131,8 @@ export default function Services() {
               <div className="absolute -inset-4 bg-gradient-to-r from-blue-500/30 to-cyan-400/30 rounded-3xl blur-2xl opacity-50" />
               <div className="relative rounded-2xl overflow-hidden border border-white/10 shadow-2xl">
                 <img 
-                  src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=800&auto=format&fit=crop&q=80" 
-                  alt="IT Support" 
+                  src="/attached_assets/E3ADCB8F-C6EE-4D72-AD0A-2FE167AC947C_1768866647002.png" 
+                  alt="IT Support technician working on computer hardware" 
                   className="w-full"
                 />
               </div>

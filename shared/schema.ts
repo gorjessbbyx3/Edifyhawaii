@@ -43,3 +43,39 @@ export type InsertBlogPost = z.infer<typeof insertBlogPostSchema>;
 export type BlogPost = typeof blogPosts.$inferSelect;
 
 export * from "./models/chat";
+
+// Agent Communication Tables (persisted to DB)
+export const agentIntel = pgTable("agent_intel", {
+  id: serial("id").primaryKey(),
+  fromAgentId: text("from_agent_id").notNull(),
+  toAgentId: text("to_agent_id").notNull(),
+  topic: text("topic").notNull(),
+  payload: text("payload").notNull(),
+  leadId: text("lead_id"),
+  read: boolean("read").default(false),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+export const insertAgentIntelSchema = createInsertSchema(agentIntel).omit({
+  id: true,
+  createdAt: true,
+  read: true,
+});
+
+export type AgentIntel = typeof agentIntel.$inferSelect;
+export type InsertAgentIntel = z.infer<typeof insertAgentIntelSchema>;
+
+export const agentAvailability = pgTable("agent_availability", {
+  agentId: text("agent_id").primaryKey(),
+  status: text("status").notNull().default("offline"),
+  currentTask: text("current_task"),
+  metadata: text("metadata"),
+  lastSeen: timestamp("last_seen").defaultNow(),
+});
+
+export const updateAgentAvailabilitySchema = createInsertSchema(agentAvailability).omit({
+  lastSeen: true,
+});
+
+export type AgentAvailability = typeof agentAvailability.$inferSelect;
+export type UpdateAgentAvailability = z.infer<typeof updateAgentAvailabilitySchema>;
