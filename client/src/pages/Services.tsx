@@ -157,8 +157,8 @@ export default function Services() {
               <div className="absolute -inset-4 bg-gradient-to-r from-purple-500/30 to-pink-400/30 rounded-3xl blur-2xl opacity-50" />
               <div className="relative rounded-2xl overflow-hidden border border-white/10 shadow-2xl">
                 <img 
-                  src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=800&auto=format&fit=crop&q=80" 
-                  alt="Software Development" 
+                  src="/attached_assets/7EE31B77-BB8D-4DE9-AFF9-D1D552743613_1768866913372.png" 
+                  alt="Custom web development consultation with client" 
                   className="w-full"
                 />
               </div>
