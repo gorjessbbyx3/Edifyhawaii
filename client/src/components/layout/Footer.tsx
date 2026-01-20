@@ -5,7 +5,7 @@ import footerVideo from "@assets/Grok-Video-31F3FA52-10E0-44E7-AD6D-9FE7D3C08021
 
 export function Footer() {
   return (
-    <footer className="bg-slate-950 text-slate-300 pt-20 pb-8 border-t border-white/5 relative z-20">
+    <footer className="bg-black text-slate-300 pt-20 pb-8 border-t border-white/5 relative z-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
           
