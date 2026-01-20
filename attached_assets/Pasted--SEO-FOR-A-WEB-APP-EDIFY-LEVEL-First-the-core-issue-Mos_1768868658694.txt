@@ -1,0 +1,139 @@
+🧠 SEO FOR A WEB APP (EDIFY-LEVEL)
+
+⚠️ First, the core issue
+
+Most web apps:
+	•	Render content client-side (React/Vue/etc.)
+	•	Hide text behind JS
+	•	Lack crawlable landing pages
+
+Google can index JS now — but marketing SEO performs far better with server-rendered or static pages.
+
+So we split SEO into two layers.
+
+⸻
+
+🧩 LAYER 1: SEO LANDING PAGES (CRITICAL)
+
+🔑 Rule
+
+Your SEO pages should not be your app UI.
+
+They should be:
+	•	Static or server-rendered
+	•	Text-rich
+	•	Conversion-focused
+	•	Crawlable without JS
+
+Best setup (what I recommend for you)
+
+Since you already use Vercel:
+	•	/ → SEO homepage
+	•	/services/web-design
+	•	/services/seo
+	•	/small-business-websites
+	•	/about
+	•	/contact
+
+Then:
+	•	/app or /dashboard → actual web app
+
+This is how top SaaS companies do it.
+
+⸻
+
+🧠 LAYER 2: APP SEO (LIMITED BUT IMPORTANT)
+
+Inside the app:
+	•	Set dynamic <title> and <meta description>
+	•	Use clean URLs
+	•	Add proper headings (<h1>, <h2>)
+	•	Avoid blank screens before load
+
+But don’t rely on the app alone to rank.
+
+⸻
+
+🚀 HOW TO IMPLEMENT THIS FAST (STEP-BY-STEP)
+
+1️⃣ Create a marketing shell (1–2 pages minimum)
+
+Even one strong page can rank.
+
+Minimum SEO homepage structure:
+	•	H1: What you do + who for
+	•	Subheadline: Outcome
+	•	3–5 sections of real text
+	•	FAQ
+	•	CTA
+
+Your hero video lives here 👈
+
+⸻
+
+2️⃣ Use Server-Side Rendering or Static Export
+
+If using Next.js:
+	•	Use app/ router with metadata
+	•	Use generateStaticParams where possible
+	•	Avoid heavy client-only rendering above the fold
+
+If not, we can still optimize — just less ideal.
+3. Metadata next.js example: export const metadata = {
+  title: "Small Business Web Design & SEO | Edify Limited",
+  description:
+    "Edify builds clear, conversion-focused websites for small businesses. Book a free strategy call."
+4️⃣ SEO-First Hero Copy (Web App Friendly)
+
+Your visible text still matters, even in apps.
+
+Example H1:
+
+Web Design That Helps Small Businesses Grow
+
+Google weights visible text heavily.
+
+⸻
+
+5️⃣ FAQ Schema (Huge Advantage for Apps)
+
+Add FAQs at the bottom of SEO pages.
+
+Why?
+	•	Adds crawlable content
+	•	Ranks for long-tail
+	•	Builds trust
+
+I can generate schema JSON for you.
+
+⸻
+
+6️⃣ Blog / Content (Optional but Powerful)
+
+If you add:
+	•	/learn or /blog
+
+You unlock:
+	•	Informational search traffic
+	•	Trust
+	•	Funnel warm-ups
+
+Even 3–5 strong articles can move the needle.
+
+⸻
+
+🔥 PRO MOVE (MOST IMPORTANT FOR EDIFY)
+
+Create a separate SEO marketing site on:
+	•	edifyltd.com or www.edifyltd.com
+Then link the app.
+
+This avoids fighting Google with JS.
+
+⸻
+
+🧠 TL;DR
+	•	Web apps ≠ SEO pages
+	•	You need a marketing layer
+	•	Vercel + Next.js = perfect stack
+	•	One great SEO page beats 10 weak ones
