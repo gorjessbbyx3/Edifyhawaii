@@ -94,7 +94,7 @@ export default function Home() {
         structuredData={combinedSchema}
       />
       {/* 1. HERO SECTION - Video-First */}
-      <section className="relative flex flex-col overflow-hidden">
+      <section className="relative flex flex-col overflow-hidden pt-16 md:pt-20">
         {/* Full Video Container */}
         <div className="relative w-full">
           <video
