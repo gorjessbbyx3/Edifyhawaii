@@ -1,10 +1,11 @@
 import { Link } from "wouter";
 import { MapPin, Mail, Phone } from "lucide-react";
 import logoImage from "@assets/9538FA01-20E4-4643-BCF9-025719F0F037_1768472217370.png";
+import footerVideo from "@assets/Grok-Video-31F3FA52-10E0-44E7-AD6D-9FE7D3C08021_1768908569124.mp4";
 
 export function Footer() {
   return (
-    <footer className="bg-slate-950 text-slate-300 pt-20 pb-8 border-t border-white/5">
+    <footer className="bg-slate-950 text-slate-300 pt-20 pb-8 border-t border-white/5 relative z-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
           
@@ -81,6 +82,21 @@ export function Footer() {
                 <a href="tel:+18087675460" data-testid="link-footer-phone" className="text-slate-300 transition-colors">(808) 767-5460</a>
               </li>
             </ul>
+          </div>
+        </div>
+
+        {/* Video Section */}
+        <div className="border-t border-white/5 pt-8 mb-8">
+          <div className="max-w-2xl mx-auto rounded-2xl overflow-hidden border border-white/10">
+            <video
+              src={footerVideo}
+              autoPlay
+              loop
+              muted
+              playsInline
+              className="w-full h-auto"
+              data-testid="video-footer-showcase"
+            />
           </div>
         </div>
 
