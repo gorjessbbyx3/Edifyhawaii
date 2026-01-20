@@ -225,15 +225,13 @@ export default function Portfolio() {
                   
                   {/* Link */}
                   {project.slug && (
-                    <Link href={`/portfolio/${project.slug}`}>
-                      <Button 
-                        variant="ghost" 
-                        data-testid={`button-view-project-${project.slug}`}
-                        className="group/btn p-0 h-auto text-primary font-semibold"
-                      >
-                        View Project
-                        <ArrowRight className="ml-2 w-4 h-4 group-hover/btn:translate-x-1 transition-transform" />
-                      </Button>
+                    <Link 
+                      href={`/portfolio/${project.slug}`}
+                      data-testid={`link-view-project-${project.slug}`}
+                      className="inline-flex items-center gap-2 text-primary font-semibold hover:text-primary/80 transition-colors group/btn"
+                    >
+                      View Project
+                      <ArrowRight className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform" />
                     </Link>
                   )}
                 </div>

@@ -3,7 +3,7 @@ import { motion, useScroll, useTransform } from "framer-motion";
 
 function TechGrid() {
   return (
-    <div className="absolute inset-0 overflow-hidden opacity-[0.06]">
+    <div className="absolute inset-0 overflow-hidden opacity-[0.04]">
       <div
         className="absolute inset-0"
         style={{
@@ -36,34 +36,63 @@ function LightSweep() {
   );
 }
 
-function GlowOrbs() {
+function SectionGradients() {
   const { scrollYProgress } = useScroll();
 
-  const orb1X = useTransform(scrollYProgress, [0, 1], ["10%", "60%"]);
-  const orb1Y = useTransform(scrollYProgress, [0, 1], ["15%", "50%"]);
-  const orb2X = useTransform(scrollYProgress, [0, 1], ["80%", "30%"]);
-  const orb2Y = useTransform(scrollYProgress, [0, 1], ["45%", "15%"]);
+  const blueOpacity = useTransform(scrollYProgress, [0, 0.2, 0.4], [0.15, 0.08, 0.02]);
+  const purpleOpacity = useTransform(scrollYProgress, [0.2, 0.4, 0.6], [0.02, 0.12, 0.02]);
+  const cyanOpacity = useTransform(scrollYProgress, [0.4, 0.6, 0.8], [0.02, 0.1, 0.02]);
+  const pinkOpacity = useTransform(scrollYProgress, [0.6, 0.8, 1], [0.02, 0.08, 0.15]);
+
+  const blueX = useTransform(scrollYProgress, [0, 1], ["20%", "80%"]);
+  const purpleX = useTransform(scrollYProgress, [0, 1], ["70%", "20%"]);
+  const cyanX = useTransform(scrollYProgress, [0, 1], ["30%", "60%"]);
+  const pinkX = useTransform(scrollYProgress, [0, 1], ["80%", "30%"]);
 
   return (
     <>
       <motion.div
-        className="absolute w-[500px] h-[500px] rounded-full will-change-transform"
+        className="absolute w-[600px] h-[600px] rounded-full will-change-transform"
         style={{
-          background: "radial-gradient(circle at center, rgba(59, 130, 246, 0.25) 0%, transparent 60%)",
-          filter: "blur(40px)",
-          left: orb1X,
-          top: orb1Y,
-          transform: "translate(-50%, -50%)",
+          background: "radial-gradient(circle at center, rgba(59, 130, 246, 1) 0%, transparent 60%)",
+          filter: "blur(80px)",
+          left: blueX,
+          top: "10%",
+          opacity: blueOpacity,
+          transform: "translate(-50%, 0)",
         }}
       />
       <motion.div
-        className="absolute w-[400px] h-[400px] rounded-full will-change-transform"
+        className="absolute w-[500px] h-[500px] rounded-full will-change-transform"
         style={{
-          background: "radial-gradient(circle at center, rgba(139, 92, 246, 0.2) 0%, transparent 60%)",
-          filter: "blur(35px)",
-          left: orb2X,
-          top: orb2Y,
-          transform: "translate(-50%, -50%)",
+          background: "radial-gradient(circle at center, rgba(139, 92, 246, 1) 0%, transparent 60%)",
+          filter: "blur(70px)",
+          left: purpleX,
+          top: "30%",
+          opacity: purpleOpacity,
+          transform: "translate(-50%, 0)",
+        }}
+      />
+      <motion.div
+        className="absolute w-[450px] h-[450px] rounded-full will-change-transform"
+        style={{
+          background: "radial-gradient(circle at center, rgba(6, 182, 212, 1) 0%, transparent 60%)",
+          filter: "blur(60px)",
+          left: cyanX,
+          top: "55%",
+          opacity: cyanOpacity,
+          transform: "translate(-50%, 0)",
+        }}
+      />
+      <motion.div
+        className="absolute w-[550px] h-[550px] rounded-full will-change-transform"
+        style={{
+          background: "radial-gradient(circle at center, rgba(236, 72, 153, 1) 0%, transparent 60%)",
+          filter: "blur(75px)",
+          left: pinkX,
+          top: "75%",
+          opacity: pinkOpacity,
+          transform: "translate(-50%, 0)",
         }}
       />
     </>
@@ -78,8 +107,6 @@ function StaticParticles() {
     { x: 70, y: 40, delay: 0.5 },
     { x: 25, y: 55, delay: 1.5 },
     { x: 90, y: 75, delay: 2.5 },
-    { x: 55, y: 25, delay: 0.8 },
-    { x: 10, y: 80, delay: 1.2 },
   ];
 
   return (
@@ -87,7 +114,7 @@ function StaticParticles() {
       {particles.map((p, i) => (
         <div
           key={i}
-          className="absolute w-1 h-1 rounded-full bg-blue-400/40 animate-float"
+          className="absolute w-1 h-1 rounded-full bg-blue-400/30 animate-float"
           style={{
             left: `${p.x}%`,
             top: `${p.y}%`,
@@ -112,18 +139,7 @@ export function AnimatedBackground() {
     <div className="fixed inset-0 pointer-events-none overflow-hidden z-0">
       <div className="absolute inset-0 bg-slate-950" />
       
-      <div
-        className="absolute inset-0"
-        style={{
-          background: `
-            radial-gradient(ellipse 60% 40% at 20% 30%, rgba(59, 130, 246, 0.08) 0%, transparent 50%),
-            radial-gradient(ellipse 50% 35% at 75% 25%, rgba(139, 92, 246, 0.06) 0%, transparent 50%),
-            radial-gradient(ellipse 45% 50% at 50% 75%, rgba(6, 182, 212, 0.05) 0%, transparent 50%)
-          `,
-        }}
-      />
-      
-      <GlowOrbs />
+      <SectionGradients />
       
       <TechGrid />
       
@@ -131,7 +147,7 @@ export function AnimatedBackground() {
       
       <StaticParticles />
       
-      <div className="absolute inset-0 bg-gradient-to-b from-slate-950/20 via-transparent to-slate-950/50" />
+      <div className="absolute inset-0 bg-gradient-to-b from-slate-950/10 via-transparent to-slate-950/40" />
     </div>
   );
 }
