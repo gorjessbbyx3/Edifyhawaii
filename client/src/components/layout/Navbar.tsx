@@ -18,7 +18,7 @@ export function Navbar() {
   ];
 
   return (
-    <nav className="fixed w-full z-50 bg-slate-950/80 backdrop-blur-xl border-b border-white/5 transition-all duration-300">
+    <nav className="fixed w-full z-50 bg-transparent border-b border-transparent transition-all duration-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-20 items-center">
           
