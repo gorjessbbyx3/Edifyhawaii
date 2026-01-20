@@ -146,3 +146,34 @@ html {
 .text-shadow-lg {
   text-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
 }
+
+/* Background animations */
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+    opacity: 0.4;
+  }
+  50% {
+    transform: translateY(-20px);
+    opacity: 0.7;
+  }
+}
+
+@keyframes sweep-horizontal {
+  0% {
+    left: -100%;
+    top: 25%;
+  }
+  100% {
+    left: 100%;
+    top: 65%;
+  }
+}
+
+.animate-float {
+  animation: float 8s ease-in-out infinite;
+}
+
+.animate-sweep-horizontal {
+  animation: sweep-horizontal 12s ease-in-out infinite;
+}
