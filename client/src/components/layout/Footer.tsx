@@ -87,7 +87,7 @@ export function Footer() {
 
         {/* Video Section */}
         <div className="border-t border-white/5 pt-8 mb-8">
-          <div className="max-w-2xl mx-auto rounded-2xl overflow-hidden border border-white/10">
+          <div className="max-w-2xl mx-auto rounded-2xl overflow-hidden">
             <video
               src={footerVideo}
               autoPlay
