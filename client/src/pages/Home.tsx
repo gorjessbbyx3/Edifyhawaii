@@ -102,7 +102,9 @@ export default function Home() {
             loop
             muted
             playsInline
-            className="w-full h-auto"
+            disablePictureInPicture
+            controlsList="nodownload nofullscreen noremoteplayback"
+            className="w-full h-auto pointer-events-none"
           >
             <source src={heroVideo} type="video/mp4" />
           </video>
