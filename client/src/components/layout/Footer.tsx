@@ -29,16 +29,22 @@ export function Footer() {
             <h3 className="text-white font-display font-semibold mb-4 text-lg">Services</h3>
             <ul className="space-y-3 text-sm">
               <li>
-                <Link href="/services" data-testid="link-footer-managed-it" className="text-slate-300 transition-colors">Managed IT Support</Link>
+                <Link href="/services/managed-it" data-testid="link-footer-managed-it" className="text-slate-300 transition-colors">Managed IT Support</Link>
               </li>
               <li>
-                <Link href="/services" data-testid="link-footer-web-dev" className="text-slate-300 transition-colors">Custom Web Development</Link>
+                <Link href="/services/web-development" data-testid="link-footer-web-dev" className="text-slate-300 transition-colors">Custom Web Development</Link>
               </li>
               <li>
-                <Link href="/services" data-testid="link-footer-crm" className="text-slate-300 transition-colors">CRM Dashboards</Link>
+                <Link href="/services/crm-dashboards" data-testid="link-footer-crm" className="text-slate-300 transition-colors">CRM Dashboards</Link>
               </li>
               <li>
-                <Link href="/services" data-testid="link-footer-cloud" className="text-slate-300 transition-colors">Cloud Solutions</Link>
+                <Link href="/services/cloud-solutions" data-testid="link-footer-cloud" className="text-slate-300 transition-colors">Cloud Solutions</Link>
+              </li>
+              <li>
+                <Link href="/services/ai-chatbox" data-testid="link-footer-ai-chatbox" className="text-slate-300 transition-colors">AI Chatbox</Link>
+              </li>
+              <li>
+                <Link href="/services/email-marketing" data-testid="link-footer-email-marketing" className="text-slate-300 transition-colors">Mass Email Marketing</Link>
               </li>
             </ul>
           </div>

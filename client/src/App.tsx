@@ -9,6 +9,7 @@ import Services from "@/pages/Services";
 import Contact from "@/pages/Contact";
 import Portfolio from "@/pages/Portfolio";
 import PortfolioDetail from "@/pages/portfolio/PortfolioDetail";
+import ServiceDetail from "@/pages/services/ServiceDetail";
 import Blog from "@/pages/Blog";
 import BlogPost from "@/pages/BlogPost";
 import { Navbar } from "@/components/layout/Navbar";
@@ -37,6 +38,7 @@ function Router() {
         <Switch>
           <Route path="/" component={Home} />
           <Route path="/services" component={Services} />
+          <Route path="/services/:slug" component={ServiceDetail} />
           <Route path="/portfolio" component={Portfolio} />
           <Route path="/portfolio/:slug" component={PortfolioDetail} />
           <Route path="/blog" component={Blog} />
