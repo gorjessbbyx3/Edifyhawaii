@@ -8,21 +8,13 @@ import Home from "@/pages/Home";
 import Services from "@/pages/Services";
 import Contact from "@/pages/Contact";
 import Portfolio from "@/pages/Portfolio";
+import PortfolioDetail from "@/pages/portfolio/PortfolioDetail";
 import Blog from "@/pages/Blog";
 import BlogPost from "@/pages/BlogPost";
-import PoormanWebsite from "@/pages/portfolio/PoormanWebsite";
-import PoormanDashboard from "@/pages/portfolio/PoormanDashboard";
-import RealtorPro from "@/pages/portfolio/RealtorPro";
-import AllIn1Bonding from "@/pages/portfolio/AllIn1Bonding";
-import OahuEliteTours from "@/pages/portfolio/OahuEliteTours";
-import MartinLaw from "@/pages/portfolio/MartinLaw";
-import SonsAuto from "@/pages/portfolio/SonsAuto";
-import StreetPatrol from "@/pages/portfolio/StreetPatrol";
-import CaptureByChristian from "@/pages/portfolio/CaptureByChristian";
-import CapturedCCollective from "@/pages/portfolio/CapturedCCollective";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { BackToTop } from "@/components/BackToTop";
+import { AnimatedBackground } from "@/components/AnimatedBackground";
 import { useEffect } from "react";
 import { useLocation } from "wouter";
 
@@ -37,24 +29,16 @@ function ScrollToTop() {
 
 function Router() {
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col min-h-screen relative">
+      <AnimatedBackground />
       <ScrollToTop />
       <Navbar />
-      <main className="flex-grow">
+      <main className="flex-grow relative z-10">
         <Switch>
           <Route path="/" component={Home} />
           <Route path="/services" component={Services} />
           <Route path="/portfolio" component={Portfolio} />
-          <Route path="/portfolio/poorman-website" component={PoormanWebsite} />
-          <Route path="/portfolio/poorman-dashboard" component={PoormanDashboard} />
-          <Route path="/portfolio/realtor-pro" component={RealtorPro} />
-          <Route path="/portfolio/all-in-1-bonding" component={AllIn1Bonding} />
-          <Route path="/portfolio/oahu-elite-tours" component={OahuEliteTours} />
-          <Route path="/portfolio/martin-law" component={MartinLaw} />
-          <Route path="/portfolio/sons-auto" component={SonsAuto} />
-          <Route path="/portfolio/street-patrol" component={StreetPatrol} />
-          <Route path="/portfolio/capture-by-christian" component={CaptureByChristian} />
-          <Route path="/portfolio/captured-c-collective" component={CapturedCCollective} />
+          <Route path="/portfolio/:slug" component={PortfolioDetail} />
           <Route path="/blog" component={Blog} />
           <Route path="/blog/:slug" component={BlogPost} />
           <Route path="/contact" component={Contact} />

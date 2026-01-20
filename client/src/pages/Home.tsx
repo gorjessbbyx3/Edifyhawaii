@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { useRef, useEffect, useState } from "react";
 import { SEO, seoConfig, generateLocalBusinessSchema, generateOrganizationSchema, generateCaseStudySchema } from "@/components/SEO";
 import { AuditChat } from "@/components/AuditChat";
-import heroVideo from "@assets/Untitled_1768900844097.mp4";
+import heroVideo from "@assets/Untitled_1768907716344.mov";
 import imgPoormanWebsite from "@assets/IMG_6122_1768864416866.jpeg";
 
 const fadeIn = {
