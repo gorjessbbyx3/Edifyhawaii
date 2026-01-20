@@ -4,11 +4,12 @@ import OpenAI from "openai";
 const OPENAI_MODEL = process.env.OPENAI_MODEL || "gpt-4o";
 
 function getOpenAIClient(): OpenAI {
-  if (!process.env.OPENAI_API_KEY) {
-    throw new Error("OPENAI_API_KEY is not configured. Please add your API key.");
+  const apiKey = process.env.AI_INTEGRATIONS_OPENAI_API_KEY || process.env.OPENAI_API_KEY;
+  if (!apiKey) {
+    throw new Error("OpenAI API key is not configured.");
   }
   return new OpenAI({
-    apiKey: process.env.OPENAI_API_KEY,
+    apiKey,
   });
 }
 
