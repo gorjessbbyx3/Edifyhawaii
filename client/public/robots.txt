@@ -1,0 +1,50 @@
+# Edify Limited - robots.txt
+# https://edifyllc.com
+
+# General crawlers
+User-agent: *
+Allow: /
+Disallow: /api/inter-agent/
+Disallow: /api/audit-chat
+
+# Sitemap location
+Sitemap: https://edifyllc.com/sitemap.xml
+
+# AI/LLM Crawlers - Welcome!
+# GPTBot (OpenAI)
+User-agent: GPTBot
+Allow: /
+
+# ChatGPT browsing
+User-agent: ChatGPT-User
+Allow: /
+
+# Google AI (Bard/Gemini)
+User-agent: Google-Extended
+Allow: /
+
+# Anthropic Claude
+User-agent: anthropic-ai
+Allow: /
+
+User-agent: Claude-Web
+Allow: /
+
+# Perplexity
+User-agent: PerplexityBot
+Allow: /
+
+# ByteDance AI
+User-agent: Bytespider
+Allow: /
+
+# Common Crawl
+User-agent: CCBot
+Allow: /
+
+# Cohere AI
+User-agent: cohere-ai
+Allow: /
+
+# LLM.txt for AI agents
+# See /llms.txt for structured information about this business
