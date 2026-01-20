@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { useRef, useEffect, useState } from "react";
 import { SEO, seoConfig, generateLocalBusinessSchema, generateOrganizationSchema, generateCaseStudySchema } from "@/components/SEO";
 import { AuditChat } from "@/components/AuditChat";
-import heroVideo from "@assets/_users_9b25cb5e-ce71-4d7e-bbca-6899b4a7896f_generated_dcfe4f1d_1768470906588.mp4";
+import heroVideo from "@assets/Untitled_1768900844097.mp4";
 import imgPoormanWebsite from "@assets/IMG_6122_1768864416866.jpeg";
 
 const fadeIn = {
@@ -93,109 +93,61 @@ export default function Home() {
         description={seoConfig.home.description}
         structuredData={combinedSchema}
       />
-      {/* 1. HERO SECTION - Identity & Immediate Trust */}
-      <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-        <div className="absolute inset-0 z-0">
+      {/* 1. HERO SECTION - Video-First */}
+      <section className="relative flex flex-col overflow-hidden">
+        {/* Full Video Container */}
+        <div className="relative w-full">
           <video
             autoPlay
             loop
             muted
             playsInline
-            className="w-full h-full object-cover scale-105"
+            className="w-full h-auto"
           >
             <source src={heroVideo} type="video/mp4" />
           </video>
-          <div className="absolute inset-0 bg-gradient-to-b from-slate-950/80 via-slate-950/60 to-slate-950" />
-          <div className="absolute inset-0 bg-gradient-to-r from-primary/10 via-transparent to-accent/10" />
+          {/* Subtle gradient overlay at bottom for transition */}
+          <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-slate-950 to-transparent" />
         </div>
-
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/20 rounded-full blur-[128px] animate-pulse pointer-events-none" />
-        <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-accent/15 rounded-full blur-[100px] animate-pulse pointer-events-none" style={{ animationDelay: "1s" }} />
-
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 py-32">
+        
+        {/* CTA Section Below Video */}
+        <div className="bg-slate-950 py-12">
           <motion.div 
             initial="hidden"
             animate="visible"
             variants={staggerContainer}
-            className="text-center space-y-8"
+            className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-6"
           >
-            <motion.div 
-              variants={scaleIn}
-              className="inline-flex items-center gap-3 bg-white/5 backdrop-blur-xl rounded-full px-6 py-2.5 border border-white/10 shadow-2xl shadow-primary/10"
-            >
-              <Shield className="w-4 h-4 text-accent" />
-              <span className="text-sm font-medium text-white/90 tracking-wide">Hawaii's Trusted Technology Partner</span>
-              <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
-            </motion.div>
-            
-            {/* SEO-Optimized H1 - Identity Appeal + Local Keywords */}
             <motion.h1 
               variants={fadeIn}
-              className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-display font-extrabold leading-[0.95] tracking-tight"
+              className="text-3xl sm:text-4xl md:text-5xl font-display font-bold text-white leading-tight"
             >
-              <span className="text-white">The Digital Foundation for</span>
-              <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary via-blue-400 to-accent animate-gradient-x">
-                Hawaii's Market Leaders
-              </span>
+              Ready to Transform Your Digital Presence?
             </motion.h1>
             
-            {/* SEO Subheadline - Clear outcome */}
             <motion.p 
               variants={fadeIn}
-              className="text-xl md:text-2xl text-white/70 max-w-3xl mx-auto leading-relaxed font-light"
+              className="text-lg md:text-xl text-white/70 max-w-2xl mx-auto"
             >
-              Edify builds clear, conversion-focused websites that 
-              <span className="text-white font-medium"> turn visitors into customers</span>.
-              <br className="hidden md:block" />
-              An outdated site is a <span className="text-red-400 font-medium">silent tax on your growth</span>—stop losing leads.
+              Get a free AI-powered audit of your website and discover hidden growth opportunities.
             </motion.p>
             
-            {/* Low-Friction CTA */}
-            <motion.div 
-              variants={fadeIn}
-              className="flex flex-col sm:flex-row gap-4 justify-center pt-4"
-            >
+            <motion.div variants={fadeIn} className="pt-4">
               <Button 
                 size="lg" 
                 onClick={() => setAuditChatOpen(true)}
                 data-testid="button-audit-hero"
-                className="group relative bg-gradient-to-r from-primary to-blue-500 text-white font-semibold rounded-xl shadow-2xl shadow-primary/30"
+                className="group relative bg-gradient-to-r from-primary to-blue-500 text-white font-semibold rounded-xl shadow-2xl shadow-primary/30 px-8 py-6 text-lg"
               >
                 <Sparkles className="mr-2 w-5 h-5" />
                 <span className="relative z-10 flex items-center">
-                  Start Your AI Audit
+                  Start Your Free AI Audit
                   <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
                 </span>
               </Button>
-              <Link href="/portfolio" data-testid="link-view-work-hero">
-                <Button 
-                  variant="outline" 
-                  size="lg" 
-                  data-testid="button-view-work-hero"
-                  className="border-2 border-white/20 text-white backdrop-blur-sm font-semibold rounded-xl"
-                >
-                  See Real Results
-                </Button>
-              </Link>
             </motion.div>
           </motion.div>
         </div>
-
-        <motion.div 
-          initial={{ opacity: 0, y: -10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 2, duration: 0.5 }}
-          className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10"
-        >
-          <div className="w-6 h-10 border-2 border-white/30 rounded-full flex justify-center p-2">
-            <motion.div 
-              animate={{ y: [0, 12, 0] }}
-              transition={{ repeat: Infinity, duration: 1.5 }}
-              className="w-1.5 h-1.5 bg-white rounded-full"
-            />
-          </div>
-        </motion.div>
       </section>
 
       {/* 2. SOCIAL PROOF BAR - Instant Validation with LLM-Ready Metrics */}
