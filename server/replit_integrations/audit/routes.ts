@@ -1,17 +1,10 @@
 import type { Express, Request, Response } from "express";
-import OpenAI from "openai";
+import Anthropic from "@anthropic-ai/sdk";
 
-const OPENAI_MODEL = process.env.OPENAI_MODEL || "gpt-4o";
-
-function getOpenAIClient(): OpenAI {
-  const apiKey = process.env.AI_INTEGRATIONS_OPENAI_API_KEY || process.env.OPENAI_API_KEY;
-  if (!apiKey) {
-    throw new Error("OpenAI API key is not configured.");
-  }
-  return new OpenAI({
-    apiKey,
-  });
-}
+const anthropic = new Anthropic({
+  apiKey: process.env.AI_INTEGRATIONS_ANTHROPIC_API_KEY,
+  baseURL: process.env.AI_INTEGRATIONS_ANTHROPIC_BASE_URL,
+});
 
 const EDIFY_SYSTEM_PROMPT = `You are the Edify AI Strategist, a sales psychologist and CRO expert for Edify Limited, a Hawaii-based IT services company. Your role is to conduct high-value diagnostic consultations using SPIN Selling that feel like GUIDANCE, not selling.
 
@@ -73,29 +66,27 @@ export function registerAuditRoutes(app: Express): void {
       res.setHeader("Cache-Control", "no-cache");
       res.setHeader("Connection", "keep-alive");
 
-      const chatMessages = [
-        { role: "system" as const, content: EDIFY_SYSTEM_PROMPT },
-        ...messages.map((m: { role: string; content: string }) => ({
-          role: m.role as "user" | "assistant",
-          content: m.content,
-        })),
-      ];
+      const chatMessages = messages.map((m: { role: string; content: string }) => ({
+        role: m.role as "user" | "assistant",
+        content: m.content,
+      }));
 
-      const openai = getOpenAIClient();
-      const stream = await openai.chat.completions.create({
-        model: OPENAI_MODEL,
-        messages: chatMessages,
-        stream: true,
+      const stream = anthropic.messages.stream({
+        model: "claude-sonnet-4-5",
         max_tokens: 1024,
+        system: EDIFY_SYSTEM_PROMPT,
+        messages: chatMessages,
       });
 
       let fullResponse = "";
 
-      for await (const chunk of stream) {
-        const content = chunk.choices[0]?.delta?.content || "";
-        if (content) {
-          fullResponse += content;
-          res.write(`data: ${JSON.stringify({ content })}\n\n`);
+      for await (const event of stream) {
+        if (event.type === "content_block_delta" && event.delta.type === "text_delta") {
+          const content = event.delta.text;
+          if (content) {
+            fullResponse += content;
+            res.write(`data: ${JSON.stringify({ content })}\n\n`);
+          }
         }
       }
 
@@ -130,25 +121,21 @@ Provide:
 
 Be specific, actionable, and frame insights in terms of business outcomes. This is a Hawaii local business.`;
 
-      const openai = getOpenAIClient();
-      const response = await openai.chat.completions.create({
-        model: OPENAI_MODEL,
+      const response = await anthropic.messages.create({
+        model: "claude-sonnet-4-5",
+        max_tokens: 1024,
+        system: EDIFY_SYSTEM_PROMPT,
         messages: [
-          { role: "system", content: EDIFY_SYSTEM_PROMPT },
           { role: "user", content: analysisPrompt },
         ],
-        max_tokens: 1024,
       });
 
-      const analysis = response.choices[0]?.message?.content || "";
+      const textContent = response.content.find(c => c.type === "text");
+      const analysis = textContent?.type === "text" ? textContent.text : "";
       res.json({ analysis });
     } catch (error: any) {
       console.error("Error in audit analysis:", error);
-      if (error.message?.includes("OPENAI_API_KEY")) {
-        res.status(503).json({ error: "AI service not configured. Please add your OpenAI API key." });
-      } else {
-        res.status(500).json({ error: "Failed to analyze" });
-      }
+      res.status(500).json({ error: "Failed to analyze" });
     }
   });
 }
