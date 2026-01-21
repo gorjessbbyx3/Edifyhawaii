@@ -66,10 +66,14 @@ export function registerAuditRoutes(app: Express): void {
       res.setHeader("Cache-Control", "no-cache");
       res.setHeader("Connection", "keep-alive");
 
-      const chatMessages = messages.map((m: { role: string; content: string }) => ({
+      let chatMessages = messages.map((m: { role: string; content: string }) => ({
         role: m.role as "user" | "assistant",
         content: m.content,
       }));
+
+      if (chatMessages.length === 0) {
+        chatMessages = [{ role: "user" as const, content: "Hello, I'm interested in learning how Edify can help my Hawaii business grow." }];
+      }
 
       const stream = anthropic.messages.stream({
         model: "claude-sonnet-4-5",
