@@ -185,7 +185,7 @@ export default function Portfolio() {
                 className="group relative rounded-2xl overflow-hidden bg-slate-900/50 border border-white/5 backdrop-blur-sm hover:border-white/20 transition-all duration-500"
               >
                 {/* Glow effect */}
-                <div className={`absolute inset-0 bg-gradient-to-br ${project.gradient} opacity-0 group-hover:opacity-10 transition-opacity duration-500`} />
+                <div className={`absolute inset-0 bg-gradient-to-br ${project.gradient} opacity-0 group-hover:opacity-10 transition-opacity duration-500 pointer-events-none`} />
                 
                 {/* Image */}
                 <div className="aspect-video overflow-hidden relative">
@@ -194,7 +194,7 @@ export default function Portfolio() {
                     alt={`${project.title} - Hawaii business website design showcasing increased lead generation and digital growth`}
                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent to-transparent opacity-60" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent to-transparent opacity-60 pointer-events-none" />
                   
                   {/* Category badge */}
                   <div className="absolute top-4 left-4">
