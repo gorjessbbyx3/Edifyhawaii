@@ -1,10 +1,14 @@
 import type { Express, Request, Response } from "express";
 import Anthropic from "@anthropic-ai/sdk";
 
-const anthropic = new Anthropic({
+// Check if AI integrations are configured
+const isAIConfigured = !!(process.env.AI_INTEGRATIONS_ANTHROPIC_API_KEY && process.env.AI_INTEGRATIONS_ANTHROPIC_BASE_URL);
+
+// Only create Anthropic client if configured
+const anthropic = isAIConfigured ? new Anthropic({
   apiKey: process.env.AI_INTEGRATIONS_ANTHROPIC_API_KEY,
   baseURL: process.env.AI_INTEGRATIONS_ANTHROPIC_BASE_URL,
-});
+}) : null;
 
 const EDIFY_SYSTEM_PROMPT = `You are the Edify AI Strategist, a master sales psychologist and conversion expert for Edify Limited, a Hawaii-based IT services company. You are deeply trained in the psychology of persuasion, influence, and consultative selling.
 
@@ -104,6 +108,14 @@ Your mission: Transform confusion into clarity, skepticism into trust, and inact
 export function registerAuditRoutes(app: Express): void {
   app.post("/api/audit-chat", async (req: Request, res: Response) => {
     try {
+      // Check if AI is configured
+      if (!anthropic) {
+        console.error("AI integrations not configured. Missing AI_INTEGRATIONS_ANTHROPIC_API_KEY or AI_INTEGRATIONS_ANTHROPIC_BASE_URL");
+        return res.status(503).json({ 
+          error: "AI chat is temporarily unavailable. Please try again later or contact us directly." 
+        });
+      }
+
       const { messages = [] } = req.body;
 
       if (!Array.isArray(messages)) {
@@ -157,6 +169,13 @@ export function registerAuditRoutes(app: Express): void {
 
   app.post("/api/audit-analyze", async (req: Request, res: Response) => {
     try {
+      // Check if AI is configured
+      if (!anthropic) {
+        return res.status(503).json({ 
+          error: "AI analysis is temporarily unavailable. Please contact us directly for a consultation." 
+        });
+      }
+
       const { websiteUrl, businessType, challenges } = req.body;
 
       const analysisPrompt = `Analyze the following Hawaii business's digital presence and provide 3-5 specific insights:
