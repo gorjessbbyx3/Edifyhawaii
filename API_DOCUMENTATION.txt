@@ -1,0 +1,376 @@
+================================================================================
+                      EDIFY LIMITED - CRM API DOCUMENTATION
+================================================================================
+
+Base URL: https://your-domain.replit.app (or your custom domain)
+
+================================================================================
+                              AUTHENTICATION
+================================================================================
+
+All CRM API endpoints require authentication via API key.
+
+Header Required:
+  X-Edify-Api-Key: YOUR_API_KEY
+
+To set up your API key:
+1. Go to your Replit project's Secrets tab
+2. Add a secret named: AGENT_API_KEY
+3. Set a secure value (e.g., a UUID or random string)
+4. Use this same value in your CRM integration
+
+Example cURL with authentication:
+  curl -H "X-Edify-Api-Key: YOUR_API_KEY" https://your-domain.replit.app/api/crm/contacts
+
+================================================================================
+                          CONTACT FORM SUBMISSIONS
+================================================================================
+
+GET /api/crm/contacts
+---------------------
+Retrieve all contact form submissions from website visitors.
+
+Response: Array of contact submissions
+[
+  {
+    "id": 1,
+    "name": "John Smith",
+    "email": "john@example.com",
+    "message": "I need help with my website...",
+    "createdAt": "2024-01-15T10:30:00.000Z"
+  },
+  ...
+]
+
+Example:
+  curl -H "X-Edify-Api-Key: YOUR_API_KEY" \
+       https://your-domain.replit.app/api/crm/contacts
+
+================================================================================
+                        AI AUDIT CHAT CONVERSATIONS
+================================================================================
+
+GET /api/crm/conversations
+--------------------------
+Retrieve all AI audit chat conversations.
+
+Response: Array of conversations
+[
+  {
+    "id": 1,
+    "title": "New Audit Chat",
+    "createdAt": "2024-01-15T10:30:00.000Z"
+  },
+  ...
+]
+
+Example:
+  curl -H "X-Edify-Api-Key: YOUR_API_KEY" \
+       https://your-domain.replit.app/api/crm/conversations
+
+
+GET /api/crm/conversations/:id/messages
+---------------------------------------
+Retrieve all messages for a specific conversation.
+
+Parameters:
+  :id - The conversation ID (integer)
+
+Response: Array of messages
+[
+  {
+    "id": 1,
+    "conversationId": 1,
+    "role": "user",
+    "content": "I need help growing my Hawaii business...",
+    "createdAt": "2024-01-15T10:30:00.000Z"
+  },
+  {
+    "id": 2,
+    "conversationId": 1,
+    "role": "assistant",
+    "content": "Aloha! I'd love to help...",
+    "createdAt": "2024-01-15T10:30:05.000Z"
+  },
+  ...
+]
+
+Example:
+  curl -H "X-Edify-Api-Key: YOUR_API_KEY" \
+       https://your-domain.replit.app/api/crm/conversations/1/messages
+
+================================================================================
+                           PAGE VIEW ANALYTICS
+================================================================================
+
+POST /api/analytics/pageview (PUBLIC - No Auth Required)
+---------------------------------------------------------
+Track a page view. This endpoint is designed to be called from your 
+frontend JavaScript to log visitor activity.
+
+Request Body:
+{
+  "path": "/portfolio",        // Required: The page path
+  "sessionId": "abc123",       // Optional: Session identifier
+  "referrer": "https://..."    // Optional: Referrer URL (auto-detected if not provided)
+}
+
+Response:
+{
+  "success": true,
+  "id": 42
+}
+
+Example (from frontend JavaScript):
+  fetch('/api/analytics/pageview', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      path: window.location.pathname,
+      sessionId: localStorage.getItem('sessionId')
+    })
+  });
+
+
+GET /api/crm/analytics/pageviews
+--------------------------------
+Retrieve all page view records.
+
+Query Parameters:
+  since - (Optional) ISO date string to filter views after this date
+
+Response: Array of page views
+[
+  {
+    "id": 1,
+    "path": "/",
+    "referrer": "https://google.com",
+    "userAgent": "Mozilla/5.0...",
+    "ip": "192.168.1.1",
+    "sessionId": "abc123",
+    "createdAt": "2024-01-15T10:30:00.000Z"
+  },
+  ...
+]
+
+Examples:
+  # Get all page views
+  curl -H "X-Edify-Api-Key: YOUR_API_KEY" \
+       https://your-domain.replit.app/api/crm/analytics/pageviews
+
+  # Get page views since a specific date
+  curl -H "X-Edify-Api-Key: YOUR_API_KEY" \
+       "https://your-domain.replit.app/api/crm/analytics/pageviews?since=2024-01-01T00:00:00.000Z"
+
+
+GET /api/crm/analytics/stats
+----------------------------
+Retrieve aggregated page view statistics by path.
+
+Response: Array of path statistics (sorted by view count, descending)
+[
+  {
+    "path": "/",
+    "count": 1523
+  },
+  {
+    "path": "/portfolio",
+    "count": 847
+  },
+  {
+    "path": "/contact",
+    "count": 312
+  },
+  ...
+]
+
+Example:
+  curl -H "X-Edify-Api-Key: YOUR_API_KEY" \
+       https://your-domain.replit.app/api/crm/analytics/stats
+
+================================================================================
+                        AGENT COMMUNICATION API
+================================================================================
+
+These endpoints are for inter-agent communication (e.g., dashboard agent
+coordination). They use the same API key authentication.
+
+
+POST /api/agent/intel
+---------------------
+Send intelligence/data from one agent to another.
+
+Request Body:
+{
+  "fromAgentId": "website-agent",
+  "toAgentId": "dashboard-agent",
+  "topic": "new_lead",
+  "payload": "{\"leadId\": 123, \"score\": 85}",
+  "leadId": "lead_123"  // Optional
+}
+
+Response: Created intel record
+
+
+GET /api/agent/intel
+--------------------
+Retrieve intel for a specific agent.
+
+Query Parameters:
+  agentId - (Required) The receiving agent's ID
+  since   - (Optional) ISO date string to filter messages after this date
+
+Response: Array of intel records
+
+
+PATCH /api/agent/intel/:id/read
+-------------------------------
+Mark an intel record as read.
+
+Response:
+{ "success": true }
+
+
+POST /api/agent/availability
+----------------------------
+Update an agent's availability status.
+
+Request Body:
+{
+  "agentId": "dashboard-agent",
+  "status": "online",           // online, offline, busy
+  "currentTask": "Processing leads",
+  "metadata": "{...}"           // Optional JSON string
+}
+
+
+GET /api/agent/availability/:agentId
+------------------------------------
+Get availability for a specific agent.
+
+
+GET /api/agent/availability
+---------------------------
+Get availability for all agents.
+
+================================================================================
+                           ERROR RESPONSES
+================================================================================
+
+401 Unauthorized
+{
+  "error": "Unauthorized: Invalid API key"
+}
+
+400 Bad Request
+{
+  "error": "Description of the validation error"
+}
+
+404 Not Found
+{
+  "error": "Resource not found"
+}
+
+500 Internal Server Error
+{
+  "error": "Internal server error"
+}
+
+503 Service Unavailable
+{
+  "error": "Agent API not configured"
+}
+(This means AGENT_API_KEY secret is not set in the Replit project)
+
+================================================================================
+                        CRM INTEGRATION EXAMPLES
+================================================================================
+
+ZAPIER / MAKE.COM WEBHOOK:
+--------------------------
+1. Create a scheduled trigger (every 5 minutes)
+2. Add HTTP request action:
+   - Method: GET
+   - URL: https://your-domain.replit.app/api/crm/contacts
+   - Headers: X-Edify-Api-Key: YOUR_API_KEY
+3. Process the JSON response
+4. Send to your CRM (HubSpot, Salesforce, etc.)
+
+
+HUBSPOT INTEGRATION (Node.js):
+------------------------------
+const axios = require('axios');
+
+async function syncContactsToCRM() {
+  const response = await axios.get('https://your-domain.replit.app/api/crm/contacts', {
+    headers: { 'X-Edify-Api-Key': 'YOUR_API_KEY' }
+  });
+  
+  for (const contact of response.data) {
+    await hubspotClient.crm.contacts.basicApi.create({
+      properties: {
+        firstname: contact.name.split(' ')[0],
+        lastname: contact.name.split(' ').slice(1).join(' '),
+        email: contact.email,
+        message: contact.message
+      }
+    });
+  }
+}
+
+
+PYTHON CRM SYNC:
+----------------
+import requests
+
+API_KEY = "YOUR_API_KEY"
+BASE_URL = "https://your-domain.replit.app"
+
+def get_contacts():
+    response = requests.get(
+        f"{BASE_URL}/api/crm/contacts",
+        headers={"X-Edify-Api-Key": API_KEY}
+    )
+    return response.json()
+
+def get_analytics():
+    response = requests.get(
+        f"{BASE_URL}/api/crm/analytics/stats",
+        headers={"X-Edify-Api-Key": API_KEY}
+    )
+    return response.json()
+
+def get_chat_conversations():
+    response = requests.get(
+        f"{BASE_URL}/api/crm/conversations",
+        headers={"X-Edify-Api-Key": API_KEY}
+    )
+    conversations = response.json()
+    
+    for conv in conversations:
+        messages = requests.get(
+            f"{BASE_URL}/api/crm/conversations/{conv['id']}/messages",
+            headers={"X-Edify-Api-Key": API_KEY}
+        ).json()
+        conv['messages'] = messages
+    
+    return conversations
+
+================================================================================
+                              RATE LIMITS
+================================================================================
+
+Currently no rate limits are enforced. For high-traffic integrations,
+we recommend:
+- Caching responses for at least 60 seconds
+- Using the "since" parameter to fetch only new records
+- Batching requests where possible
+
+================================================================================
+                              SUPPORT
+================================================================================
+
+For API questions or issues, contact: support@edifylimited.com
+
+================================================================================

@@ -79,3 +79,22 @@ export const updateAgentAvailabilitySchema = createInsertSchema(agentAvailabilit
 
 export type AgentAvailability = typeof agentAvailability.$inferSelect;
 export type UpdateAgentAvailability = z.infer<typeof updateAgentAvailabilitySchema>;
+
+// Page Analytics
+export const pageViews = pgTable("page_views", {
+  id: serial("id").primaryKey(),
+  path: text("path").notNull(),
+  referrer: text("referrer"),
+  userAgent: text("user_agent"),
+  ip: text("ip"),
+  sessionId: text("session_id"),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+export const insertPageViewSchema = createInsertSchema(pageViews).omit({
+  id: true,
+  createdAt: true,
+});
+
+export type PageView = typeof pageViews.$inferSelect;
+export type InsertPageView = z.infer<typeof insertPageViewSchema>;

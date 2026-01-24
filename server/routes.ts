@@ -3,7 +3,7 @@ import type { Server } from "http";
 import { storage } from "./storage";
 import { api } from "@shared/routes";
 import { z } from "zod";
-import { insertAgentIntelSchema, updateAgentAvailabilitySchema } from "@shared/schema";
+import { insertAgentIntelSchema, updateAgentAvailabilitySchema, insertPageViewSchema } from "@shared/schema";
 
 // API Key Authentication Middleware for Agent Communication
 const AGENT_API_KEY = process.env.AGENT_API_KEY;
@@ -152,6 +152,89 @@ export async function registerRoutes(
       res.json(availability);
     } catch (err) {
       console.error("Error getting all agent availability:", err);
+      res.status(500).json({ error: "Internal server error" });
+    }
+  });
+
+  // ============================================
+  // CRM API ENDPOINTS (Protected by API Key)
+  // ============================================
+
+  // Get all contact form submissions
+  app.get("/api/crm/contacts", agentApiAuth, async (req, res) => {
+    try {
+      const contacts = await storage.getAllContactSubmissions();
+      res.json(contacts);
+    } catch (err) {
+      console.error("Error getting contacts:", err);
+      res.status(500).json({ error: "Internal server error" });
+    }
+  });
+
+  // Get all AI audit chat conversations
+  app.get("/api/crm/conversations", agentApiAuth, async (req, res) => {
+    try {
+      const convos = await storage.getAllConversations();
+      res.json(convos);
+    } catch (err) {
+      console.error("Error getting conversations:", err);
+      res.status(500).json({ error: "Internal server error" });
+    }
+  });
+
+  // Get messages for a specific conversation
+  app.get("/api/crm/conversations/:id/messages", agentApiAuth, async (req, res) => {
+    try {
+      const id = parseInt(req.params.id, 10);
+      if (isNaN(id)) {
+        return res.status(400).json({ error: "Invalid conversation ID" });
+      }
+      const msgs = await storage.getConversationMessages(id);
+      res.json(msgs);
+    } catch (err) {
+      console.error("Error getting conversation messages:", err);
+      res.status(500).json({ error: "Internal server error" });
+    }
+  });
+
+  // Track a page view (public endpoint for analytics tracking)
+  app.post("/api/analytics/pageview", async (req, res) => {
+    try {
+      const input = insertPageViewSchema.parse({
+        path: req.body.path,
+        referrer: req.body.referrer || req.headers.referer,
+        userAgent: req.headers["user-agent"],
+        ip: req.headers["x-forwarded-for"]?.toString().split(",")[0] || req.socket.remoteAddress,
+        sessionId: req.body.sessionId,
+      });
+      const view = await storage.createPageView(input);
+      res.status(201).json({ success: true, id: view.id });
+    } catch (err) {
+      console.error("Error tracking page view:", err);
+      res.status(500).json({ error: "Internal server error" });
+    }
+  });
+
+  // Get page view analytics (protected)
+  app.get("/api/crm/analytics/pageviews", agentApiAuth, async (req, res) => {
+    try {
+      const sinceStr = req.query.since as string;
+      const since = sinceStr ? new Date(sinceStr) : undefined;
+      const views = await storage.getPageViews(since);
+      res.json(views);
+    } catch (err) {
+      console.error("Error getting page views:", err);
+      res.status(500).json({ error: "Internal server error" });
+    }
+  });
+
+  // Get page view stats (aggregated by path)
+  app.get("/api/crm/analytics/stats", agentApiAuth, async (req, res) => {
+    try {
+      const stats = await storage.getPageViewStats();
+      res.json(stats);
+    } catch (err) {
+      console.error("Error getting analytics stats:", err);
       res.status(500).json({ error: "Internal server error" });
     }
   });
