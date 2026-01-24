@@ -2,7 +2,7 @@
                       EDIFY LIMITED - CRM API DOCUMENTATION
 ================================================================================
 
-Base URL: https://edifylimited.tech
+Base URL: https://your-domain.replit.app (or your custom domain)
 
 ================================================================================
                               AUTHENTICATION
@@ -20,7 +20,7 @@ To set up your API key:
 4. Use this same value in your CRM integration
 
 Example cURL with authentication:
-  curl -H "X-Edify-Api-Key: YOUR_API_KEY" https://edifylimited.tech/api/crm/contacts
+  curl -H "X-Edify-Api-Key: YOUR_API_KEY" https://your-domain.replit.app/api/crm/contacts
 
 ================================================================================
                           CONTACT FORM SUBMISSIONS
@@ -44,7 +44,7 @@ Response: Array of contact submissions
 
 Example:
   curl -H "X-Edify-Api-Key: YOUR_API_KEY" \
-       https://edifylimited.tech/api/crm/contacts
+       https://your-domain.replit.app/api/crm/contacts
 
 ================================================================================
                         AI AUDIT CHAT CONVERSATIONS
@@ -66,7 +66,7 @@ Response: Array of conversations
 
 Example:
   curl -H "X-Edify-Api-Key: YOUR_API_KEY" \
-       https://edifylimited.tech/api/crm/conversations
+       https://your-domain.replit.app/api/crm/conversations
 
 
 GET /api/crm/conversations/:id/messages
@@ -97,7 +97,7 @@ Response: Array of messages
 
 Example:
   curl -H "X-Edify-Api-Key: YOUR_API_KEY" \
-       https://edifylimited.tech/api/crm/conversations/1/messages
+       https://your-domain.replit.app/api/crm/conversations/1/messages
 
 ================================================================================
                            PAGE VIEW ANALYTICS
@@ -156,11 +156,11 @@ Response: Array of page views
 Examples:
   # Get all page views
   curl -H "X-Edify-Api-Key: YOUR_API_KEY" \
-       https://edifylimited.tech/api/crm/analytics/pageviews
+       https://your-domain.replit.app/api/crm/analytics/pageviews
 
   # Get page views since a specific date
   curl -H "X-Edify-Api-Key: YOUR_API_KEY" \
-       "https://edifylimited.tech/api/crm/analytics/pageviews?since=2024-01-01T00:00:00.000Z"
+       "https://your-domain.replit.app/api/crm/analytics/pageviews?since=2024-01-01T00:00:00.000Z"
 
 
 GET /api/crm/analytics/stats
@@ -186,7 +186,7 @@ Response: Array of path statistics (sorted by view count, descending)
 
 Example:
   curl -H "X-Edify-Api-Key: YOUR_API_KEY" \
-       https://edifylimited.tech/api/crm/analytics/stats
+       https://your-domain.replit.app/api/crm/analytics/stats
 
 ================================================================================
                         AGENT COMMUNICATION API
@@ -292,7 +292,7 @@ ZAPIER / MAKE.COM WEBHOOK:
 1. Create a scheduled trigger (every 5 minutes)
 2. Add HTTP request action:
    - Method: GET
-   - URL: https://edifylimited.tech/api/crm/contacts
+   - URL: https://your-domain.replit.app/api/crm/contacts
    - Headers: X-Edify-Api-Key: YOUR_API_KEY
 3. Process the JSON response
 4. Send to your CRM (HubSpot, Salesforce, etc.)
@@ -303,7 +303,7 @@ HUBSPOT INTEGRATION (Node.js):
 const axios = require('axios');
 
 async function syncContactsToCRM() {
-  const response = await axios.get('https://edifylimited.tech/api/crm/contacts', {
+  const response = await axios.get('https://your-domain.replit.app/api/crm/contacts', {
     headers: { 'X-Edify-Api-Key': 'YOUR_API_KEY' }
   });
   
@@ -325,7 +325,7 @@ PYTHON CRM SYNC:
 import requests
 
 API_KEY = "YOUR_API_KEY"
-BASE_URL = "https://edifylimited.tech"
+BASE_URL = "https://your-domain.replit.app"
 
 def get_contacts():
     response = requests.get(
