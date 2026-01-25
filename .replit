@@ -40,3 +40,8 @@ waitForPort = 5000
 
 [agent]
 integrations = ["javascript_openai_ai_integrations:2.0.0", "javascript_anthropic_ai_integrations:2.0.0"]
+
+[userenv]
+
+[userenv.shared]
+AGENT_API_KEY = "edify-crm-k8xP4mN2vQ7rL9wS3jF6hY1tB5zA"
