@@ -76,7 +76,7 @@ const services: Record<string, {
       { title: "Stand Out", description: "Custom design that sets you apart from competitors using templates." },
       { title: "Own Everything", description: "You own 100% of your website, code, and content. No lock-ins." }
     ],
-    pricing: "Starting at $3,500"
+    pricing: "$500 + $50/month hosting OR $800 with 1 year free hosting"
   },
   "crm-dashboards": {
     title: "CRM Dashboards",

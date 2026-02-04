@@ -79,3 +79,6 @@ export const updateAgentAvailabilitySchema = createInsertSchema(agentAvailabilit
 
 export type AgentAvailability = typeof agentAvailability.$inferSelect;
 export type UpdateAgentAvailability = z.infer<typeof updateAgentAvailabilitySchema>;
+
+// CRM Schema exports (for admin CRM functionality)
+export * from "./crm-schema";

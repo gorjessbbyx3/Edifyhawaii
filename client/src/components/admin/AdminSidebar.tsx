@@ -14,6 +14,7 @@ import {
   Mail,
   QrCode,
   CheckCircle,
+  Home,
 } from "lucide-react";
 import {
   Sidebar,
@@ -32,58 +33,58 @@ import { Badge } from "@/components/ui/badge";
 const mainNavItems = [
   {
     title: "Dashboard",
-    url: "/",
+    url: "/admin/dashboard",
     icon: LayoutDashboard,
   },
   {
     title: "Leads",
-    url: "/leads",
+    url: "/admin/leads",
     icon: Users,
     badge: "Pipeline",
   },
   {
     title: "Clients",
-    url: "/clients",
+    url: "/admin/clients",
     icon: Building2,
   },
   {
     title: "Assets",
-    url: "/assets",
+    url: "/admin/assets",
     icon: Globe,
   },
   {
     title: "AI Agents",
-    url: "/agents",
+    url: "/admin/agents",
     icon: Bot,
     badge: "7 Active",
   },
   {
     title: "Nurturing",
-    url: "/nurturing",
+    url: "/admin/nurturing",
     icon: Mail,
     badge: "Auto",
   },
   {
     title: "Sample Sites",
-    url: "/sample-sites",
+    url: "/admin/sample-sites",
     icon: QrCode,
     badge: "Preview",
   },
   {
     title: "Approval Queue",
-    url: "/approval-queue",
+    url: "/admin/approval-queue",
     icon: CheckCircle,
     badge: "Review",
   },
   {
     title: "Event Stream",
-    url: "/events",
+    url: "/admin/events",
     icon: Radio,
     badge: "Live",
   },
   {
     title: "Analytics",
-    url: "/analytics",
+    url: "/admin/analytics",
     icon: BarChart3,
   },
 ];
@@ -91,12 +92,12 @@ const mainNavItems = [
 const integrationItems = [
   {
     title: "External CRM",
-    url: "/external",
+    url: "/admin/external",
     icon: Database,
   },
   {
     title: "Conversations",
-    url: "/conversations",
+    url: "/admin/conversations",
     icon: MessageSquare,
   },
 ];
@@ -104,17 +105,22 @@ const integrationItems = [
 const systemItems = [
   {
     title: "Agent Config",
-    url: "/config",
+    url: "/admin/config",
     icon: Zap,
   },
   {
     title: "Settings",
-    url: "/settings",
+    url: "/admin/settings",
     icon: Settings,
+  },
+  {
+    title: "Back to Site",
+    url: "/",
+    icon: Home,
   },
 ];
 
-export function AppSidebar() {
+export function AdminSidebar() {
   const [location] = useLocation();
 
   return (
@@ -125,7 +131,7 @@ export function AppSidebar() {
             <Zap className="h-5 w-5 text-sidebar-primary-foreground" />
           </div>
           <div className="flex flex-col">
-            <span className="text-lg font-semibold text-sidebar-foreground">Smart CRM</span>
+            <span className="text-lg font-semibold text-sidebar-foreground">Edify CRM</span>
             <span className="text-xs text-sidebar-foreground/60">AI-Powered Sales</span>
           </div>
         </div>

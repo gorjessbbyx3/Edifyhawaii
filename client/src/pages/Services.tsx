@@ -8,7 +8,7 @@ import { AuditChatTrigger } from "@/components/AuditChat";
 const faqs = [
   {
     question: "How much does a small business website cost in Hawaii?",
-    answer: "Our website packages start at $3,500 for essential business websites and go up to $15,000+ for full custom solutions with software development. We provide transparent pricing with no hidden fees, and every project includes a free strategy consultation."
+    answer: "Our website packages start at $500 + $50/month hosting, or $800 with 1 year of free hosting included. Custom solutions with software development are priced based on complexity. We provide transparent pricing with no hidden fees, and every project includes a free strategy consultation."
   },
   {
     question: "How long does it take to build a professional website?",
