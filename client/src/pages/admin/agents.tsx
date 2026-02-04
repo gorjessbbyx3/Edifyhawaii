@@ -99,9 +99,9 @@ function AgentCard({
         <Switch
           checked={isActive}
           onCheckedChange={(checked) =>
-            onToggle(definition.id, checked ? "active" : "paused")
+            agent && onToggle(agent.id, checked ? "active" : "paused")
           }
-          disabled={false}
+          disabled={!agent}
           data-testid={`switch-agent-${definition.id}`}
         />
       </CardHeader>
@@ -138,8 +138,8 @@ function AgentCard({
           variant="outline"
           size="sm"
           className="flex-1"
-          onClick={() => onRun(definition.id)}
-          disabled={!isActive}
+          onClick={() => agent && onRun(agent.id)}
+          disabled={!isActive || !agent}
           data-testid={`button-run-${definition.id}`}
         >
           <Play className="mr-2 h-4 w-4" />
@@ -272,7 +272,7 @@ export default function Agents() {
     runAgentMutation.mutate(agentId);
   };
 
-  const agentMap = new Map(agents?.map((a) => [a.id, a]) || []);
+  const agentMap = new Map(agents?.map((a) => [a.type, a]) || []);
 
   return (
     <div className="flex flex-col gap-6 p-6">
