@@ -89,7 +89,7 @@ function ClientRow({ client }: { client: EnrichedClient }) {
   return (
     <TableRow
       className="cursor-pointer hover-elevate"
-      onClick={() => navigate(`/clients/${client.id}`)}
+      onClick={() => navigate(`/admin/clients/${client.id}`)}
       data-testid={`row-client-${client.id}`}
     >
       <TableCell>
@@ -133,7 +133,7 @@ function ClientRow({ client }: { client: EnrichedClient }) {
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
-            <DropdownMenuItem onClick={() => navigate(`/clients/${client.id}`)}>
+            <DropdownMenuItem onClick={() => navigate(`/admin/clients/${client.id}`)}>
               <ExternalLink className="mr-2 h-4 w-4" />
               View Details
             </DropdownMenuItem>

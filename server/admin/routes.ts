@@ -180,7 +180,19 @@ export function registerAdminRoutes(app: Express): void {
   app.get("/api/clients", async (req, res) => {
     try {
       const clients = await storage.getAllClients();
-      res.json(clients);
+      const enrichedClients = await Promise.all(
+        clients.map(async (client) => {
+          const business = client.businessId ? await storage.getBusiness(client.businessId) : null;
+          const assets = await storage.getAssetsByClient(client.id);
+          return {
+            ...client,
+            business,
+            assetCount: assets.length,
+            totalAssetCost: assets.reduce((sum: number, a: { cost: number | null }) => sum + (a.cost || 0), 0),
+          };
+        })
+      );
+      res.json(enrichedClients);
     } catch (error) {
       console.error("Error fetching clients:", error);
       res.status(500).json({ error: "Failed to fetch clients" });
@@ -458,6 +470,17 @@ export function registerAdminRoutes(app: Express): void {
     } catch (error) {
       console.error("Error fetching nurturing sequences:", error);
       res.status(500).json({ error: "Failed to fetch nurturing sequences" });
+    }
+  });
+
+  // Scheduled Messages (for calendar)
+  app.get("/api/scheduled-messages", async (req, res) => {
+    try {
+      const messages = await storage.getPendingScheduledMessages();
+      res.json(messages);
+    } catch (error) {
+      console.error("Error fetching scheduled messages:", error);
+      res.status(500).json({ error: "Failed to fetch scheduled messages" });
     }
   });
 
