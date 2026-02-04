@@ -41,3 +41,9 @@ waitForPort = 5000
 [agent]
 integrations = ["javascript_openai_ai_integrations:2.0.0", "javascript_anthropic_ai_integrations:2.0.0"]
 expertMode = true
+
+[userenv]
+
+[userenv.shared]
+ADMIN_USERNAME = "webmaster"
+ADMIN_PASSWORD_HASH = "a5af919084a5bf2685c0a23259e3cc53aab2dc5e561f72930d02cbcb04e326d0"
