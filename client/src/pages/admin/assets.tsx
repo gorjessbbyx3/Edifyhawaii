@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useMutation } from "@tanstack/react-query";
 import { useLocation } from "wouter";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -7,6 +7,15 @@ import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import {
   Table,
   TableBody,
@@ -31,7 +40,10 @@ import {
   AlertTriangle,
   Calendar,
   ExternalLink,
+  Plus,
 } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
+import { apiRequest, queryClient } from "@/lib/queryClient";
 import type { ClientAsset, Client, Business } from "@shared/schema";
 
 type EnrichedAsset = ClientAsset & {
@@ -91,12 +103,58 @@ function daysUntil(date: Date | string | null): number | null {
 
 export default function Assets() {
   const [, navigate] = useLocation();
+  const { toast } = useToast();
   const [searchQuery, setSearchQuery] = useState("");
   const [typeFilter, setTypeFilter] = useState<string>("all");
   const [activeTab, setActiveTab] = useState("all");
+  const [addDialogOpen, setAddDialogOpen] = useState(false);
+  const [newAsset, setNewAsset] = useState({
+    name: "",
+    type: "domain",
+    provider: "",
+    cost: "",
+    expiryDate: "",
+    notes: "",
+    clientId: "",
+  });
 
   const { data: allAssets = [], isLoading: loadingAll } = useQuery<EnrichedAsset[]>({
     queryKey: ["/api/assets"],
+  });
+
+  const { data: clients = [] } = useQuery<Client[]>({
+    queryKey: ["/api/clients"],
+  });
+
+  const createAssetMutation = useMutation({
+    mutationFn: async (data: typeof newAsset) => {
+      const response = await apiRequest("POST", "/api/assets", {
+        ...data,
+        clientId: data.clientId || null,
+        cost: data.cost ? parseFloat(data.cost) : 0,
+        expiryDate: data.expiryDate || null,
+        notes: data.notes || null,
+        provider: data.provider || null,
+      });
+      return response.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["/api/assets"] });
+      setAddDialogOpen(false);
+      setNewAsset({
+        name: "",
+        type: "domain",
+        provider: "",
+        cost: "",
+        expiryDate: "",
+        notes: "",
+        clientId: "",
+      });
+      toast({ title: "Asset created successfully" });
+    },
+    onError: () => {
+      toast({ title: "Failed to create asset", variant: "destructive" });
+    },
   });
 
   const { data: expiringAssets = [], isLoading: loadingExpiring } = useQuery<EnrichedAsset[]>({
@@ -130,7 +188,7 @@ export default function Assets() {
       <TableRow
         key={asset.id}
         className="cursor-pointer hover-elevate"
-        onClick={() => asset.client && navigate(`/clients/${asset.client.id}`)}
+        onClick={() => asset.client && navigate(`/admin/clients/${asset.client.id}`)}
       >
         <TableCell>
           <div className="flex items-center gap-2">
@@ -177,11 +235,144 @@ export default function Assets() {
 
   return (
     <div className="p-6 space-y-6">
-      <div>
-        <h1 className="text-3xl font-bold">Assets</h1>
-        <p className="text-muted-foreground">
-          Track domains, hosting, and subscriptions across all clients
-        </p>
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-3xl font-bold">Assets</h1>
+          <p className="text-muted-foreground">
+            Track domains, hosting, and subscriptions across all clients
+          </p>
+        </div>
+        <Dialog open={addDialogOpen} onOpenChange={setAddDialogOpen}>
+          <DialogTrigger asChild>
+            <Button data-testid="button-add-asset">
+              <Plus className="h-4 w-4 mr-2" />
+              Add Asset
+            </Button>
+          </DialogTrigger>
+          <DialogContent className="max-w-md">
+            <DialogHeader>
+              <DialogTitle>Add New Asset</DialogTitle>
+            </DialogHeader>
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                createAssetMutation.mutate(newAsset);
+              }}
+              className="space-y-4"
+            >
+              <div className="space-y-2">
+                <Label htmlFor="asset-name">Asset Name</Label>
+                <Input
+                  id="asset-name"
+                  placeholder="e.g., example.com"
+                  value={newAsset.name}
+                  onChange={(e) => setNewAsset({ ...newAsset, name: e.target.value })}
+                  required
+                  data-testid="input-asset-name"
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="asset-type">Type</Label>
+                <Select
+                  value={newAsset.type}
+                  onValueChange={(value) => setNewAsset({ ...newAsset, type: value })}
+                >
+                  <SelectTrigger id="asset-type" data-testid="select-asset-type">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="domain">Domain</SelectItem>
+                    <SelectItem value="hosting">Hosting</SelectItem>
+                    <SelectItem value="subscription">Subscription</SelectItem>
+                    <SelectItem value="email">Email</SelectItem>
+                    <SelectItem value="ssl">SSL Certificate</SelectItem>
+                    <SelectItem value="other">Other</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="asset-client">Client (Optional)</Label>
+                <Select
+                  value={newAsset.clientId}
+                  onValueChange={(value) => setNewAsset({ ...newAsset, clientId: value })}
+                >
+                  <SelectTrigger id="asset-client" data-testid="select-asset-client">
+                    <SelectValue placeholder="Select a client" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="">No client</SelectItem>
+                    {clients.map((client) => (
+                      <SelectItem key={client.id} value={client.id}>
+                        {client.id}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="asset-provider">Provider</Label>
+                <Input
+                  id="asset-provider"
+                  placeholder="e.g., GoDaddy, AWS"
+                  value={newAsset.provider}
+                  onChange={(e) => setNewAsset({ ...newAsset, provider: e.target.value })}
+                  data-testid="input-asset-provider"
+                />
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="asset-cost">Monthly Cost ($)</Label>
+                  <Input
+                    id="asset-cost"
+                    type="number"
+                    step="0.01"
+                    placeholder="0.00"
+                    value={newAsset.cost}
+                    onChange={(e) => setNewAsset({ ...newAsset, cost: e.target.value })}
+                    data-testid="input-asset-cost"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="asset-expiry">Expiry Date</Label>
+                  <Input
+                    id="asset-expiry"
+                    type="date"
+                    value={newAsset.expiryDate}
+                    onChange={(e) => setNewAsset({ ...newAsset, expiryDate: e.target.value })}
+                    data-testid="input-asset-expiry"
+                  />
+                </div>
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="asset-notes">Notes</Label>
+                <Textarea
+                  id="asset-notes"
+                  placeholder="Additional notes..."
+                  value={newAsset.notes}
+                  onChange={(e) => setNewAsset({ ...newAsset, notes: e.target.value })}
+                  data-testid="input-asset-notes"
+                />
+              </div>
+              <div className="flex justify-end gap-2">
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={() => setAddDialogOpen(false)}
+                  data-testid="button-cancel-asset"
+                >
+                  Cancel
+                </Button>
+                <Button
+                  type="submit"
+                  disabled={createAssetMutation.isPending || !newAsset.name}
+                  data-testid="button-submit-asset"
+                >
+                  {createAssetMutation.isPending ? "Creating..." : "Create Asset"}
+                </Button>
+              </div>
+            </form>
+          </DialogContent>
+        </Dialog>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-6 gap-4">

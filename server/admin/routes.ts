@@ -412,6 +412,44 @@ export function registerAdminRoutes(app: Express): void {
     }
   });
 
+  app.get("/api/assets", async (req, res) => {
+    try {
+      const assets = await storage.getAllClientAssets();
+      res.json(assets);
+    } catch (error) {
+      console.error("Error fetching assets:", error);
+      res.status(500).json({ error: "Failed to fetch assets" });
+    }
+  });
+
+  app.get("/api/assets/expiring", async (req, res) => {
+    try {
+      const days = parseInt(req.query.days as string) || 30;
+      const assets = await storage.getAllClientAssets();
+      const now = new Date();
+      const expiringAssets = assets.filter((asset: any) => {
+        if (!asset.expiryDate) return false;
+        const expiryDate = new Date(asset.expiryDate);
+        const daysUntil = Math.ceil((expiryDate.getTime() - now.getTime()) / (1000 * 60 * 60 * 24));
+        return daysUntil > 0 && daysUntil <= days;
+      });
+      res.json(expiringAssets);
+    } catch (error) {
+      console.error("Error fetching expiring assets:", error);
+      res.status(500).json({ error: "Failed to fetch expiring assets" });
+    }
+  });
+
+  app.post("/api/assets", async (req, res) => {
+    try {
+      const asset = await storage.createClientAsset(req.body);
+      res.json(asset);
+    } catch (error) {
+      console.error("Error creating asset:", error);
+      res.status(500).json({ error: "Failed to create asset" });
+    }
+  });
+
   // Nurturing Sequences
   app.get("/api/nurturing-sequences", async (req, res) => {
     try {
