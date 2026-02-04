@@ -1,6 +1,6 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { insertContactSchema, type InsertContact } from "@shared/schema";
+import { insertContactSubmissionSchema, type InsertContactSubmission } from "@shared/schema";
 import { useSubmitContact } from "@/hooks/use-contact";
 import { 
   Form, 
@@ -41,8 +41,8 @@ const scaleIn = {
 export default function Contact() {
   const submitMutation = useSubmitContact();
   
-  const form = useForm<InsertContact>({
-    resolver: zodResolver(insertContactSchema),
+  const form = useForm<InsertContactSubmission>({
+    resolver: zodResolver(insertContactSubmissionSchema),
     defaultValues: {
       name: "",
       email: "",
@@ -50,7 +50,7 @@ export default function Contact() {
     }
   });
 
-  function onSubmit(data: InsertContact) {
+  function onSubmit(data: InsertContactSubmission) {
     submitMutation.mutate(data, {
       onSuccess: () => {
         form.reset();

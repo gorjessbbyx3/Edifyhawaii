@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { insertContactSchema, contactSubmissions, blogPosts } from './schema';
+import { insertContactSubmissionSchema, contactSubmissions, blogPosts } from './schema';
 
 export const errorSchemas = {
   validation: z.object({
@@ -16,7 +16,7 @@ export const api = {
     submit: {
       method: 'POST' as const,
       path: '/api/contact',
-      input: insertContactSchema,
+      input: insertContactSubmissionSchema,
       responses: {
         201: z.custom<typeof contactSubmissions.$inferSelect>(),
         400: errorSchemas.validation,

@@ -1,12 +1,13 @@
 import { useMutation } from "@tanstack/react-query";
-import { api, type InsertContact } from "@shared/routes";
+import { api } from "@shared/routes";
+import { type InsertContactSubmission } from "@shared/schema";
 import { useToast } from "@/hooks/use-toast";
 
 export function useSubmitContact() {
   const { toast } = useToast();
 
   return useMutation({
-    mutationFn: async (data: InsertContact) => {
+    mutationFn: async (data: InsertContactSubmission) => {
       // Validate locally first using the shared schema if needed, 
       // but here we just send to the endpoint which shares the schema.
       const res = await fetch(api.contact.submit.path, {
