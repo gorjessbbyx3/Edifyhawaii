@@ -295,7 +295,7 @@ export default function Dashboard() {
               <CardDescription>Track leads through your sales funnel</CardDescription>
             </div>
             <Button variant="outline" size="sm" asChild>
-              <Link href="/leads" data-testid="link-view-all-leads">
+              <Link href="/admin/leads" data-testid="link-view-all-leads">
                 View All
                 <ArrowUpRight className="ml-1 h-3 w-3" />
               </Link>
@@ -398,7 +398,7 @@ export default function Dashboard() {
           <CardContent>
             <div className="grid gap-3 sm:grid-cols-2">
               <Button variant="outline" className="justify-start h-auto py-3" asChild>
-                <Link href="/leads" data-testid="button-add-lead">
+                <Link href="/admin/leads" data-testid="button-add-lead">
                   <Users className="mr-2 h-4 w-4" />
                   <div className="flex flex-col items-start">
                     <span>Add Lead</span>
@@ -407,7 +407,7 @@ export default function Dashboard() {
                 </Link>
               </Button>
               <Button variant="outline" className="justify-start h-auto py-3" asChild>
-                <Link href="/agents" data-testid="button-run-crawler">
+                <Link href="/admin/agents" data-testid="button-run-crawler">
                   <Bot className="mr-2 h-4 w-4" />
                   <div className="flex flex-col items-start">
                     <span>Run Crawler</span>
@@ -416,7 +416,7 @@ export default function Dashboard() {
                 </Link>
               </Button>
               <Button variant="outline" className="justify-start h-auto py-3" asChild>
-                <Link href="/external" data-testid="button-sync-crm">
+                <Link href="/admin/external" data-testid="button-sync-crm">
                   <Zap className="mr-2 h-4 w-4" />
                   <div className="flex flex-col items-start">
                     <span>Sync CRM</span>
@@ -425,7 +425,7 @@ export default function Dashboard() {
                 </Link>
               </Button>
               <Button variant="outline" className="justify-start h-auto py-3" asChild>
-                <Link href="/analytics" data-testid="button-view-reports">
+                <Link href="/admin/analytics" data-testid="button-view-reports">
                   <TrendingUp className="mr-2 h-4 w-4" />
                   <div className="flex flex-col items-start">
                     <span>View Reports</span>

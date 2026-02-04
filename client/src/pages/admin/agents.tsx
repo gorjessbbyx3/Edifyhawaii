@@ -145,7 +145,7 @@ function AgentCard({
           <Play className="mr-2 h-4 w-4" />
           Run Task
         </Button>
-        <Link href={`/agents/${definition.id}`}>
+        <Link href={`/admin/agents/${definition.id}`}>
           <Button variant="ghost" size="icon" data-testid={`button-view-${definition.id}`}>
             <Eye className="h-4 w-4" />
           </Button>
