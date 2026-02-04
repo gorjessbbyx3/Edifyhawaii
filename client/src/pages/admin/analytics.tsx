@@ -80,6 +80,8 @@ function StatCard({
   );
 }
 
+type WeeklyData = { day: string; leads: number; calls: number; conversions: number };
+
 export default function Analytics() {
   const { data: leads, isLoading: leadsLoading } = useQuery<Lead[]>({
     queryKey: ["/api/leads"],
@@ -93,6 +95,10 @@ export default function Analytics() {
     queryKey: ["/api/analytics/page-views"],
   });
 
+  const { data: weeklyData, isLoading: weeklyLoading } = useQuery<WeeklyData[]>({
+    queryKey: ["/api/analytics/weekly"],
+  });
+
   const pipelineData = pipelineStages.map((stage, index) => ({
     name: stage.label,
     value: leads?.filter((l) => l.status === stage.id).length || 0,
@@ -102,7 +108,7 @@ export default function Analytics() {
   const sourceData = leads
     ? Object.entries(
         leads.reduce((acc, lead) => {
-          const source = lead.source || "manual";
+          const source = (lead as { source?: string }).source || "manual";
           acc[source] = (acc[source] || 0) + 1;
           return acc;
         }, {} as Record<string, number>)
@@ -115,7 +121,7 @@ export default function Analytics() {
   const callOutcomeData = callLogs
     ? Object.entries(
         callLogs.reduce((acc, log) => {
-          const outcome = log.outcome || "unknown";
+          const outcome = log.callStatus || "unknown";
           acc[outcome] = (acc[outcome] || 0) + 1;
           return acc;
         }, {} as Record<string, number>)
@@ -126,23 +132,24 @@ export default function Analytics() {
       }))
     : [];
 
-  const weeklyData = [
-    { day: "Mon", leads: 12, calls: 8, conversions: 2 },
-    { day: "Tue", leads: 19, calls: 12, conversions: 4 },
-    { day: "Wed", leads: 15, calls: 10, conversions: 3 },
-    { day: "Thu", leads: 22, calls: 15, conversions: 5 },
-    { day: "Fri", leads: 18, calls: 14, conversions: 4 },
-    { day: "Sat", leads: 8, calls: 5, conversions: 1 },
-    { day: "Sun", leads: 5, calls: 3, conversions: 1 },
-  ];
+  // Weekly data is now fetched from the API
 
   const totalLeads = leads?.length || 0;
   const qualifiedLeads = leads?.filter((l) => l.status === "qualified").length || 0;
-  const wonLeads = leads?.filter((l) => l.status === "won").length || 0;
+  const wonLeads = leads?.filter((l) => l.status === "closed").length || 0;
   const conversionRate = totalLeads > 0 ? Math.round((wonLeads / totalLeads) * 100) : 0;
   const totalCalls = callLogs?.length || 0;
   const avgCallDuration = callLogs?.length
-    ? Math.round(callLogs.reduce((sum, c) => sum + (c.duration || 0), 0) / callLogs.length)
+    ? (() => {
+        const callsWithDuration = callLogs.filter(c => c.callStart && c.callEnd);
+        if (callsWithDuration.length === 0) return 0;
+        const totalDuration = callsWithDuration.reduce((sum, c) => {
+          const start = c.callStart ? new Date(c.callStart).getTime() : 0;
+          const end = c.callEnd ? new Date(c.callEnd).getTime() : 0;
+          return sum + (end - start) / 1000;
+        }, 0);
+        return Math.round(totalDuration / callsWithDuration.length);
+      })()
     : 0;
 
   return (
@@ -204,6 +211,15 @@ export default function Analytics() {
             <CardDescription>Leads, calls, and conversions over the past week</CardDescription>
           </CardHeader>
           <CardContent>
+            {weeklyLoading ? (
+              <div className="h-[300px] flex items-center justify-center">
+                <Skeleton className="h-full w-full" />
+              </div>
+            ) : !weeklyData || weeklyData.length === 0 ? (
+              <div className="h-[300px] flex items-center justify-center text-muted-foreground">
+                No activity data available yet
+              </div>
+            ) : (
             <div className="h-[300px]">
               <ResponsiveContainer width="100%" height="100%">
                 <AreaChart data={weeklyData}>
@@ -245,6 +261,7 @@ export default function Analytics() {
                 </AreaChart>
               </ResponsiveContainer>
             </div>
+            )}
           </CardContent>
         </Card>
 

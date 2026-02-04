@@ -102,6 +102,46 @@ export function registerAdminRoutes(app: Express): void {
     }
   });
 
+  // Run agent task
+  app.post("/api/agents/:id/run", async (req, res) => {
+    try {
+      const agent = await storage.getAgent(req.params.id);
+      if (!agent) {
+        return res.status(404).json({ error: "Agent not found" });
+      }
+      
+      if (agent.status !== "active") {
+        return res.status(400).json({ error: "Agent must be active to run" });
+      }
+
+      // Create an agent task record
+      const task = await storage.createAgentTask({
+        agentId: agent.id,
+        taskType: `${agent.type}_run`,
+        status: "running",
+        payload: {},
+        startedAt: new Date(),
+      });
+
+      // Log the activity
+      await storage.createActivityLog({
+        actorType: "agent",
+        actorId: agent.id,
+        action: "task_started",
+        metadata: { taskId: task.id, agentType: agent.type },
+      });
+
+      res.json({ 
+        success: true, 
+        message: `Agent ${agent.name} task started`,
+        taskId: task.id 
+      });
+    } catch (error) {
+      console.error("Error running agent:", error);
+      res.status(500).json({ error: "Failed to start agent task" });
+    }
+  });
+
   // Activity Logs
   app.get("/api/activity-logs", async (req, res) => {
     try {
@@ -121,6 +161,16 @@ export function registerAdminRoutes(app: Express): void {
     } catch (error) {
       console.error("Error fetching analytics:", error);
       res.status(500).json({ error: "Failed to fetch analytics" });
+    }
+  });
+
+  app.get("/api/analytics/weekly", async (req, res) => {
+    try {
+      const weeklyData = await storage.getWeeklyAnalytics();
+      res.json(weeklyData);
+    } catch (error) {
+      console.error("Error fetching weekly analytics:", error);
+      res.status(500).json({ error: "Failed to fetch weekly analytics" });
     }
   });
 

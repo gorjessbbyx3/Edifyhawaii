@@ -146,6 +146,13 @@ export interface IStorage {
     callsMade: number;
   }>;
 
+  getWeeklyAnalytics(): Promise<Array<{
+    day: string;
+    leads: number;
+    calls: number;
+    conversions: number;
+  }>>;
+
   // Events
   getAllEvents(): Promise<Event[]>;
   getEventsByType(eventType: string): Promise<Event[]>;
@@ -885,6 +892,51 @@ export class MemStorage implements IStorage {
       conversionRate,
       callsMade,
     };
+  }
+
+  async getWeeklyAnalytics(): Promise<Array<{
+    day: string;
+    leads: number;
+    calls: number;
+    conversions: number;
+  }>> {
+    const leads = Array.from(this.leads.values());
+    const calls = Array.from(this.calls.values());
+    const dayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+    const weeklyData: Array<{ day: string; leads: number; calls: number; conversions: number }> = [];
+
+    // Get data for the last 7 days
+    for (let i = 6; i >= 0; i--) {
+      const date = new Date();
+      date.setDate(date.getDate() - i);
+      date.setHours(0, 0, 0, 0);
+      const nextDate = new Date(date);
+      nextDate.setDate(nextDate.getDate() + 1);
+
+      const dayLeads = leads.filter((l) => {
+        const createdAt = l.createdAt ? new Date(l.createdAt) : null;
+        return createdAt && createdAt >= date && createdAt < nextDate;
+      }).length;
+
+      const dayCalls = calls.filter((c) => {
+        const callStart = c.callStart ? new Date(c.callStart) : null;
+        return callStart && callStart >= date && callStart < nextDate;
+      }).length;
+
+      const dayConversions = leads.filter((l) => {
+        const createdAt = l.createdAt ? new Date(l.createdAt) : null;
+        return createdAt && createdAt >= date && createdAt < nextDate && l.status === "closed";
+      }).length;
+
+      weeklyData.push({
+        day: dayNames[date.getDay()],
+        leads: dayLeads,
+        calls: dayCalls,
+        conversions: dayConversions,
+      });
+    }
+
+    return weeklyData;
   }
 
   // Events
