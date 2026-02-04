@@ -200,6 +200,136 @@ export function registerAdminRoutes(app: Express): void {
     }
   });
 
+  // Create client
+  app.post("/api/clients", async (req, res) => {
+    try {
+      const { businessName, website, status, monthlyRevenue, notes, assets } = req.body;
+      
+      // Create or find business first
+      const existingBusinesses = await storage.getAllBusinesses();
+      let business = existingBusinesses.find(b => b.website === website);
+      if (!business) {
+        business = await storage.createBusiness({
+          name: businessName,
+          website,
+          phone: req.body.phone || null,
+          industry: req.body.industry || null,
+          address: req.body.address || null,
+        });
+      }
+      
+      // Create client
+      const client = await storage.createClient({
+        businessId: business.id,
+        status: status || "active",
+        monthlyRevenue: monthlyRevenue || 0,
+        notes,
+      });
+      
+      // Create assets if provided
+      if (assets && Array.isArray(assets)) {
+        for (const asset of assets) {
+          await storage.createClientAsset({
+            clientId: client.id,
+            type: asset.type,
+            name: asset.name,
+            provider: asset.provider || null,
+            cost: asset.cost || 0,
+            status: asset.status || "active",
+            expiryDate: asset.expiryDate ? new Date(asset.expiryDate) : null,
+          });
+        }
+      }
+      
+      res.status(201).json(client);
+    } catch (error) {
+      console.error("Error creating client:", error);
+      res.status(500).json({ error: "Failed to create client" });
+    }
+  });
+
+  // Convert lead to client
+  app.post("/api/leads/:id/convert", async (req, res) => {
+    try {
+      const lead = await storage.getLead(req.params.id);
+      if (!lead) {
+        return res.status(404).json({ error: "Lead not found" });
+      }
+      
+      // Get the associated business
+      const business = await storage.getBusiness(lead.businessId);
+      if (!business) {
+        return res.status(404).json({ error: "Business not found" });
+      }
+      
+      // Create client from lead
+      const client = await storage.createClient({
+        businessId: lead.businessId,
+        leadId: lead.id,
+        status: "active",
+        monthlyRevenue: req.body.monthlyRevenue || 0,
+        notes: req.body.notes || `Converted from lead on ${new Date().toLocaleDateString()}`,
+      });
+      
+      // Update lead status to closed
+      await storage.updateLead(lead.id, { status: "closed" });
+      
+      res.status(201).json(client);
+    } catch (error) {
+      console.error("Error converting lead:", error);
+      res.status(500).json({ error: "Failed to convert lead" });
+    }
+  });
+
+  // Meetings
+  app.get("/api/meetings", async (req, res) => {
+    try {
+      const meetings = await storage.getAllMeetings();
+      res.json(meetings);
+    } catch (error) {
+      console.error("Error fetching meetings:", error);
+      res.status(500).json({ error: "Failed to fetch meetings" });
+    }
+  });
+
+  app.post("/api/meetings", async (req, res) => {
+    try {
+      const meeting = await storage.createMeeting({
+        leadId: req.body.leadId,
+        scheduledAt: new Date(req.body.scheduledAt),
+        meetingLink: req.body.meetingLink || null,
+        status: req.body.status || "scheduled",
+      });
+      res.status(201).json(meeting);
+    } catch (error) {
+      console.error("Error creating meeting:", error);
+      res.status(500).json({ error: "Failed to create meeting" });
+    }
+  });
+
+  app.patch("/api/meetings/:id", async (req, res) => {
+    try {
+      const meeting = await storage.updateMeeting(req.params.id, req.body);
+      if (!meeting) {
+        return res.status(404).json({ error: "Meeting not found" });
+      }
+      res.json(meeting);
+    } catch (error) {
+      console.error("Error updating meeting:", error);
+      res.status(500).json({ error: "Failed to update meeting" });
+    }
+  });
+
+  app.delete("/api/meetings/:id", async (req, res) => {
+    try {
+      await storage.deleteMeeting(req.params.id);
+      res.status(204).send();
+    } catch (error) {
+      console.error("Error deleting meeting:", error);
+      res.status(500).json({ error: "Failed to delete meeting" });
+    }
+  });
+
   // Businesses
   app.get("/api/businesses", async (req, res) => {
     try {

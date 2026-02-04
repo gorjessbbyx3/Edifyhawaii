@@ -303,6 +303,11 @@ export class DatabaseStorage implements IStorage {
     return updated;
   }
 
+  async deleteMeeting(id: string): Promise<boolean> {
+    await db.delete(meetings).where(eq(meetings.id, id));
+    return true;
+  }
+
   async getAllActivityLogs(): Promise<ActivityLog[]> {
     return db.select().from(activityLogs).orderBy(desc(activityLogs.createdAt));
   }

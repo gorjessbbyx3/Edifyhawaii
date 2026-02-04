@@ -144,10 +144,61 @@ function ClientRow({ client }: { client: EnrichedClient }) {
   );
 }
 
+const addClientSchema = z.object({
+  businessName: z.string().min(1, "Business name is required"),
+  website: z.string().url("Must be a valid URL").or(z.string().min(0)),
+  phone: z.string().optional(),
+  industry: z.string().optional(),
+  monthlyRevenue: z.number().min(0).optional(),
+  notes: z.string().optional(),
+});
+
+type AddClientForm = z.infer<typeof addClientSchema>;
+
 export default function Clients() {
   const [searchQuery, setSearchQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState<string>("all");
+  const [addDialogOpen, setAddDialogOpen] = useState(false);
   const { toast } = useToast();
+  
+  const form = useForm<AddClientForm>({
+    resolver: zodResolver(addClientSchema),
+    defaultValues: {
+      businessName: "",
+      website: "",
+      phone: "",
+      industry: "",
+      monthlyRevenue: 0,
+      notes: "",
+    },
+  });
+
+  const addClientMutation = useMutation({
+    mutationFn: async (data: AddClientForm) => {
+      const response = await apiRequest("POST", "/api/clients", data);
+      return response.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["/api/clients"] });
+      setAddDialogOpen(false);
+      form.reset();
+      toast({
+        title: "Client added",
+        description: "The new client has been created successfully.",
+      });
+    },
+    onError: () => {
+      toast({
+        title: "Error",
+        description: "Failed to create client. Please try again.",
+        variant: "destructive",
+      });
+    },
+  });
+
+  const onSubmit = (data: AddClientForm) => {
+    addClientMutation.mutate(data);
+  };
 
   const { data: clients = [], isLoading } = useQuery<EnrichedClient[]>({
     queryKey: ["/api/clients"],
@@ -177,6 +228,117 @@ export default function Clients() {
             Manage your client relationships and track their assets
           </p>
         </div>
+        <Dialog open={addDialogOpen} onOpenChange={setAddDialogOpen}>
+          <DialogTrigger asChild>
+            <Button data-testid="button-add-client">
+              <Plus className="mr-2 h-4 w-4" />
+              Add Client
+            </Button>
+          </DialogTrigger>
+          <DialogContent className="max-w-md">
+            <DialogHeader>
+              <DialogTitle>Add New Client</DialogTitle>
+              <DialogDescription>
+                Create a new client record with their business details.
+              </DialogDescription>
+            </DialogHeader>
+            <Form {...form}>
+              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+                <FormField
+                  control={form.control}
+                  name="businessName"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Business Name</FormLabel>
+                      <FormControl>
+                        <Input placeholder="Acme Inc." {...field} data-testid="input-business-name" />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="website"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Website</FormLabel>
+                      <FormControl>
+                        <Input placeholder="https://example.com" {...field} data-testid="input-website" />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <div className="grid grid-cols-2 gap-4">
+                  <FormField
+                    control={form.control}
+                    name="phone"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Phone</FormLabel>
+                        <FormControl>
+                          <Input placeholder="(808) 555-0123" {...field} data-testid="input-phone" />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="industry"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Industry</FormLabel>
+                        <FormControl>
+                          <Input placeholder="Technology" {...field} data-testid="input-industry" />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+                <FormField
+                  control={form.control}
+                  name="monthlyRevenue"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Monthly Revenue ($)</FormLabel>
+                      <FormControl>
+                        <Input 
+                          type="number" 
+                          placeholder="500" 
+                          {...field}
+                          onChange={(e) => field.onChange(parseInt(e.target.value) || 0)}
+                          data-testid="input-revenue" 
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="notes"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Notes</FormLabel>
+                      <FormControl>
+                        <Input placeholder="Additional notes..." {...field} data-testid="input-notes" />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <DialogFooter>
+                  <Button type="submit" disabled={addClientMutation.isPending} data-testid="button-submit-client">
+                    {addClientMutation.isPending ? "Creating..." : "Create Client"}
+                  </Button>
+                </DialogFooter>
+              </form>
+            </Form>
+          </DialogContent>
+        </Dialog>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">

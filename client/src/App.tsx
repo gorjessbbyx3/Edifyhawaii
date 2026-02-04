@@ -35,6 +35,7 @@ import AdminConversations from "@/pages/admin/conversations";
 import AdminConfig from "@/pages/admin/config";
 import AdminSettings from "@/pages/admin/settings";
 import AdminNurturing from "@/pages/admin/nurturing";
+import AdminCalendar from "@/pages/admin/calendar";
 import AdminSampleSites from "@/pages/admin/sample-sites";
 import AdminApprovalQueue from "@/pages/admin/approval-queue";
 import { AdminLayout } from "@/components/admin/AdminLayout";
@@ -92,6 +93,7 @@ function AdminRouter() {
         <Route path="/admin/config" component={AdminConfig} />
         <Route path="/admin/settings" component={AdminSettings} />
         <Route path="/admin/nurturing" component={AdminNurturing} />
+        <Route path="/admin/calendar" component={AdminCalendar} />
         <Route path="/admin/sample-sites" component={AdminSampleSites} />
         <Route path="/admin/approval-queue" component={AdminApprovalQueue} />
         <Route component={AdminDashboard} />

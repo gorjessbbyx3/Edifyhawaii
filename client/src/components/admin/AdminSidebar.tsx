@@ -15,6 +15,7 @@ import {
   QrCode,
   CheckCircle,
   Home,
+  Calendar,
 } from "lucide-react";
 import {
   Sidebar,
@@ -63,6 +64,11 @@ const mainNavItems = [
     url: "/admin/nurturing",
     icon: Mail,
     badge: "Auto",
+  },
+  {
+    title: "Calendar",
+    url: "/admin/calendar",
+    icon: Calendar,
   },
   {
     title: "Sample Sites",

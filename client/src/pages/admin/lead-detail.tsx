@@ -120,6 +120,33 @@ export default function LeadDetail() {
     },
   });
 
+  const convertToClientMutation = useMutation({
+    mutationFn: async () => {
+      const response = await apiRequest("POST", `/api/leads/${id}/convert`, {
+        monthlyRevenue: 0,
+        notes: `Converted from lead on ${new Date().toLocaleDateString()}`,
+      });
+      return response.json();
+    },
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({ queryKey: ["/api/leads", id] });
+      queryClient.invalidateQueries({ queryKey: ["/api/leads"] });
+      queryClient.invalidateQueries({ queryKey: ["/api/clients"] });
+      toast({
+        title: "Lead converted to client",
+        description: "You can now manage this client in the Clients section.",
+      });
+      navigate(`/admin/clients/${data.id}`);
+    },
+    onError: () => {
+      toast({
+        title: "Failed to convert lead",
+        description: "Please try again.",
+        variant: "destructive",
+      });
+    },
+  });
+
   if (isLoading) {
     return (
       <div className="p-6 space-y-6">
@@ -177,6 +204,15 @@ export default function LeadDetail() {
         <Badge className={statusColors[lead.status] || ""}>
           {statusLabels[lead.status] || lead.status}
         </Badge>
+        {lead.status !== "closed" && (
+          <Button
+            onClick={() => convertToClientMutation.mutate()}
+            disabled={convertToClientMutation.isPending}
+            data-testid="button-convert-to-client"
+          >
+            {convertToClientMutation.isPending ? "Converting..." : "Convert to Client"}
+          </Button>
+        )}
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
