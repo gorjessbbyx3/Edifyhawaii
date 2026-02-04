@@ -1,9 +1,11 @@
 import type { Express, Request, Response, NextFunction } from "express";
-import { MemStorage } from "./storage";
+import { DatabaseStorage, seedDatabase } from "./db-storage";
 import { requireAdminAuth } from "./auth";
 import { z } from "zod";
 
-const storage = new MemStorage();
+const storage = new DatabaseStorage();
+
+seedDatabase().catch(console.error);
 
 const updateAgentSchema = z.object({
   name: z.string().optional(),
