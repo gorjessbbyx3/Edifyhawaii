@@ -4,6 +4,7 @@ import { serveStatic } from "./static";
 import { createServer } from "http";
 import { registerAuditRoutes } from "./replit_integrations/audit";
 import { registerAdminAuthRoutes } from "./admin/auth";
+import { registerAdminRoutes } from "./admin/routes";
 import path from "path";
 
 const app = express();
@@ -30,6 +31,7 @@ app.use(express.urlencoded({ extended: false, limit: "50mb" }));
 
 registerAuditRoutes(app);
 registerAdminAuthRoutes(app);
+registerAdminRoutes(app);
 
 export function log(message: string, source = "express") {
   const formattedTime = new Date().toLocaleTimeString("en-US", {

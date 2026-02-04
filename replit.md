@@ -1,8 +1,25 @@
-# EDIFY Limited - IT Services & Web Development Portfolio
+# EDIFY Limited - IT Services & Web Development Portfolio + CRM
 
 ## Overview
 
-EDIFY Limited is a Hawaii-based IT services company website showcasing managed IT support, custom web development, and technology consulting services. The application is a marketing portfolio site with a contact form for lead generation. Built as a full-stack TypeScript application with React frontend and Express backend, it targets local businesses seeking technology solutions.
+EDIFY Limited is a Hawaii-based IT services company website with an integrated admin CRM system. The public site showcases managed IT support, custom web development, and technology consulting services with AI-powered audit chat. The admin portal at `/admin` provides comprehensive CRM functionality including lead management, client tracking, AI agents, analytics, and business automation tools.
+
+**Public Site Features:**
+- Marketing portfolio with services, portfolio projects, and blog
+- AI-powered website audit chat
+- Contact form for lead generation
+- SEO-optimized pages
+
+**Admin CRM Features (at /admin):**
+- Secure token-based authentication (webmaster credentials)
+- Dashboard with KPIs and analytics
+- Lead pipeline management with stages (Discovered, Needs Help, Contacted, Qualified, Closed, Archived)
+- Client management and tracking
+- 7 AI Agents (Crawler, Verifier, Contact, Caller, Reporter, Form Agent, Nurturer)
+- Event stream monitoring
+- Nurturing campaigns and sample sites
+- Approval queue for AI-generated content
+- External CRM sync capabilities
 
 ## User Preferences
 
@@ -30,20 +47,32 @@ Preferred communication style: Simple, everyday language.
 ```
 ├── client/           # React frontend application
 │   └── src/
-│       ├── components/  # Reusable UI components
-│       ├── pages/       # Route page components
-│       ├── hooks/       # Custom React hooks
-│       └── lib/         # Utilities and query client
+│       ├── components/     # Reusable UI components
+│       │   └── admin/      # Admin-specific components (AdminLayout, AdminSidebar)
+│       ├── pages/          # Route page components
+│       │   └── admin/      # Admin CRM pages (dashboard, leads, clients, agents, etc.)
+│       ├── hooks/          # Custom React hooks
+│       └── lib/            # Utilities and query client
 ├── server/           # Express backend
 │   ├── index.ts      # Server entry point
 │   ├── routes.ts     # API route handlers
-│   ├── storage.ts    # Database operations
-│   └── db.ts         # Database connection
+│   ├── storage.ts    # Database operations (public site)
+│   ├── db.ts         # Database connection
+│   └── admin/        # Admin CRM backend
+│       ├── auth.ts   # Admin authentication (token-based)
+│       ├── storage.ts # CRM storage operations
+│       └── services/ # AI agent services
 ├── shared/           # Shared code between client/server
-│   ├── schema.ts     # Drizzle database schema and Zod types
+│   ├── schema.ts     # Public site database schema
+│   ├── crm-schema.ts # CRM database schema (leads, clients, agents, etc.)
 │   └── routes.ts     # API route definitions with validation
 └── migrations/       # Drizzle database migrations
 ```
+
+### Admin Credentials
+- Username: Stored in `ADMIN_USERNAME` environment variable
+- Password: SHA-256 hashed, stored in `ADMIN_PASSWORD_HASH` environment variable
+- Access: Navigate to `/admin` to login
 
 ### Key Design Decisions
 
