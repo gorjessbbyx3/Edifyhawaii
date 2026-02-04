@@ -1,9 +1,12 @@
 import type { Express, Request, Response, NextFunction } from "express";
 import type { Server } from "http";
 import { storage } from "./storage";
+import { DatabaseStorage } from "./admin/db-storage";
 import { api } from "@shared/routes";
 import { z } from "zod";
 import { insertAgentIntelSchema, updateAgentAvailabilitySchema } from "@shared/schema";
+
+const crmStorage = new DatabaseStorage();
 
 // API Key Authentication Middleware for Agent Communication
 const AGENT_API_KEY = process.env.AGENT_API_KEY;
@@ -59,6 +62,25 @@ export async function registerRoutes(
       }
       res.json(post);
     } catch (err) {
+      res.status(500).json({ message: "Internal server error" });
+    }
+  });
+
+  // ============================================
+  // PUBLIC SAMPLE SITE PREVIEW (No Auth Required)
+  // ============================================
+  app.get("/api/sample/:slug", async (req, res) => {
+    try {
+      const site = await crmStorage.getSampleSiteBySlug(req.params.slug);
+      if (!site) {
+        return res.status(404).json({ message: "Sample site not found" });
+      }
+      if (site.approvalStatus !== "approved" && site.approvalStatus !== "pending") {
+        return res.status(404).json({ message: "Sample site not available" });
+      }
+      res.json(site);
+    } catch (err) {
+      console.error("Error fetching sample site:", err);
       res.status(500).json({ message: "Internal server error" });
     }
   });
