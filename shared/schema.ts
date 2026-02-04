@@ -10,13 +10,13 @@ export const contactSubmissions = pgTable("contact_submissions", {
   createdAt: timestamp("created_at").defaultNow(),
 });
 
-export const insertContactSchema = createInsertSchema(contactSubmissions).pick({
+export const insertContactSubmissionSchema = createInsertSchema(contactSubmissions).pick({
   name: true,
   email: true,
   message: true,
 });
 
-export type InsertContact = z.infer<typeof insertContactSchema>;
+export type InsertContactSubmission = z.infer<typeof insertContactSubmissionSchema>;
 export type ContactSubmission = typeof contactSubmissions.$inferSelect;
 
 export const blogPosts = pgTable("blog_posts", {

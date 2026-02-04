@@ -5,7 +5,7 @@ import {
   blogPosts,
   agentIntel,
   agentAvailability,
-  type InsertContact,
+  type InsertContactSubmission,
   type ContactSubmission,
   type InsertBlogPost,
   type BlogPost,
@@ -16,7 +16,7 @@ import {
 } from "@shared/schema";
 
 export interface IStorage {
-  createContactSubmission(contact: InsertContact): Promise<ContactSubmission>;
+  createContactSubmission(contact: InsertContactSubmission): Promise<ContactSubmission>;
   getAllBlogPosts(): Promise<BlogPost[]>;
   getBlogPostBySlug(slug: string): Promise<BlogPost | undefined>;
   createBlogPost(post: InsertBlogPost): Promise<BlogPost>;
@@ -31,7 +31,7 @@ export interface IStorage {
 }
 
 export class DatabaseStorage implements IStorage {
-  async createContactSubmission(contact: InsertContact): Promise<ContactSubmission> {
+  async createContactSubmission(contact: InsertContactSubmission): Promise<ContactSubmission> {
     const [submission] = await db
       .insert(contactSubmissions)
       .values(contact)
