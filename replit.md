@@ -9,6 +9,7 @@ EDIFY Limited is a Hawaii-based IT services company website with an integrated a
 - AI-powered website audit chat
 - Contact form for lead generation
 - SEO-optimized pages
+- Payment Processing service page (/services/payment-processing) - $500 terminal, zero fees, customer-pays-surcharge model
 
 **Admin CRM Features (at /admin):**
 - Secure token-based authentication (webmaster credentials)

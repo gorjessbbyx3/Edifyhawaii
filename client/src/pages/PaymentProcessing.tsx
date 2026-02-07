@@ -51,19 +51,19 @@ export default function PaymentProcessing() {
               <span className="text-sm font-medium text-green-400">Payment Processing</span>
             </motion.div>
 
-            <motion.h1 variants={fadeInUp} className="text-5xl md:text-6xl lg:text-7xl font-display font-bold text-white leading-tight">
+            <motion.h1 data-testid="text-payment-hero-title" variants={fadeInUp} className="text-5xl md:text-6xl lg:text-7xl font-display font-bold text-white leading-tight">
               Stop Paying <br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-green-400 via-emerald-400 to-teal-400">
                 Processing Fees
               </span>
             </motion.h1>
 
-            <motion.p variants={fadeInUp} className="text-xl text-slate-400 max-w-2xl mx-auto">
+            <motion.p data-testid="text-payment-hero-description" variants={fadeInUp} className="text-xl text-slate-400 max-w-2xl mx-auto">
               $500 for a payment terminal. No monthly fees. No processing fees. Your customers cover the small surcharge—you keep 100% of every sale.
             </motion.p>
 
             <motion.div variants={fadeInUp} className="flex flex-wrap justify-center gap-4 pt-4">
-              <Link href="/contact">
+              <Link href="/contact" data-testid="link-get-terminal">
                 <Button
                   size="lg"
                   data-testid="button-get-terminal"
@@ -73,7 +73,7 @@ export default function PaymentProcessing() {
                   <ArrowRight className="ml-2 w-5 h-5" />
                 </Button>
               </Link>
-              <Link href="/contact">
+              <Link href="/contact" data-testid="link-ask-question-payment">
                 <Button
                   size="lg"
                   variant="outline"
@@ -99,7 +99,7 @@ export default function PaymentProcessing() {
             className="space-y-16"
           >
             <div className="text-center">
-              <motion.h2 variants={fadeInUp} className="text-4xl md:text-5xl font-display font-bold text-white mb-4">
+              <motion.h2 data-testid="text-how-it-works-title" variants={fadeInUp} className="text-4xl md:text-5xl font-display font-bold text-white mb-4">
                 How It Works
               </motion.h2>
               <motion.p variants={fadeInUp} className="text-lg text-slate-400 max-w-2xl mx-auto">
@@ -115,7 +115,7 @@ export default function PaymentProcessing() {
                 <div className="mb-6 p-4 rounded-xl bg-white/5 w-fit mx-auto text-green-400">
                   <DollarSign className="w-8 h-8" />
                 </div>
-                <h3 className="text-xl font-bold font-display mb-3 text-white">Pay $500 Once</h3>
+                <h3 data-testid="text-step-1-title" className="text-xl font-bold font-display mb-3 text-white">Pay $500 Once</h3>
                 <p className="text-slate-400 leading-relaxed">One-time purchase for your payment terminal. No contracts, no commitments, no monthly bills.</p>
               </motion.div>
 
@@ -126,7 +126,7 @@ export default function PaymentProcessing() {
                 <div className="mb-6 p-4 rounded-xl bg-white/5 w-fit mx-auto text-green-400">
                   <Store className="w-8 h-8" />
                 </div>
-                <h3 className="text-xl font-bold font-display mb-3 text-white">Start Accepting Payments</h3>
+                <h3 data-testid="text-step-2-title" className="text-xl font-bold font-display mb-3 text-white">Start Accepting Payments</h3>
                 <p className="text-slate-400 leading-relaxed">We set up and train you on your terminal. Accept cards in-store and online from day one.</p>
               </motion.div>
 
@@ -137,7 +137,7 @@ export default function PaymentProcessing() {
                 <div className="mb-6 p-4 rounded-xl bg-white/5 w-fit mx-auto text-green-400">
                   <BadgeCheck className="w-8 h-8" />
                 </div>
-                <h3 className="text-xl font-bold font-display mb-3 text-white">Keep 100% of Sales</h3>
+                <h3 data-testid="text-step-3-title" className="text-xl font-bold font-display mb-3 text-white">Keep 100% of Sales</h3>
                 <p className="text-slate-400 leading-relaxed">Your customers cover the small processing surcharge. You receive the full sale amount—no deductions.</p>
               </motion.div>
             </motion.div>
@@ -157,7 +157,7 @@ export default function PaymentProcessing() {
             className="space-y-12"
           >
             <div className="text-center">
-              <motion.h2 variants={fadeInUp} className="text-4xl md:text-5xl font-display font-bold text-white mb-4">
+              <motion.h2 data-testid="text-comparison-title" variants={fadeInUp} className="text-4xl md:text-5xl font-display font-bold text-white mb-4">
                 See the Difference
               </motion.h2>
               <motion.p variants={fadeInUp} className="text-lg text-slate-400 max-w-2xl mx-auto">
@@ -170,7 +170,7 @@ export default function PaymentProcessing() {
               <motion.div variants={fadeInUp}>
                 <Card className="p-8 bg-slate-900/80 border-white/10">
                   <div className="text-center space-y-6">
-                    <h3 className="text-2xl font-display font-bold text-slate-400">Traditional Processor</h3>
+                    <h3 data-testid="text-traditional-title" className="text-2xl font-display font-bold text-slate-400">Traditional Processor</h3>
                     <div className="space-y-3">
                       <div className="flex items-center justify-between gap-2 py-2 border-b border-white/5">
                         <span className="text-slate-400">Terminal Cost</span>
@@ -202,7 +202,7 @@ export default function PaymentProcessing() {
                 <Card className="p-8 bg-gradient-to-br from-green-950/50 to-emerald-950/50 border-green-500/30 ring-1 ring-green-500/20">
                   <div className="text-center space-y-6">
                     <div className="flex items-center justify-center gap-2">
-                      <h3 className="text-2xl font-display font-bold text-green-400">Edify Payment Processing</h3>
+                      <h3 data-testid="text-edify-title" className="text-2xl font-display font-bold text-green-400">Edify Payment Processing</h3>
                     </div>
                     <div className="space-y-3">
                       <div className="flex items-center justify-between gap-2 py-2 border-b border-green-500/10">
@@ -232,7 +232,7 @@ export default function PaymentProcessing() {
             </motion.div>
 
             <motion.div variants={fadeInUp} className="text-center">
-              <p className="text-slate-400 text-lg">
+              <p data-testid="text-savings-summary" className="text-slate-400 text-lg">
                 On $10,000/month in sales, you could save <span className="text-green-400 font-bold">$3,600 - $5,400 per year</span> compared to traditional processors.
               </p>
             </motion.div>
@@ -251,7 +251,7 @@ export default function PaymentProcessing() {
             className="space-y-16"
           >
             <div className="text-center">
-              <motion.h2 variants={fadeInUp} className="text-4xl md:text-5xl font-display font-bold text-white mb-4">
+              <motion.h2 data-testid="text-features-title" variants={fadeInUp} className="text-4xl md:text-5xl font-display font-bold text-white mb-4">
                 Everything You Need
               </motion.h2>
               <motion.p variants={fadeInUp} className="text-lg text-slate-400 max-w-2xl mx-auto">
@@ -310,7 +310,7 @@ export default function PaymentProcessing() {
               <motion.div variants={fadeInUp} className="inline-flex items-center gap-3 p-4 bg-gradient-to-r from-green-500 to-emerald-400 rounded-xl shadow-lg w-fit">
                 <Store className="w-8 h-8 text-white" />
               </motion.div>
-              <motion.h2 variants={fadeInUp} className="text-4xl md:text-5xl font-display font-bold text-white">
+              <motion.h2 data-testid="text-instore-title" variants={fadeInUp} className="text-4xl md:text-5xl font-display font-bold text-white">
                 In-Store Payments
               </motion.h2>
               <motion.p variants={fadeInUp} className="text-lg text-slate-400 leading-relaxed">
@@ -331,7 +331,7 @@ export default function PaymentProcessing() {
               <motion.div variants={fadeInUp} className="inline-flex items-center gap-3 p-4 bg-gradient-to-r from-blue-500 to-cyan-400 rounded-xl shadow-lg w-fit">
                 <Globe className="w-8 h-8 text-white" />
               </motion.div>
-              <motion.h2 variants={fadeInUp} className="text-4xl md:text-5xl font-display font-bold text-white">
+              <motion.h2 data-testid="text-online-title" variants={fadeInUp} className="text-4xl md:text-5xl font-display font-bold text-white">
                 Online Payments
               </motion.h2>
               <motion.p variants={fadeInUp} className="text-lg text-slate-400 leading-relaxed">
@@ -364,25 +364,25 @@ export default function PaymentProcessing() {
             variants={staggerContainer}
             className="text-center space-y-8"
           >
-            <motion.h2 variants={fadeInUp} className="text-4xl md:text-5xl font-display font-bold text-white">
+            <motion.h2 data-testid="text-payment-cta-title" variants={fadeInUp} className="text-4xl md:text-5xl font-display font-bold text-white">
               Ready to Keep More of Your Money?
             </motion.h2>
-            <motion.p variants={fadeInUp} className="text-xl text-slate-400 max-w-2xl mx-auto">
+            <motion.p data-testid="text-payment-cta-description" variants={fadeInUp} className="text-xl text-slate-400 max-w-2xl mx-auto">
               Get your $500 terminal and start accepting payments with zero ongoing fees. Setup takes minutes, not weeks.
             </motion.p>
 
             <motion.div variants={fadeInUp} className="flex flex-wrap justify-center gap-4 pt-4">
-              <Link href="/contact">
+              <Link href="/contact" data-testid="link-get-terminal-cta">
                 <Button
                   size="lg"
                   data-testid="button-get-started-payment-cta"
-                  className="group bg-gradient-to-r from-green-500 to-emerald-500 text-white font-semibold rounded-xl shadow-2xl shadow-green-500/30"
+                  className="bg-gradient-to-r from-green-500 to-emerald-500 text-white font-semibold rounded-xl shadow-2xl shadow-green-500/30"
                 >
                   Get Your Terminal Today
-                  <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                  <ArrowRight className="ml-2 w-5 h-5" />
                 </Button>
               </Link>
-              <Link href="/contact">
+              <Link href="/contact" data-testid="link-questions-payment">
                 <Button
                   size="lg"
                   variant="outline"
@@ -395,9 +395,9 @@ export default function PaymentProcessing() {
             </motion.div>
 
             <motion.div variants={fadeInUp} className="flex flex-wrap justify-center gap-6 pt-6 text-slate-400 text-sm">
-              <span className="flex items-center gap-2"><Zap className="w-4 h-4 text-green-400" /> Same-Day Setup</span>
-              <span className="flex items-center gap-2"><Shield className="w-4 h-4 text-green-400" /> PCI Compliant</span>
-              <span className="flex items-center gap-2"><DollarSign className="w-4 h-4 text-green-400" /> Zero Monthly Fees</span>
+              <span data-testid="text-badge-setup" className="flex items-center gap-2"><Zap className="w-4 h-4 text-green-400" /> Same-Day Setup</span>
+              <span data-testid="text-badge-pci" className="flex items-center gap-2"><Shield className="w-4 h-4 text-green-400" /> PCI Compliant</span>
+              <span data-testid="text-badge-zero-fees" className="flex items-center gap-2"><DollarSign className="w-4 h-4 text-green-400" /> Zero Monthly Fees</span>
             </motion.div>
           </motion.div>
         </div>
