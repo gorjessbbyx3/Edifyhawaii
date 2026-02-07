@@ -2,6 +2,13 @@ import type { Express, Request, Response, NextFunction } from "express";
 import { DatabaseStorage, seedDatabase } from "./db-storage";
 import { requireAdminAuth } from "./auth";
 import { z } from "zod";
+import { runCrawlerAgent } from "./ai/agents/crawlerAgent";
+import { runVerifierAgent } from "./ai/agents/verifierAgent";
+import { runContactAgent } from "./ai/agents/contactAgent";
+import { runCallerAgent } from "./ai/agents/callerAgent";
+import { runReporterAgent } from "./ai/agents/reporterAgent";
+import { runFormAgent } from "./ai/agents/formAgent";
+import { runNurturerAgent } from "./ai/agents/nurturerAgent";
 
 const storage = new DatabaseStorage();
 
@@ -116,16 +123,14 @@ export function registerAdminRoutes(app: Express): void {
         return res.status(400).json({ error: "Agent must be active to run" });
       }
 
-      // Create an agent task record
       const task = await storage.createAgentTask({
         agentId: agent.id,
         taskType: `${agent.type}_run`,
         status: "running",
-        payload: {},
+        payload: req.body || {},
         startedAt: new Date(),
       });
 
-      // Log the activity
       await storage.createActivityLog({
         actorType: "agent",
         actorId: agent.id,
@@ -138,9 +143,112 @@ export function registerAdminRoutes(app: Express): void {
         message: `Agent ${agent.name} task started`,
         taskId: task.id 
       });
-    } catch (error) {
+
+      (async () => {
+        try {
+          let result: unknown;
+          const payload = req.body || {};
+
+          switch (agent.type) {
+            case "crawler":
+              result = await runCrawlerAgent(agent.id, {
+                query: payload.query || "small businesses",
+                location: payload.location || "Hawaii",
+                industry: payload.industry,
+              });
+              break;
+            case "verifier": {
+              const businesses = await storage.getAllBusinesses();
+              if (businesses.length === 0) {
+                throw new Error("No businesses to verify. Run the Crawler agent first.");
+              }
+              const unverified = businesses.find(b => !payload.businessId) ? businesses[0] : undefined;
+              result = await runVerifierAgent(agent.id, {
+                businessId: payload.businessId || unverified?.id || businesses[0].id,
+              });
+              break;
+            }
+            case "contact": {
+              const allBusinesses = await storage.getAllBusinesses();
+              if (allBusinesses.length === 0) {
+                throw new Error("No businesses found. Run the Crawler agent first.");
+              }
+              result = await runContactAgent(agent.id, {
+                businessId: payload.businessId || allBusinesses[0].id,
+              });
+              break;
+            }
+            case "caller": {
+              const leads = await storage.getAllLeads();
+              const contacts = await storage.getAllContacts();
+              if (leads.length === 0 || contacts.length === 0) {
+                throw new Error("No leads or contacts found. Run Crawler and Contact agents first.");
+              }
+              const lead = leads[0];
+              const contact = contacts[0];
+              result = await runCallerAgent(agent.id, {
+                leadId: lead.id,
+                contactId: contact.id,
+              });
+              break;
+            }
+            case "reporter":
+              result = await runReporterAgent(agent.id, {});
+              break;
+            case "form_agent":
+              result = await runFormAgent(agent.id, {
+                businessId: payload.businessId,
+              });
+              break;
+            case "nurturer": {
+              const nurtLeads = await storage.getAllLeads();
+              const nurtContacts = await storage.getAllContacts();
+              if (nurtLeads.length === 0) {
+                throw new Error("No leads found. Run Crawler agent first.");
+              }
+              const nurtLead = nurtLeads.find(l => l.status === "verified") || nurtLeads[0];
+              const nurtBiz = await storage.getBusiness(nurtLead.businessId);
+              const nurtContact = nurtContacts.find(c => c.businessId === nurtLead.businessId);
+              result = await runNurturerAgent(agent.id, {
+                businessId: nurtLead.businessId,
+                contactId: nurtContact?.id,
+              });
+              break;
+            }
+            default:
+              throw new Error(`Unknown agent type: ${agent.type}`);
+          }
+
+          await storage.updateAgentTask(task.id, {
+            status: "completed",
+            payload: result as Record<string, unknown> || { success: true },
+            completedAt: new Date(),
+          });
+
+          await storage.createActivityLog({
+            actorType: "agent",
+            actorId: agent.id,
+            action: "task_completed",
+            metadata: { taskId: task.id, agentType: agent.type },
+          });
+        } catch (err: any) {
+          console.error(`Agent ${agent.type} task failed:`, err.message);
+          await storage.updateAgentTask(task.id, {
+            status: "failed",
+            payload: { error: err.message },
+            completedAt: new Date(),
+          });
+          await storage.createActivityLog({
+            actorType: "agent",
+            actorId: agent.id,
+            action: "task_failed",
+            metadata: { taskId: task.id, agentType: agent.type, error: err.message },
+          });
+        }
+      })();
+    } catch (error: any) {
       console.error("Error running agent:", error);
-      res.status(500).json({ error: "Failed to start agent task" });
+      res.status(500).json({ error: error.message || "Failed to start agent task" });
     }
   });
 
