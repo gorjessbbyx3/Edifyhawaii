@@ -110,11 +110,6 @@ const integrationItems = [
 
 const systemItems = [
   {
-    title: "Agent Config",
-    url: "/admin/config",
-    icon: Zap,
-  },
-  {
     title: "Settings",
     url: "/admin/settings",
     icon: Settings,

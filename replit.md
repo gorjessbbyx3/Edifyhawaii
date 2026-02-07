@@ -16,7 +16,8 @@ EDIFY Limited is a Hawaii-based IT services company website with an integrated a
 - Dashboard with KPIs and analytics
 - Lead pipeline management with stages (Discovered, Needs Help, Contacted, Qualified, Closed, Archived)
 - Client management and tracking
-- 7 AI Agents (Crawler, Verifier, Contact, Caller, Reporter, Form Agent, Nurturer)
+- 7 AI Agents (Crawler, Verifier, Contact, Caller, Reporter, Form Agent, Nurturer) - powered by Anthropic Claude
+- Unified AI Agents page with fleet management, configuration, global settings, and compliance tabs
 - Event stream monitoring
 - Nurturing campaigns and sample sites
 - Approval queue for AI-generated content

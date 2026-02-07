@@ -1,19 +1,17 @@
-import OpenAI from "openai";
+import Anthropic from "@anthropic-ai/sdk";
 
-const apiKey = process.env.AI_INTEGRATIONS_OPENAI_API_KEY;
-const baseURL = process.env.AI_INTEGRATIONS_OPENAI_BASE_URL;
+const apiKey = process.env.ANTHROPIC_API_KEY;
 
-if (!apiKey || !baseURL) {
-  console.warn("AI Integrations environment variables not set. AI agents will not function.");
+if (!apiKey) {
+  console.warn("ANTHROPIC_API_KEY not set. AI agents will not function.");
 }
 
-export const openai = new OpenAI({
+export const anthropic = new Anthropic({
   apiKey: apiKey || "not-configured",
-  baseURL: baseURL || "https://api.openai.com/v1",
 });
 
 export function isAIConfigured(): boolean {
-  return !!(process.env.AI_INTEGRATIONS_OPENAI_API_KEY && process.env.AI_INTEGRATIONS_OPENAI_BASE_URL);
+  return !!process.env.ANTHROPIC_API_KEY;
 }
 
 export interface AgentResponse {
@@ -26,15 +24,16 @@ export async function chatCompletion(
   userMessage: string,
   options?: { model?: string; maxTokens?: number }
 ): Promise<string> {
-  const response = await openai.chat.completions.create({
-    model: options?.model || "gpt-4o-mini",
+  const response = await anthropic.messages.create({
+    model: options?.model || "claude-haiku-4-5",
+    max_tokens: options?.maxTokens || 8192,
+    system: systemPrompt,
     messages: [
-      { role: "system", content: systemPrompt },
       { role: "user", content: userMessage },
     ],
-    max_tokens: options?.maxTokens || 1024,
   });
-  return response.choices[0]?.message?.content || "";
+  const block = response.content[0];
+  return block.type === "text" ? block.text : "";
 }
 
 export async function chatCompletionJSON<T>(
@@ -42,15 +41,16 @@ export async function chatCompletionJSON<T>(
   userMessage: string,
   options?: { model?: string; maxTokens?: number }
 ): Promise<T> {
-  const response = await openai.chat.completions.create({
-    model: options?.model || "gpt-4o-mini",
+  const response = await anthropic.messages.create({
+    model: options?.model || "claude-haiku-4-5",
+    max_tokens: options?.maxTokens || 8192,
+    system: systemPrompt + "\n\nYou must respond with valid JSON only. No other text.",
     messages: [
-      { role: "system", content: systemPrompt },
       { role: "user", content: userMessage },
     ],
-    max_tokens: options?.maxTokens || 1024,
-    response_format: { type: "json_object" },
   });
-  const content = response.choices[0]?.message?.content || "{}";
-  return JSON.parse(content) as T;
+  const block = response.content[0];
+  const content = block.type === "text" ? block.text : "{}";
+  const cleaned = content.replace(/```json\n?/g, "").replace(/```\n?/g, "").trim();
+  return JSON.parse(cleaned) as T;
 }

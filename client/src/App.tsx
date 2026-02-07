@@ -33,7 +33,6 @@ import AdminEvents from "@/pages/admin/events";
 import AdminAnalytics from "@/pages/admin/analytics";
 import AdminExternal from "@/pages/admin/external";
 import AdminConversations from "@/pages/admin/conversations";
-import AdminConfig from "@/pages/admin/config";
 import AdminSettings from "@/pages/admin/settings";
 import AdminNurturing from "@/pages/admin/nurturing";
 import AdminCalendar from "@/pages/admin/calendar";
@@ -92,7 +91,6 @@ function AdminRouter() {
         <Route path="/admin/analytics" component={AdminAnalytics} />
         <Route path="/admin/external" component={AdminExternal} />
         <Route path="/admin/conversations" component={AdminConversations} />
-        <Route path="/admin/config" component={AdminConfig} />
         <Route path="/admin/settings" component={AdminSettings} />
         <Route path="/admin/nurturing" component={AdminNurturing} />
         <Route path="/admin/calendar" component={AdminCalendar} />
