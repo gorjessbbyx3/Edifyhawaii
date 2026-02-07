@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { CheckCircle2, Server, Code, BarChart, Lock, Phone, Globe, Shield, Cpu, ArrowRight, Sparkles, Zap, HelpCircle, Bot, MessageCircle } from "lucide-react";
+import { CheckCircle2, Server, Code, BarChart, Lock, Phone, Globe, Shield, Cpu, ArrowRight, Sparkles, Zap, HelpCircle, Bot, MessageCircle, CreditCard } from "lucide-react";
 import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import { SEO, seoConfig, generateFAQSchema, generateServiceOfferingSchema } from "@/components/SEO";
@@ -225,6 +225,13 @@ export default function Services() {
                 title="Hardware Solutions"
                 description="Complete procurement, setup, and lifecycle management for all your equipment."
                 gradient="from-orange-500 to-amber-400"
+              />
+              <ServiceCard 
+                icon={<CreditCard className="w-6 h-6" />}
+                title="Payment Processing"
+                description="Accept payments in-store and online. $500 terminal, zero monthly fees—your customers cover processing."
+                gradient="from-green-500 to-emerald-400"
+                link="/services/payment-processing"
               />
             </motion.div>
           </motion.div>
@@ -472,12 +479,12 @@ function FeatureItem({ text }: { text: string }) {
   );
 }
 
-function ServiceCard({ icon, title, description, gradient }: { icon: React.ReactNode, title: string, description: string, gradient: string }) {
-  return (
+function ServiceCard({ icon, title, description, gradient, link }: { icon: React.ReactNode, title: string, description: string, gradient: string, link?: string }) {
+  const content = (
     <motion.div 
       variants={fadeInUp}
       whileHover={{ y: -8 }}
-      className="group relative p-8 rounded-2xl bg-slate-900/50 border border-white/5 backdrop-blur-sm overflow-hidden transition-all duration-500 hover:border-white/20"
+      className="group relative p-8 rounded-2xl bg-slate-900/50 border border-white/5 backdrop-blur-sm overflow-hidden transition-all duration-500 hover:border-white/20 h-full"
     >
       <div className={`absolute inset-0 bg-gradient-to-br ${gradient} opacity-0 group-hover:opacity-10 transition-opacity duration-500`} />
       
@@ -487,9 +494,19 @@ function ServiceCard({ icon, title, description, gradient }: { icon: React.React
         </div>
         <h3 className="text-xl font-bold font-display mb-3 text-white">{title}</h3>
         <p className="text-slate-400 leading-relaxed">{description}</p>
+        {link && (
+          <div className="mt-4 flex items-center gap-1 text-sm font-medium text-primary">
+            Learn More <ArrowRight className="w-4 h-4" />
+          </div>
+        )}
       </div>
     </motion.div>
   );
+
+  if (link) {
+    return <Link href={link} data-testid={`link-service-${title.toLowerCase().replace(/\s+/g, '-')}`}>{content}</Link>;
+  }
+  return content;
 }
 
 function ProcessCard({ icon, step, title, description }: { icon: React.ReactNode, step: string, title: string, description: string }) {

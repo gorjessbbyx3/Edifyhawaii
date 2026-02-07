@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { Link, useParams } from "wouter";
-import { ArrowLeft, ArrowRight, CheckCircle2, Server, Code, BarChart, Cloud, Bot, Mail } from "lucide-react";
+import { ArrowLeft, ArrowRight, CheckCircle2, Server, Code, BarChart, Cloud, Bot, Mail, CreditCard } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { SEO } from "@/components/SEO";
 
@@ -149,6 +149,34 @@ const services: Record<string, {
       { title: "Learn & Improve", description: "AI gets smarter over time based on real customer interactions." }
     ],
     pricing: "Starting at $200/month"
+  },
+  "payment-processing": {
+    title: "Payment Processing",
+    tagline: "Accept Payments In-Store & Online with Zero Fees",
+    description: "Stop losing money to processing fees. Our payment terminals let you accept credit cards, debit cards, and digital payments in-store or online—with zero monthly fees and zero processing fees. Your customers cover the small processing surcharge, so you keep 100% of every sale.",
+    icon: <CreditCard className="w-8 h-8" />,
+    gradient: "from-green-500 to-emerald-400",
+    features: [
+      "In-Store Terminal ($500 One-Time Cost)",
+      "Online Payment Gateway Included",
+      "No Monthly Fees Ever",
+      "No Processing Fees for Merchants",
+      "Customer Pays Processing Surcharge",
+      "Accept All Major Credit & Debit Cards",
+      "Digital Wallet Support (Apple Pay, Google Pay)",
+      "Next-Day Fund Deposits",
+      "Real-Time Transaction Dashboard",
+      "PCI-Compliant Security",
+      "24/7 Support & Terminal Replacement",
+      "Easy Setup & Training Included"
+    ],
+    benefits: [
+      { title: "Keep 100% of Sales", description: "No processing fees eating into your margins. Your customers cover the small surcharge, so you keep every dollar you earn." },
+      { title: "One-Time Investment", description: "$500 for the terminal and you're set. No monthly fees, no hidden charges, no surprises on your statement." },
+      { title: "In-Store & Online", description: "Accept payments at your counter with the terminal or through your website with our online gateway—both included." },
+      { title: "Fast & Secure", description: "PCI-compliant processing with next-day deposits. Your money and your customers' data are always protected." }
+    ],
+    pricing: "$500 One-Time — No Monthly or Processing Fees"
   },
   "email-marketing": {
     title: "Mass Email Marketing",
