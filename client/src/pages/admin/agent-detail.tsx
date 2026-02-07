@@ -83,24 +83,29 @@ export default function AgentDetail() {
     queryKey: ["/api/agents"],
   });
 
+  const agentDbId = agents?.find(a => a.type === definition?.type)?.id;
+
   const { data: logs, isLoading: logsLoading, refetch: refetchLogs } = useQuery<ActivityLog[]>({
-    queryKey: ["/api/agents", id, "logs"],
+    queryKey: ["/api/agents", agentDbId, "logs"],
     queryFn: async () => {
-      const response = await fetch(`/api/agents/${id}/logs`);
+      if (!agentDbId) return [];
+      const response = await fetch(`/api/agents/${agentDbId}/logs`);
       if (!response.ok) throw new Error("Failed to fetch logs");
       return response.json();
     },
+    enabled: !!agentDbId,
   });
 
   const { data: allLeads } = useQuery<(Lead & { business: Business | null })[]>({
     queryKey: ["/api/leads"],
   });
 
-  const agent = agents?.find(a => a.id === id);
+  const agent = agents?.find(a => a.type === definition?.type);
 
   const toggleAgentMutation = useMutation({
     mutationFn: async ({ status }: { status: string }) => {
-      const response = await apiRequest("PATCH", `/api/agents/${id}`, { status });
+      if (!agent) throw new Error("Agent not found");
+      const response = await apiRequest("PATCH", `/api/agents/${agent.id}`, { status });
       return response.json();
     },
     onSuccess: () => {
@@ -114,12 +119,13 @@ export default function AgentDetail() {
 
   const runAgentMutation = useMutation({
     mutationFn: async () => {
-      const response = await apiRequest("POST", `/api/agents/${id}/run`, {});
+      if (!agent) throw new Error("Agent not found");
+      const response = await apiRequest("POST", `/api/agents/${agent.id}/run`, {});
       return response.json();
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["/api/agents"] });
-      queryClient.invalidateQueries({ queryKey: ["/api/agents", id, "logs"] });
+      queryClient.invalidateQueries({ queryKey: ["/api/agents", agent?.id, "logs"] });
       queryClient.invalidateQueries({ queryKey: ["/api/leads"] });
       toast({
         title: "Agent task completed",
