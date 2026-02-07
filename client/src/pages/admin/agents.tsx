@@ -491,7 +491,7 @@ export default function Agents() {
                 <AgentCard
                   key={definition.id}
                   definition={definition}
-                  agent={agentMap.get(definition.id)}
+                  agent={agentMap.get(definition.type)}
                   onToggle={handleToggle}
                   onRun={handleRun}
                 />
