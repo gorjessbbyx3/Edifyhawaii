@@ -12,6 +12,7 @@ import PortfolioDetail from "@/pages/portfolio/PortfolioDetail";
 import ServiceDetail from "@/pages/services/ServiceDetail";
 import Blog from "@/pages/Blog";
 import BlogPost from "@/pages/BlogPost";
+import PaymentProcessing from "@/pages/PaymentProcessing";
 import SamplePreview from "@/pages/sample-preview";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
@@ -58,6 +59,7 @@ function PublicRouter() {
         <Switch>
           <Route path="/" component={Home} />
           <Route path="/services" component={Services} />
+          <Route path="/services/payment-processing" component={PaymentProcessing} />
           <Route path="/services/:slug" component={ServiceDetail} />
           <Route path="/portfolio" component={Portfolio} />
           <Route path="/portfolio/:slug" component={PortfolioDetail} />
