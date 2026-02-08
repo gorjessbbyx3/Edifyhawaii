@@ -33,6 +33,7 @@ import {
   ApprovalEditRequest, InsertApprovalEditRequest,
   ApprovalQueue, InsertApprovalQueue,
   AgentConfig, InsertAgentConfig,
+  GlobalSetting,
   agentDefinitions,
 } from "@shared/schema";
 
@@ -60,13 +61,16 @@ export interface IStorage {
 
   // Agent Tasks
   getAllAgentTasks(): Promise<AgentTask[]>;
+  getAgentTask(id: string): Promise<AgentTask | undefined>;
   getAgentTasksByAgent(agentId: string): Promise<AgentTask[]>;
+  getRunningTaskByAgent(agentId: string): Promise<AgentTask | undefined>;
   createAgentTask(task: InsertAgentTask): Promise<AgentTask>;
   updateAgentTask(id: string, data: Partial<InsertAgentTask>): Promise<AgentTask | undefined>;
 
   // Businesses
   getAllBusinesses(): Promise<Business[]>;
   getBusiness(id: string): Promise<Business | undefined>;
+  getBusinessByWebsite(website: string): Promise<Business | undefined>;
   createBusiness(business: InsertBusiness): Promise<Business>;
   updateBusiness(id: string, data: Partial<InsertBusiness>): Promise<Business | undefined>;
   deleteBusiness(id: string): Promise<boolean>;
@@ -75,6 +79,7 @@ export interface IStorage {
   getAllLeads(): Promise<Lead[]>;
   getLead(id: string): Promise<Lead | undefined>;
   getLeadsByBusiness(businessId: string): Promise<Lead[]>;
+  getLeadsByStatus(status: string): Promise<Lead[]>;
   createLead(lead: InsertLead): Promise<Lead>;
   updateLead(id: string, data: Partial<InsertLead>): Promise<Lead | undefined>;
   deleteLead(id: string): Promise<boolean>;
@@ -171,6 +176,7 @@ export interface IStorage {
   getClient(id: string): Promise<Client | undefined>;
   getClientByBusiness(businessId: string): Promise<Client | undefined>;
   getClientByLead(leadId: string): Promise<Client | undefined>;
+  getClientsEnriched(): Promise<Array<Client & { business: Business | null; assetCount: number; totalAssetCost: number }>>;
   createClient(client: InsertClient): Promise<Client>;
   updateClient(id: string, data: Partial<InsertClient>): Promise<Client | undefined>;
   deleteClient(id: string): Promise<boolean>;
@@ -257,6 +263,11 @@ export interface IStorage {
   getAgentConfig(agentId: string): Promise<AgentConfig | undefined>;
   getAllAgentConfigs(): Promise<AgentConfig[]>;
   upsertAgentConfig(config: InsertAgentConfig): Promise<AgentConfig>;
+
+  // Global Settings
+  getGlobalSettings(): Promise<GlobalSetting[]>;
+  getGlobalSetting(key: string): Promise<GlobalSetting | undefined>;
+  upsertGlobalSetting(key: string, value: unknown): Promise<GlobalSetting>;
 }
 
 export class MemStorage implements IStorage {
@@ -293,6 +304,7 @@ export class MemStorage implements IStorage {
   private approvalQueue: Map<string, ApprovalQueue> = new Map();
   private approvalEditRequests: Map<string, ApprovalEditRequest> = new Map();
   private agentConfigs: Map<string, AgentConfig> = new Map();
+  private globalSettingsMap: Map<string, GlobalSetting> = new Map();
 
   constructor() {
     this.seedData();
@@ -436,6 +448,14 @@ export class MemStorage implements IStorage {
     return Array.from(this.agentTasks.values());
   }
 
+  async getAgentTask(id: string): Promise<AgentTask | undefined> {
+    return this.agentTasks.get(id);
+  }
+
+  async getRunningTaskByAgent(agentId: string): Promise<AgentTask | undefined> {
+    return Array.from(this.agentTasks.values()).find(t => t.agentId === agentId && t.status === "running");
+  }
+
   async getAgentTasksByAgent(agentId: string): Promise<AgentTask[]> {
     return Array.from(this.agentTasks.values()).filter((t) => t.agentId === agentId);
   }
@@ -472,6 +492,10 @@ export class MemStorage implements IStorage {
 
   async getBusiness(id: string): Promise<Business | undefined> {
     return this.businesses.get(id);
+  }
+
+  async getBusinessByWebsite(website: string): Promise<Business | undefined> {
+    return Array.from(this.businesses.values()).find(b => b.website === website);
   }
 
   async createBusiness(insertBusiness: InsertBusiness): Promise<Business> {
@@ -528,6 +552,10 @@ export class MemStorage implements IStorage {
 
   async getLeadsByBusiness(businessId: string): Promise<Lead[]> {
     return Array.from(this.leads.values()).filter((l) => l.businessId === businessId);
+  }
+
+  async getLeadsByStatus(status: string): Promise<Lead[]> {
+    return Array.from(this.leads.values()).filter((l) => l.status === status);
   }
 
   async createLead(insertLead: InsertLead): Promise<Lead> {
@@ -1036,6 +1064,16 @@ export class MemStorage implements IStorage {
     return Array.from(this.clients.values()).find((c) => c.leadId === leadId);
   }
 
+  async getClientsEnriched(): Promise<Array<Client & { business: Business | null; assetCount: number; totalAssetCost: number }>> {
+    const allClients = Array.from(this.clients.values());
+    return allClients.map(client => {
+      const business = this.businesses.get(client.businessId) ?? null;
+      const assets = Array.from(this.clientAssets.values()).filter(a => a.clientId === client.id);
+      const totalCost = assets.reduce((sum, a) => sum + (a.cost ?? 0), 0);
+      return { ...client, business, assetCount: assets.length, totalAssetCost: totalCost };
+    });
+  }
+
   async createClient(client: InsertClient): Promise<Client> {
     const id = randomUUID();
     const newClient: Client = {
@@ -1538,8 +1576,30 @@ export class MemStorage implements IStorage {
     this.agentConfigs.set(id, newConfig);
     return newConfig;
   }
+
+  // Global Settings
+  async getGlobalSettings(): Promise<GlobalSetting[]> {
+    return Array.from(this.globalSettingsMap.values());
+  }
+
+  async getGlobalSetting(key: string): Promise<GlobalSetting | undefined> {
+    return Array.from(this.globalSettingsMap.values()).find(s => s.key === key);
+  }
+
+  async upsertGlobalSetting(key: string, value: unknown): Promise<GlobalSetting> {
+    const existing = Array.from(this.globalSettingsMap.values()).find(s => s.key === key);
+    if (existing) {
+      const updated: GlobalSetting = { ...existing, value, updatedAt: new Date() };
+      this.globalSettingsMap.set(existing.id, updated);
+      return updated;
+    }
+    const id = randomUUID();
+    const setting: GlobalSetting = { id, key, value, updatedAt: new Date() };
+    this.globalSettingsMap.set(id, setting);
+    return setting;
+  }
 }
 
 // Use DatabaseStorage for persistent storage (PostgreSQL)
-import { DatabaseStorage } from "./databaseStorage";
+import { DatabaseStorage } from "./db-storage";
 export const storage = new DatabaseStorage();

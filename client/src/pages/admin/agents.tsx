@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -256,6 +256,20 @@ function AgentConfigCard({ definition, savedConfig }: { definition: typeof agent
     targetLocation: savedConfig?.targetLocation ?? defaultConfig.targetLocation,
   }));
 
+  // Sync local state when server data loads (fixes stale config on mount)
+  useEffect(() => {
+    if (savedConfig) {
+      setConfig({
+        enabled: savedConfig.enabled ?? defaultConfig.enabled,
+        autoRun: savedConfig.autoRun ?? defaultConfig.autoRun,
+        interval: savedConfig.interval ?? defaultConfig.interval,
+        maxLeadsPerRun: savedConfig.maxLeadsPerRun ?? defaultConfig.maxLeadsPerRun,
+        targetIndustries: (savedConfig.targetIndustries as string[]) ?? defaultConfig.targetIndustries,
+        targetLocation: savedConfig.targetLocation ?? defaultConfig.targetLocation,
+      });
+    }
+  }, [savedConfig]);
+
   const saveConfigMutation = useMutation({
     mutationFn: async (data: LocalAgentConfig) => {
       const response = await apiRequest("PUT", `/api/agent-configs/${definition.id}`, data);
@@ -385,14 +399,34 @@ function AgentConfigCard({ definition, savedConfig }: { definition: typeof agent
 export default function Agents() {
   const { toast } = useToast();
 
-  const [globalSettings, setGlobalSettings] = useState({
+  const defaultGlobalSettings = {
     tcpaCompliance: true,
     dncChecking: true,
     callRecording: true,
     maxConcurrentAgents: 3,
     retryAttempts: 3,
     notificationsEnabled: true,
+  };
+
+  const [globalSettings, setGlobalSettings] = useState(defaultGlobalSettings);
+
+  const { data: savedGlobalSettings } = useQuery<Record<string, unknown>>({
+    queryKey: ["/api/global-settings"],
   });
+
+  // Sync global settings from server when loaded
+  useEffect(() => {
+    if (savedGlobalSettings) {
+      setGlobalSettings({
+        tcpaCompliance: (savedGlobalSettings.tcpaCompliance as boolean) ?? defaultGlobalSettings.tcpaCompliance,
+        dncChecking: (savedGlobalSettings.dncChecking as boolean) ?? defaultGlobalSettings.dncChecking,
+        callRecording: (savedGlobalSettings.callRecording as boolean) ?? defaultGlobalSettings.callRecording,
+        maxConcurrentAgents: (savedGlobalSettings.maxConcurrentAgents as number) ?? defaultGlobalSettings.maxConcurrentAgents,
+        retryAttempts: (savedGlobalSettings.retryAttempts as number) ?? defaultGlobalSettings.retryAttempts,
+        notificationsEnabled: (savedGlobalSettings.notificationsEnabled as boolean) ?? defaultGlobalSettings.notificationsEnabled,
+      });
+    }
+  }, [savedGlobalSettings]);
 
   const { data: agents, isLoading } = useQuery<Agent[]>({
     queryKey: ["/api/agents"],
@@ -445,11 +479,29 @@ export default function Agents() {
     runAgentMutation.mutate(agentId);
   };
 
+  const saveGlobalMutation = useMutation({
+    mutationFn: async (settings: typeof globalSettings) => {
+      const response = await apiRequest("PUT", "/api/global-settings", settings);
+      return response.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["/api/global-settings"] });
+      toast({
+        title: "Global settings saved",
+        description: "Your agent configuration has been updated.",
+      });
+    },
+    onError: () => {
+      toast({
+        title: "Failed to save settings",
+        description: "Please try again.",
+        variant: "destructive",
+      });
+    },
+  });
+
   const handleSaveGlobal = () => {
-    toast({
-      title: "Global settings saved",
-      description: "Your agent configuration has been updated.",
-    });
+    saveGlobalMutation.mutate(globalSettings);
   };
 
   const agentMap = new Map(agents?.map((a) => [a.type, a]) || []);
