@@ -1,5 +1,5 @@
 import { sql } from "drizzle-orm";
-import { pgTable, text, varchar, integer, timestamp, boolean, jsonb, real } from "drizzle-orm/pg-core";
+import { pgTable, text, varchar, integer, timestamp, boolean, jsonb, real, index } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 
@@ -48,11 +48,11 @@ export type Role = typeof roles.$inferSelect;
 // ============================================================
 export const users = pgTable("users", {
   id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
-  organizationId: varchar("organization_id"),
+  organizationId: varchar("organization_id").references(() => organizations.id),
   email: text("email").notNull().unique(),
   hashedPassword: text("hashed_password").notNull(),
   fullName: text("full_name").notNull(),
-  roleId: varchar("role_id"),
+  roleId: varchar("role_id").references(() => roles.id),
   isActive: boolean("is_active").default(true),
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),
@@ -107,7 +107,10 @@ export const agentTasks = pgTable("agent_tasks", {
   status: text("status").notNull().default("pending"),
   startedAt: timestamp("started_at"),
   completedAt: timestamp("completed_at"),
-});
+}, (table) => [
+  index("agent_tasks_agent_id_idx").on(table.agentId),
+  index("agent_tasks_status_idx").on(table.status),
+]);
 
 export const insertAgentTaskSchema = createInsertSchema(agentTasks).omit({
   id: true,
@@ -135,7 +138,9 @@ export const businesses = pgTable("businesses", {
   website: text("website"),
   source: text("source").notNull().default("manual"),
   createdAt: timestamp("created_at").defaultNow(),
-});
+}, (table) => [
+  index("businesses_website_idx").on(table.website),
+]);
 
 export const insertBusinessSchema = createInsertSchema(businesses).omit({
   id: true,
@@ -162,14 +167,18 @@ export const pipelineStages = [
 
 export const leads = pgTable("leads", {
   id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
-  businessId: varchar("business_id").notNull(),
-  organizationId: varchar("organization_id"),
+  businessId: varchar("business_id").notNull().references(() => businesses.id),
+  organizationId: varchar("organization_id").references(() => organizations.id),
   status: text("status").notNull().default("new"),
   score: integer("score").default(0),
   assignedTo: varchar("assigned_to"),
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),
-});
+}, (table) => [
+  index("leads_business_id_idx").on(table.businessId),
+  index("leads_status_idx").on(table.status),
+  index("leads_created_at_idx").on(table.createdAt),
+]);
 
 export const insertLeadSchema = createInsertSchema(leads).omit({
   id: true,
@@ -188,7 +197,7 @@ export type OnlinePresenceStrength = typeof onlinePresenceStrengthEnum[number];
 
 export const onlinePresenceChecks = pgTable("online_presence_checks", {
   id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
-  businessId: varchar("business_id").notNull(),
+  businessId: varchar("business_id").notNull().references(() => businesses.id),
   // Website info
   websiteFound: boolean("website_found").default(false),
   websiteUrl: text("website_url"),
@@ -218,7 +227,9 @@ export const onlinePresenceChecks = pgTable("online_presence_checks", {
   reasoning: text("reasoning"),
   recommendation: text("recommendation"), // prospect, archive
   checkedAt: timestamp("checked_at").defaultNow(),
-});
+}, (table) => [
+  index("online_presence_checks_business_id_idx").on(table.businessId),
+]);
 
 export const insertOnlinePresenceCheckSchema = createInsertSchema(onlinePresenceChecks).omit({
   id: true,
@@ -233,7 +244,7 @@ export type OnlinePresenceCheck = typeof onlinePresenceChecks.$inferSelect;
 // ============================================================
 export const contacts = pgTable("contacts", {
   id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
-  businessId: varchar("business_id").notNull(),
+  businessId: varchar("business_id").notNull().references(() => businesses.id),
   fullName: text("full_name").notNull(),
   role: text("role"),
   phone: text("phone"),
@@ -242,7 +253,9 @@ export const contacts = pgTable("contacts", {
   isDnc: boolean("is_dnc").default(false),
   verified: boolean("verified").default(false),
   createdAt: timestamp("created_at").defaultNow(),
-});
+}, (table) => [
+  index("contacts_business_id_idx").on(table.businessId),
+]);
 
 export const insertContactSchema = createInsertSchema(contacts).omit({
   id: true,
@@ -260,14 +273,17 @@ export type CallStatus = typeof callStatusEnum[number];
 
 export const calls = pgTable("calls", {
   id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
-  leadId: varchar("lead_id").notNull(),
-  contactId: varchar("contact_id"),
+  leadId: varchar("lead_id").notNull().references(() => leads.id),
+  contactId: varchar("contact_id").references(() => contacts.id),
   agentId: varchar("agent_id"),
   callStatus: text("call_status").notNull().default("completed"),
   callStart: timestamp("call_start"),
   callEnd: timestamp("call_end"),
   recordingUrl: text("recording_url"),
-});
+}, (table) => [
+  index("calls_lead_id_idx").on(table.leadId),
+  index("calls_call_start_idx").on(table.callStart),
+]);
 
 export const insertCallSchema = createInsertSchema(calls).omit({
   id: true,
@@ -284,7 +300,7 @@ export type Sentiment = typeof sentimentEnum[number];
 
 export const callTranscripts = pgTable("call_transcripts", {
   id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
-  callId: varchar("call_id").notNull(),
+  callId: varchar("call_id").notNull().references(() => calls.id),
   transcript: text("transcript"),
   sentiment: text("sentiment"),
   createdAt: timestamp("created_at").defaultNow(),
@@ -306,7 +322,7 @@ export type CallOutcomeType = typeof callOutcomeEnum[number];
 
 export const callOutcomes = pgTable("call_outcomes", {
   id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
-  callId: varchar("call_id").notNull(),
+  callId: varchar("call_id").notNull().references(() => calls.id),
   outcome: text("outcome").notNull(),
   notes: text("notes"),
   nextAction: text("next_action"),
@@ -326,7 +342,7 @@ export type CallOutcome = typeof callOutcomes.$inferSelect;
 // ============================================================
 export const webFormSubmissions = pgTable("web_form_submissions", {
   id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
-  leadId: varchar("lead_id").notNull(),
+  leadId: varchar("lead_id").notNull().references(() => leads.id),
   endpoint: text("endpoint").notNull(),
   payload: jsonb("payload"),
   responseStatus: integer("response_status"),
@@ -349,7 +365,7 @@ export type MeetingStatus = typeof meetingStatusEnum[number];
 
 export const meetings = pgTable("meetings", {
   id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
-  leadId: varchar("lead_id").notNull(),
+  leadId: varchar("lead_id").notNull().references(() => leads.id),
   scheduledAt: timestamp("scheduled_at").notNull(),
   meetingLink: text("meeting_link"),
   status: text("status").notNull().default("scheduled"),
@@ -378,7 +394,10 @@ export const activityLogs = pgTable("activity_logs", {
   action: text("action").notNull(),
   metadata: jsonb("metadata"),
   createdAt: timestamp("created_at").defaultNow(),
-});
+}, (table) => [
+  index("activity_logs_lead_id_idx").on(table.leadId),
+  index("activity_logs_created_at_idx").on(table.createdAt),
+]);
 
 export const insertActivityLogSchema = createInsertSchema(activityLogs).omit({
   id: true,
@@ -588,6 +607,47 @@ export const agentDefinitions = [
 ] as const;
 
 // ============================================================
+// AGENT CONFIG (Persistent per-agent settings)
+// ============================================================
+export const agentConfigs = pgTable("agent_configs", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  agentId: varchar("agent_id").notNull().unique(),
+  enabled: boolean("enabled").notNull().default(true),
+  autoRun: boolean("auto_run").notNull().default(false),
+  interval: integer("interval").notNull().default(30),
+  maxLeadsPerRun: integer("max_leads_per_run").notNull().default(50),
+  targetIndustries: jsonb("target_industries").default([]),
+  targetLocation: text("target_location").default("Hawaii"),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+export const insertAgentConfigSchema = createInsertSchema(agentConfigs).omit({
+  id: true,
+  updatedAt: true,
+});
+
+export type InsertAgentConfig = z.infer<typeof insertAgentConfigSchema>;
+export type AgentConfig = typeof agentConfigs.$inferSelect;
+
+// ============================================================
+// GLOBAL SETTINGS (Persisted compliance & performance settings)
+// ============================================================
+export const globalSettings = pgTable("global_settings", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  key: text("key").notNull().unique(),
+  value: jsonb("value").notNull(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+export const insertGlobalSettingSchema = createInsertSchema(globalSettings).omit({
+  id: true,
+  updatedAt: true,
+});
+
+export type InsertGlobalSetting = z.infer<typeof insertGlobalSettingSchema>;
+export type GlobalSetting = typeof globalSettings.$inferSelect;
+
+// ============================================================
 // LEGACY COMPATIBILITY TYPES
 // ============================================================
 export const leadSourceEnum = businessSourceEnum;
@@ -631,6 +691,8 @@ export const eventTypeEnum = [
   // Approval workflow events
   "CONTENT_APPROVED",
   "CONTENT_REJECTED",
+  // Agent config events
+  "AGENT_CONFIG_UPDATED",
 ] as const;
 export type EventType = typeof eventTypeEnum[number];
 
@@ -643,7 +705,11 @@ export const events = pgTable("events", {
   correlationId: varchar("correlation_id"),
   payload: jsonb("payload"),
   processed: boolean("processed").default(false),
-});
+}, (table) => [
+  index("events_event_type_idx").on(table.eventType),
+  index("events_processed_idx").on(table.processed),
+  index("events_correlation_id_idx").on(table.correlationId),
+]);
 
 export const insertEventSchema = createInsertSchema(events).omit({
   id: true,
@@ -776,9 +842,9 @@ export type ClientStatus = typeof clientStatusEnum[number];
 
 export const clients = pgTable("clients", {
   id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
-  businessId: varchar("business_id").notNull(),
-  leadId: varchar("lead_id"),
-  organizationId: varchar("organization_id"),
+  businessId: varchar("business_id").notNull().references(() => businesses.id),
+  leadId: varchar("lead_id").references(() => leads.id),
+  organizationId: varchar("organization_id").references(() => organizations.id),
   status: text("status").notNull().default("active"),
   monthlyRevenue: integer("monthly_revenue").default(0),
   contractStart: timestamp("contract_start"),
@@ -786,7 +852,10 @@ export const clients = pgTable("clients", {
   notes: text("notes"),
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),
-});
+}, (table) => [
+  index("clients_business_id_idx").on(table.businessId),
+  index("clients_status_idx").on(table.status),
+]);
 
 export const insertClientSchema = createInsertSchema(clients).omit({
   id: true,
@@ -808,7 +877,7 @@ export type AssetStatus = typeof assetStatusEnum[number];
 
 export const clientAssets = pgTable("client_assets", {
   id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
-  clientId: varchar("client_id").notNull(),
+  clientId: varchar("client_id").notNull().references(() => clients.id),
   type: text("type").notNull(),
   name: text("name").notNull(),
   provider: text("provider"),
@@ -823,7 +892,10 @@ export const clientAssets = pgTable("client_assets", {
   metadata: jsonb("metadata"),
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),
-});
+}, (table) => [
+  index("client_assets_client_id_idx").on(table.clientId),
+  index("client_assets_expiry_date_idx").on(table.expiryDate),
+]);
 
 export const insertClientAssetSchema = createInsertSchema(clientAssets).omit({
   id: true,
@@ -839,7 +911,7 @@ export type ClientAsset = typeof clientAssets.$inferSelect;
 // ============================================================
 export const clientNotes = pgTable("client_notes", {
   id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
-  clientId: varchar("client_id").notNull(),
+  clientId: varchar("client_id").notNull().references(() => clients.id),
   authorId: varchar("author_id"),
   authorType: text("author_type").default("user"),
   content: text("content").notNull(),
@@ -888,7 +960,7 @@ export type NurturingChannel = typeof nurturingChannelEnum[number];
 
 export const nurturingSteps = pgTable("nurturing_steps", {
   id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
-  sequenceId: varchar("sequence_id").notNull(),
+  sequenceId: varchar("sequence_id").notNull().references(() => nurturingSequences.id),
   stepOrder: integer("step_order").notNull().default(1),
   name: text("name").notNull(),
   channel: text("channel").notNull().default("email"), // email, sms, both
@@ -916,8 +988,8 @@ export type EnrollmentStatus = typeof enrollmentStatusEnum[number];
 
 export const leadNurturingEnrollments = pgTable("lead_nurturing_enrollments", {
   id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
-  leadId: varchar("lead_id").notNull(),
-  sequenceId: varchar("sequence_id").notNull(),
+  leadId: varchar("lead_id").notNull().references(() => leads.id),
+  sequenceId: varchar("sequence_id").notNull().references(() => nurturingSequences.id),
   currentStepId: varchar("current_step_id"),
   status: text("status").notNull().default("active"),
   enrolledAt: timestamp("enrolled_at").defaultNow(),
@@ -941,10 +1013,10 @@ export type ScheduledMessageStatus = typeof scheduledMessageStatusEnum[number];
 
 export const scheduledMessages = pgTable("scheduled_messages", {
   id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
-  enrollmentId: varchar("enrollment_id").notNull(),
-  stepId: varchar("step_id").notNull(),
-  leadId: varchar("lead_id").notNull(),
-  contactId: varchar("contact_id"),
+  enrollmentId: varchar("enrollment_id").notNull().references(() => leadNurturingEnrollments.id),
+  stepId: varchar("step_id").notNull().references(() => nurturingSteps.id),
+  leadId: varchar("lead_id").notNull().references(() => leads.id),
+  contactId: varchar("contact_id").references(() => contacts.id),
   channel: text("channel").notNull(), // email or sms
   scheduledFor: timestamp("scheduled_for").notNull(),
   status: text("status").notNull().default("pending_approval"),
@@ -961,7 +1033,11 @@ export const scheduledMessages = pgTable("scheduled_messages", {
   originalBody: text("original_body"),
   originalSubject: text("original_subject"),
   createdAt: timestamp("created_at").defaultNow(),
-});
+}, (table) => [
+  index("scheduled_messages_status_idx").on(table.status),
+  index("scheduled_messages_lead_id_idx").on(table.leadId),
+  index("scheduled_messages_scheduled_for_idx").on(table.scheduledFor),
+]);
 
 export const insertScheduledMessageSchema = createInsertSchema(scheduledMessages).omit({
   id: true,
@@ -1021,8 +1097,8 @@ export type SampleSiteStatus = typeof sampleSiteStatusEnum[number];
 
 export const sampleSites = pgTable("sample_sites", {
   id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
-  leadId: varchar("lead_id").notNull(),
-  businessId: varchar("business_id").notNull(),
+  leadId: varchar("lead_id").notNull().references(() => leads.id),
+  businessId: varchar("business_id").notNull().references(() => businesses.id),
   // URL slug (e.g., "hairsalon808" for edifylimited.tech/sample/hairsalon808)
   slug: varchar("slug").notNull().unique(),
   // Generated site content

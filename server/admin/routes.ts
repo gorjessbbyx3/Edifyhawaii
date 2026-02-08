@@ -2,6 +2,7 @@ import type { Express, Request, Response, NextFunction } from "express";
 import { DatabaseStorage, seedDatabase } from "./db-storage";
 import { requireAdminAuth } from "./auth";
 import { z } from "zod";
+import { randomUUID } from "crypto";
 import { runCrawlerAgent } from "./ai/agents/crawlerAgent";
 import { runVerifierAgent } from "./ai/agents/verifierAgent";
 import { runContactAgent } from "./ai/agents/contactAgent";
@@ -13,6 +14,17 @@ import { runNurturerAgent } from "./ai/agents/nurturerAgent";
 const storage = new DatabaseStorage();
 
 seedDatabase().catch(console.error);
+
+// Helper: opt-in pagination. If ?page is provided, returns paginated response; otherwise returns the raw array.
+function paginate<T>(items: T[], query: { page?: string; limit?: string }): T[] | { data: T[]; total: number; page: number; limit: number } {
+  if (!query.page) {
+    return items;
+  }
+  const page = Math.max(1, parseInt(query.page) || 1);
+  const limit = Math.min(200, Math.max(1, parseInt(query.limit || "50") || 50));
+  const start = (page - 1) * limit;
+  return { data: items.slice(start, start + limit), total: items.length, page, limit };
+}
 
 const updateAgentSchema = z.object({
   name: z.string().optional(),
@@ -33,7 +45,7 @@ export function registerAdminRoutes(app: Express): void {
   app.get("/api/leads", async (req, res) => {
     try {
       const leads = await storage.getAllLeads();
-      res.json(leads);
+      res.json(paginate(leads, req.query as { page?: string; limit?: string }));
     } catch (error) {
       console.error("Error fetching leads:", error);
       res.status(500).json({ error: "Failed to fetch leads" });
@@ -100,6 +112,15 @@ export function registerAdminRoutes(app: Express): void {
       if (!parsed.success) {
         return res.status(400).json({ error: "Invalid agent data" });
       }
+
+      // Validate config.enabled before activating
+      if (parsed.data.status === "active") {
+        const agentConfig = await storage.getAgentConfig(req.params.id);
+        if (agentConfig && !agentConfig.enabled) {
+          return res.status(400).json({ error: "Agent is disabled in configuration. Enable it in the Configuration tab first." });
+        }
+      }
+
       const updated = await storage.updateAgent(req.params.id, parsed.data);
       if (!updated) {
         return res.status(404).json({ error: "Agent not found" });
@@ -111,16 +132,102 @@ export function registerAdminRoutes(app: Express): void {
     }
   });
 
-  // Run agent task
+  // Agent Configs
+  const upsertAgentConfigSchema = z.object({
+    agentId: z.string(),
+    enabled: z.boolean().optional(),
+    autoRun: z.boolean().optional(),
+    interval: z.number().min(5).max(120).optional(),
+    maxLeadsPerRun: z.number().min(10).max(200).optional(),
+    targetIndustries: z.array(z.string()).optional(),
+    targetLocation: z.string().optional(),
+  });
+
+  app.get("/api/agent-configs", async (req, res) => {
+    try {
+      const configs = await storage.getAllAgentConfigs();
+      res.json(configs);
+    } catch (error) {
+      console.error("Error fetching agent configs:", error);
+      res.status(500).json({ error: "Failed to fetch agent configs" });
+    }
+  });
+
+  app.get("/api/agent-configs/:agentId", async (req, res) => {
+    try {
+      const config = await storage.getAgentConfig(req.params.agentId);
+      if (!config) {
+        return res.status(404).json({ error: "Agent config not found" });
+      }
+      res.json(config);
+    } catch (error) {
+      console.error("Error fetching agent config:", error);
+      res.status(500).json({ error: "Failed to fetch agent config" });
+    }
+  });
+
+  app.put("/api/agent-configs/:agentId", async (req, res) => {
+    try {
+      const parsed = upsertAgentConfigSchema.safeParse({ ...req.body, agentId: req.params.agentId });
+      if (!parsed.success) {
+        return res.status(400).json({ error: "Invalid agent config data", details: parsed.error.flatten() });
+      }
+      const config = await storage.upsertAgentConfig(parsed.data);
+
+      // Fire AGENT_CONFIG_UPDATED event
+      await storage.createEvent({
+        eventId: randomUUID(),
+        eventType: "AGENT_CONFIG_UPDATED",
+        sourceAgent: req.params.agentId,
+        payload: { agentId: req.params.agentId, config: parsed.data },
+      });
+
+      res.json(config);
+    } catch (error) {
+      console.error("Error saving agent config:", error);
+      res.status(500).json({ error: "Failed to save agent config" });
+    }
+  });
+
+  // Task status endpoint
+  app.get("/api/agent-tasks/:id", async (req, res) => {
+    try {
+      const task = await storage.getAgentTask(req.params.id);
+      if (!task) {
+        return res.status(404).json({ error: "Task not found" });
+      }
+      res.json(task);
+    } catch (error) {
+      console.error("Error fetching task:", error);
+      res.status(500).json({ error: "Failed to fetch task" });
+    }
+  });
+
+  // Run agent task (with concurrency guard and config validation)
   app.post("/api/agents/:id/run", async (req, res) => {
     try {
       const agent = await storage.getAgent(req.params.id);
       if (!agent) {
         return res.status(404).json({ error: "Agent not found" });
       }
-      
+
       if (agent.status !== "active") {
         return res.status(400).json({ error: "Agent must be active to run" });
+      }
+
+      // Check if agent config is enabled
+      const agentConfig = await storage.getAgentConfig(agent.id);
+      if (agentConfig && !agentConfig.enabled) {
+        return res.status(400).json({ error: "Agent is disabled in configuration. Enable it first." });
+      }
+
+      // Concurrency guard: prevent duplicate runs
+      const runningTask = await storage.getRunningTaskByAgent(agent.id);
+      if (runningTask) {
+        return res.status(409).json({
+          error: "Agent already has a running task",
+          taskId: runningTask.id
+        });
       }
 
       const task = await storage.createAgentTask({
@@ -256,7 +363,7 @@ export function registerAdminRoutes(app: Express): void {
   app.get("/api/activity-logs", async (req, res) => {
     try {
       const logs = await storage.getAllActivityLogs();
-      res.json(logs);
+      res.json(paginate(logs, req.query as { page?: string; limit?: string }));
     } catch (error) {
       console.error("Error fetching activity logs:", error);
       res.status(500).json({ error: "Failed to fetch activity logs" });
@@ -284,22 +391,10 @@ export function registerAdminRoutes(app: Express): void {
     }
   });
 
-  // Clients
+  // Clients (uses JOIN instead of N+1 queries)
   app.get("/api/clients", async (req, res) => {
     try {
-      const clients = await storage.getAllClients();
-      const enrichedClients = await Promise.all(
-        clients.map(async (client) => {
-          const business = client.businessId ? await storage.getBusiness(client.businessId) : null;
-          const assets = await storage.getAssetsByClient(client.id);
-          return {
-            ...client,
-            business,
-            assetCount: assets.length,
-            totalAssetCost: assets.reduce((sum: number, a: { cost: number | null }) => sum + (a.cost || 0), 0),
-          };
-        })
-      );
+      const enrichedClients = await storage.getClientsEnriched();
       res.json(enrichedClients);
     } catch (error) {
       console.error("Error fetching clients:", error);
@@ -325,9 +420,8 @@ export function registerAdminRoutes(app: Express): void {
     try {
       const { businessName, website, status, monthlyRevenue, notes, assets } = req.body;
       
-      // Create or find business first
-      const existingBusinesses = await storage.getAllBusinesses();
-      let business = existingBusinesses.find(b => b.website === website);
+      // Create or find business first (targeted query instead of loading all)
+      let business = website ? await storage.getBusinessByWebsite(website) : undefined;
       if (!business) {
         business = await storage.createBusiness({
           name: businessName,
@@ -454,7 +548,7 @@ export function registerAdminRoutes(app: Express): void {
   app.get("/api/businesses", async (req, res) => {
     try {
       const businesses = await storage.getAllBusinesses();
-      res.json(businesses);
+      res.json(paginate(businesses, req.query as { page?: string; limit?: string }));
     } catch (error) {
       console.error("Error fetching businesses:", error);
       res.status(500).json({ error: "Failed to fetch businesses" });
@@ -492,7 +586,7 @@ export function registerAdminRoutes(app: Express): void {
   app.get("/api/events", async (req, res) => {
     try {
       const events = await storage.getAllEvents();
-      res.json(events);
+      res.json(paginate(events, req.query as { page?: string; limit?: string }));
     } catch (error) {
       console.error("Error fetching events:", error);
       res.status(500).json({ error: "Failed to fetch events" });
@@ -503,7 +597,7 @@ export function registerAdminRoutes(app: Express): void {
   app.get("/api/contacts", async (req, res) => {
     try {
       const contacts = await storage.getAllContacts();
-      res.json(contacts);
+      res.json(paginate(contacts, req.query as { page?: string; limit?: string }));
     } catch (error) {
       console.error("Error fetching contacts:", error);
       res.status(500).json({ error: "Failed to fetch contacts" });
@@ -545,14 +639,7 @@ export function registerAdminRoutes(app: Express): void {
   app.get("/api/assets/expiring", async (req, res) => {
     try {
       const days = parseInt(req.query.days as string) || 30;
-      const assets = await storage.getAllClientAssets();
-      const now = new Date();
-      const expiringAssets = assets.filter((asset: any) => {
-        if (!asset.expiryDate) return false;
-        const expiryDate = new Date(asset.expiryDate);
-        const daysUntil = Math.ceil((expiryDate.getTime() - now.getTime()) / (1000 * 60 * 60 * 24));
-        return daysUntil > 0 && daysUntil <= days;
-      });
+      const expiringAssets = await storage.getExpiringAssets(days);
       res.json(expiringAssets);
     } catch (error) {
       console.error("Error fetching expiring assets:", error);
@@ -631,6 +718,35 @@ export function registerAdminRoutes(app: Express): void {
     } catch (error) {
       console.error("Error fetching external conversations:", error);
       res.status(500).json({ error: "Failed to fetch external conversations" });
+    }
+  });
+
+  // Global Settings
+  app.get("/api/global-settings", async (req, res) => {
+    try {
+      const settings = await storage.getGlobalSettings();
+      // Convert array of {key, value} into a single object
+      const settingsObj: Record<string, unknown> = {};
+      for (const s of settings) {
+        settingsObj[s.key] = s.value;
+      }
+      res.json(settingsObj);
+    } catch (error) {
+      console.error("Error fetching global settings:", error);
+      res.status(500).json({ error: "Failed to fetch global settings" });
+    }
+  });
+
+  app.put("/api/global-settings", async (req, res) => {
+    try {
+      const entries = Object.entries(req.body);
+      for (const [key, value] of entries) {
+        await storage.upsertGlobalSetting(key, value);
+      }
+      res.json({ success: true });
+    } catch (error) {
+      console.error("Error saving global settings:", error);
+      res.status(500).json({ error: "Failed to save global settings" });
     }
   });
 }

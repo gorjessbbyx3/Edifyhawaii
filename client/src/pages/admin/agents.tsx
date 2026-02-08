@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -41,7 +41,7 @@ import {
 import { Link } from "wouter";
 import { useToast } from "@/hooks/use-toast";
 import { apiRequest, queryClient } from "@/lib/queryClient";
-import type { Agent } from "@shared/schema";
+import type { Agent, AgentConfig } from "@shared/schema";
 import { agentDefinitions } from "@shared/schema";
 
 const iconMap: Record<string, React.ElementType> = {
@@ -225,8 +225,7 @@ function AgentStats({ agents }: { agents: Agent[] }) {
   );
 }
 
-interface AgentConfig {
-  id: string;
+interface LocalAgentConfig {
   enabled: boolean;
   autoRun: boolean;
   interval: number;
@@ -235,25 +234,65 @@ interface AgentConfig {
   targetLocation: string;
 }
 
-function AgentConfigCard({ definition }: { definition: typeof agentDefinitions[number] }) {
-  const Icon = iconMap[definition.icon] || Bot;
-  const [config, setConfig] = useState<AgentConfig>({
-    id: definition.id,
-    enabled: true,
-    autoRun: false,
-    interval: 30,
-    maxLeadsPerRun: 50,
-    targetIndustries: [],
-    targetLocation: "Hawaii",
-  });
+const defaultConfig: LocalAgentConfig = {
+  enabled: true,
+  autoRun: false,
+  interval: 30,
+  maxLeadsPerRun: 50,
+  targetIndustries: [],
+  targetLocation: "Hawaii",
+};
 
+function AgentConfigCard({ definition, savedConfig }: { definition: typeof agentDefinitions[number]; savedConfig?: AgentConfig }) {
+  const Icon = iconMap[definition.icon] || Bot;
   const { toast } = useToast();
 
+  const [config, setConfig] = useState<LocalAgentConfig>(() => ({
+    enabled: savedConfig?.enabled ?? defaultConfig.enabled,
+    autoRun: savedConfig?.autoRun ?? defaultConfig.autoRun,
+    interval: savedConfig?.interval ?? defaultConfig.interval,
+    maxLeadsPerRun: savedConfig?.maxLeadsPerRun ?? defaultConfig.maxLeadsPerRun,
+    targetIndustries: (savedConfig?.targetIndustries as string[]) ?? defaultConfig.targetIndustries,
+    targetLocation: savedConfig?.targetLocation ?? defaultConfig.targetLocation,
+  }));
+
+  // Sync local state when server data loads (fixes stale config on mount)
+  useEffect(() => {
+    if (savedConfig) {
+      setConfig({
+        enabled: savedConfig.enabled ?? defaultConfig.enabled,
+        autoRun: savedConfig.autoRun ?? defaultConfig.autoRun,
+        interval: savedConfig.interval ?? defaultConfig.interval,
+        maxLeadsPerRun: savedConfig.maxLeadsPerRun ?? defaultConfig.maxLeadsPerRun,
+        targetIndustries: (savedConfig.targetIndustries as string[]) ?? defaultConfig.targetIndustries,
+        targetLocation: savedConfig.targetLocation ?? defaultConfig.targetLocation,
+      });
+    }
+  }, [savedConfig]);
+
+  const saveConfigMutation = useMutation({
+    mutationFn: async (data: LocalAgentConfig) => {
+      const response = await apiRequest("PUT", `/api/agent-configs/${definition.id}`, data);
+      return response.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["/api/agent-configs"] });
+      toast({
+        title: "Configuration saved",
+        description: `${definition.name} settings have been updated.`,
+      });
+    },
+    onError: () => {
+      toast({
+        title: "Failed to save configuration",
+        description: "Please try again.",
+        variant: "destructive",
+      });
+    },
+  });
+
   const handleSave = () => {
-    toast({
-      title: "Configuration saved",
-      description: `${definition.name} settings have been updated.`,
-    });
+    saveConfigMutation.mutate(config);
   };
 
   return (
@@ -338,20 +377,19 @@ function AgentConfigCard({ definition }: { definition: typeof agentDefinitions[n
       </CardContent>
       <CardFooter className="gap-2">
         <Button variant="outline" size="sm" className="flex-1" onClick={() => setConfig({
-          id: definition.id,
-          enabled: true,
-          autoRun: false,
-          interval: 30,
-          maxLeadsPerRun: 50,
-          targetIndustries: [],
-          targetLocation: "Hawaii",
+          enabled: savedConfig?.enabled ?? defaultConfig.enabled,
+          autoRun: savedConfig?.autoRun ?? defaultConfig.autoRun,
+          interval: savedConfig?.interval ?? defaultConfig.interval,
+          maxLeadsPerRun: savedConfig?.maxLeadsPerRun ?? defaultConfig.maxLeadsPerRun,
+          targetIndustries: (savedConfig?.targetIndustries as string[]) ?? defaultConfig.targetIndustries,
+          targetLocation: savedConfig?.targetLocation ?? defaultConfig.targetLocation,
         })}>
           <RotateCcw className="mr-2 h-4 w-4" />
           Reset
         </Button>
-        <Button size="sm" className="flex-1" onClick={handleSave} disabled={!config.enabled}>
+        <Button size="sm" className="flex-1" onClick={handleSave} disabled={saveConfigMutation.isPending}>
           <Save className="mr-2 h-4 w-4" />
-          Save
+          {saveConfigMutation.isPending ? "Saving..." : "Save"}
         </Button>
       </CardFooter>
     </Card>
@@ -361,17 +399,41 @@ function AgentConfigCard({ definition }: { definition: typeof agentDefinitions[n
 export default function Agents() {
   const { toast } = useToast();
 
-  const [globalSettings, setGlobalSettings] = useState({
+  const defaultGlobalSettings = {
     tcpaCompliance: true,
     dncChecking: true,
     callRecording: true,
     maxConcurrentAgents: 3,
     retryAttempts: 3,
     notificationsEnabled: true,
+  };
+
+  const [globalSettings, setGlobalSettings] = useState(defaultGlobalSettings);
+
+  const { data: savedGlobalSettings } = useQuery<Record<string, unknown>>({
+    queryKey: ["/api/global-settings"],
   });
+
+  // Sync global settings from server when loaded
+  useEffect(() => {
+    if (savedGlobalSettings) {
+      setGlobalSettings({
+        tcpaCompliance: (savedGlobalSettings.tcpaCompliance as boolean) ?? defaultGlobalSettings.tcpaCompliance,
+        dncChecking: (savedGlobalSettings.dncChecking as boolean) ?? defaultGlobalSettings.dncChecking,
+        callRecording: (savedGlobalSettings.callRecording as boolean) ?? defaultGlobalSettings.callRecording,
+        maxConcurrentAgents: (savedGlobalSettings.maxConcurrentAgents as number) ?? defaultGlobalSettings.maxConcurrentAgents,
+        retryAttempts: (savedGlobalSettings.retryAttempts as number) ?? defaultGlobalSettings.retryAttempts,
+        notificationsEnabled: (savedGlobalSettings.notificationsEnabled as boolean) ?? defaultGlobalSettings.notificationsEnabled,
+      });
+    }
+  }, [savedGlobalSettings]);
 
   const { data: agents, isLoading } = useQuery<Agent[]>({
     queryKey: ["/api/agents"],
+  });
+
+  const { data: agentConfigsData } = useQuery<AgentConfig[]>({
+    queryKey: ["/api/agent-configs"],
   });
 
   const toggleAgentMutation = useMutation({
@@ -417,14 +479,33 @@ export default function Agents() {
     runAgentMutation.mutate(agentId);
   };
 
+  const saveGlobalMutation = useMutation({
+    mutationFn: async (settings: typeof globalSettings) => {
+      const response = await apiRequest("PUT", "/api/global-settings", settings);
+      return response.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["/api/global-settings"] });
+      toast({
+        title: "Global settings saved",
+        description: "Your agent configuration has been updated.",
+      });
+    },
+    onError: () => {
+      toast({
+        title: "Failed to save settings",
+        description: "Please try again.",
+        variant: "destructive",
+      });
+    },
+  });
+
   const handleSaveGlobal = () => {
-    toast({
-      title: "Global settings saved",
-      description: "Your agent configuration has been updated.",
-    });
+    saveGlobalMutation.mutate(globalSettings);
   };
 
   const agentMap = new Map(agents?.map((a) => [a.type, a]) || []);
+  const configMap = new Map(agentConfigsData?.map((c) => [c.agentId, c]) || []);
 
   return (
     <div className="flex flex-col gap-6 p-6">
@@ -520,7 +601,11 @@ export default function Agents() {
         <TabsContent value="config" className="mt-6">
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {agentDefinitions.map((definition) => (
-              <AgentConfigCard key={definition.id} definition={definition} />
+              <AgentConfigCard
+                key={definition.id}
+                definition={definition}
+                savedConfig={configMap.get(definition.id)}
+              />
             ))}
           </div>
         </TabsContent>
