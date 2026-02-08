@@ -7,7 +7,7 @@ import {
   externalConversations, events, callerAgentStates, clients, clientAssets,
   clientNotes, nurturingSequences, nurturingSteps, leadNurturingEnrollments,
   scheduledMessages, messageEngagements, leadNurturingTags, sampleSites,
-  approvalQueue, approvalEditRequests, agentDefinitions,
+  approvalQueue, approvalEditRequests, agentConfigs, agentDefinitions,
   User, InsertUser, Organization, InsertOrganization, Role, InsertRole,
   Agent, InsertAgent, AgentTask, InsertAgentTask, Business, InsertBusiness,
   Lead, InsertLead, OnlinePresenceCheck, InsertOnlinePresenceCheck,
@@ -21,7 +21,8 @@ import {
   LeadNurturingEnrollment, InsertLeadNurturingEnrollment,
   ScheduledMessage, InsertScheduledMessage, MessageEngagement, InsertMessageEngagement,
   LeadNurturingTag, InsertLeadNurturingTag, SampleSite, InsertSampleSite,
-  ApprovalQueue, InsertApprovalQueue, ApprovalEditRequest, InsertApprovalEditRequest
+  ApprovalQueue, InsertApprovalQueue, ApprovalEditRequest, InsertApprovalEditRequest,
+  AgentConfig, InsertAgentConfig,
 } from "@shared/schema";
 import { IStorage } from "./storage";
 
@@ -760,6 +761,29 @@ export class DatabaseStorage implements IStorage {
 
   async getScheduledMessagesPendingApproval(): Promise<ScheduledMessage[]> {
     return db.select().from(scheduledMessages).where(eq(scheduledMessages.approvalStatus, "pending"));
+  }
+
+  // Agent Configs
+  async getAgentConfig(agentId: string): Promise<AgentConfig | undefined> {
+    const [config] = await db.select().from(agentConfigs).where(eq(agentConfigs.agentId, agentId));
+    return config;
+  }
+
+  async getAllAgentConfigs(): Promise<AgentConfig[]> {
+    return db.select().from(agentConfigs);
+  }
+
+  async upsertAgentConfig(config: InsertAgentConfig): Promise<AgentConfig> {
+    const existing = await db.select().from(agentConfigs).where(eq(agentConfigs.agentId, config.agentId));
+    if (existing.length > 0) {
+      const [updated] = await db.update(agentConfigs)
+        .set({ ...config, updatedAt: new Date() })
+        .where(eq(agentConfigs.agentId, config.agentId))
+        .returning();
+      return updated;
+    }
+    const [created] = await db.insert(agentConfigs).values(config).returning();
+    return created;
   }
 
   async getWeeklyAnalytics(): Promise<{ day: string; leads: number; calls: number; conversions: number }[]> {

@@ -588,6 +588,29 @@ export const agentDefinitions = [
 ] as const;
 
 // ============================================================
+// AGENT CONFIG (Persistent per-agent settings)
+// ============================================================
+export const agentConfigs = pgTable("agent_configs", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  agentId: varchar("agent_id").notNull().unique(),
+  enabled: boolean("enabled").notNull().default(true),
+  autoRun: boolean("auto_run").notNull().default(false),
+  interval: integer("interval").notNull().default(30),
+  maxLeadsPerRun: integer("max_leads_per_run").notNull().default(50),
+  targetIndustries: jsonb("target_industries").default([]),
+  targetLocation: text("target_location").default("Hawaii"),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+export const insertAgentConfigSchema = createInsertSchema(agentConfigs).omit({
+  id: true,
+  updatedAt: true,
+});
+
+export type InsertAgentConfig = z.infer<typeof insertAgentConfigSchema>;
+export type AgentConfig = typeof agentConfigs.$inferSelect;
+
+// ============================================================
 // LEGACY COMPATIBILITY TYPES
 // ============================================================
 export const leadSourceEnum = businessSourceEnum;
@@ -631,6 +654,8 @@ export const eventTypeEnum = [
   // Approval workflow events
   "CONTENT_APPROVED",
   "CONTENT_REJECTED",
+  // Agent config events
+  "AGENT_CONFIG_UPDATED",
 ] as const;
 export type EventType = typeof eventTypeEnum[number];
 

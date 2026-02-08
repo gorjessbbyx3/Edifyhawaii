@@ -41,7 +41,7 @@ import {
 import { Link } from "wouter";
 import { useToast } from "@/hooks/use-toast";
 import { apiRequest, queryClient } from "@/lib/queryClient";
-import type { Agent } from "@shared/schema";
+import type { Agent, AgentConfig } from "@shared/schema";
 import { agentDefinitions } from "@shared/schema";
 
 const iconMap: Record<string, React.ElementType> = {
@@ -225,8 +225,7 @@ function AgentStats({ agents }: { agents: Agent[] }) {
   );
 }
 
-interface AgentConfig {
-  id: string;
+interface LocalAgentConfig {
   enabled: boolean;
   autoRun: boolean;
   interval: number;
@@ -235,25 +234,51 @@ interface AgentConfig {
   targetLocation: string;
 }
 
-function AgentConfigCard({ definition }: { definition: typeof agentDefinitions[number] }) {
-  const Icon = iconMap[definition.icon] || Bot;
-  const [config, setConfig] = useState<AgentConfig>({
-    id: definition.id,
-    enabled: true,
-    autoRun: false,
-    interval: 30,
-    maxLeadsPerRun: 50,
-    targetIndustries: [],
-    targetLocation: "Hawaii",
-  });
+const defaultConfig: LocalAgentConfig = {
+  enabled: true,
+  autoRun: false,
+  interval: 30,
+  maxLeadsPerRun: 50,
+  targetIndustries: [],
+  targetLocation: "Hawaii",
+};
 
+function AgentConfigCard({ definition, savedConfig }: { definition: typeof agentDefinitions[number]; savedConfig?: AgentConfig }) {
+  const Icon = iconMap[definition.icon] || Bot;
   const { toast } = useToast();
 
+  const [config, setConfig] = useState<LocalAgentConfig>(() => ({
+    enabled: savedConfig?.enabled ?? defaultConfig.enabled,
+    autoRun: savedConfig?.autoRun ?? defaultConfig.autoRun,
+    interval: savedConfig?.interval ?? defaultConfig.interval,
+    maxLeadsPerRun: savedConfig?.maxLeadsPerRun ?? defaultConfig.maxLeadsPerRun,
+    targetIndustries: (savedConfig?.targetIndustries as string[]) ?? defaultConfig.targetIndustries,
+    targetLocation: savedConfig?.targetLocation ?? defaultConfig.targetLocation,
+  }));
+
+  const saveConfigMutation = useMutation({
+    mutationFn: async (data: LocalAgentConfig) => {
+      const response = await apiRequest("PUT", `/api/agent-configs/${definition.id}`, data);
+      return response.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["/api/agent-configs"] });
+      toast({
+        title: "Configuration saved",
+        description: `${definition.name} settings have been updated.`,
+      });
+    },
+    onError: () => {
+      toast({
+        title: "Failed to save configuration",
+        description: "Please try again.",
+        variant: "destructive",
+      });
+    },
+  });
+
   const handleSave = () => {
-    toast({
-      title: "Configuration saved",
-      description: `${definition.name} settings have been updated.`,
-    });
+    saveConfigMutation.mutate(config);
   };
 
   return (
@@ -338,20 +363,19 @@ function AgentConfigCard({ definition }: { definition: typeof agentDefinitions[n
       </CardContent>
       <CardFooter className="gap-2">
         <Button variant="outline" size="sm" className="flex-1" onClick={() => setConfig({
-          id: definition.id,
-          enabled: true,
-          autoRun: false,
-          interval: 30,
-          maxLeadsPerRun: 50,
-          targetIndustries: [],
-          targetLocation: "Hawaii",
+          enabled: savedConfig?.enabled ?? defaultConfig.enabled,
+          autoRun: savedConfig?.autoRun ?? defaultConfig.autoRun,
+          interval: savedConfig?.interval ?? defaultConfig.interval,
+          maxLeadsPerRun: savedConfig?.maxLeadsPerRun ?? defaultConfig.maxLeadsPerRun,
+          targetIndustries: (savedConfig?.targetIndustries as string[]) ?? defaultConfig.targetIndustries,
+          targetLocation: savedConfig?.targetLocation ?? defaultConfig.targetLocation,
         })}>
           <RotateCcw className="mr-2 h-4 w-4" />
           Reset
         </Button>
-        <Button size="sm" className="flex-1" onClick={handleSave} disabled={!config.enabled}>
+        <Button size="sm" className="flex-1" onClick={handleSave} disabled={saveConfigMutation.isPending}>
           <Save className="mr-2 h-4 w-4" />
-          Save
+          {saveConfigMutation.isPending ? "Saving..." : "Save"}
         </Button>
       </CardFooter>
     </Card>
@@ -372,6 +396,10 @@ export default function Agents() {
 
   const { data: agents, isLoading } = useQuery<Agent[]>({
     queryKey: ["/api/agents"],
+  });
+
+  const { data: agentConfigsData } = useQuery<AgentConfig[]>({
+    queryKey: ["/api/agent-configs"],
   });
 
   const toggleAgentMutation = useMutation({
@@ -425,6 +453,7 @@ export default function Agents() {
   };
 
   const agentMap = new Map(agents?.map((a) => [a.type, a]) || []);
+  const configMap = new Map(agentConfigsData?.map((c) => [c.agentId, c]) || []);
 
   return (
     <div className="flex flex-col gap-6 p-6">
@@ -520,7 +549,11 @@ export default function Agents() {
         <TabsContent value="config" className="mt-6">
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {agentDefinitions.map((definition) => (
-              <AgentConfigCard key={definition.id} definition={definition} />
+              <AgentConfigCard
+                key={definition.id}
+                definition={definition}
+                savedConfig={configMap.get(definition.id)}
+              />
             ))}
           </div>
         </TabsContent>

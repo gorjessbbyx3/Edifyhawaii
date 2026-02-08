@@ -2,6 +2,7 @@ import type { Express, Request, Response, NextFunction } from "express";
 import { DatabaseStorage, seedDatabase } from "./db-storage";
 import { requireAdminAuth } from "./auth";
 import { z } from "zod";
+import { randomUUID } from "crypto";
 import { runCrawlerAgent } from "./ai/agents/crawlerAgent";
 import { runVerifierAgent } from "./ai/agents/verifierAgent";
 import { runContactAgent } from "./ai/agents/contactAgent";
@@ -108,6 +109,63 @@ export function registerAdminRoutes(app: Express): void {
     } catch (error) {
       console.error("Error updating agent:", error);
       res.status(500).json({ error: "Failed to update agent" });
+    }
+  });
+
+  // Agent Configs
+  const upsertAgentConfigSchema = z.object({
+    agentId: z.string(),
+    enabled: z.boolean().optional(),
+    autoRun: z.boolean().optional(),
+    interval: z.number().min(5).max(120).optional(),
+    maxLeadsPerRun: z.number().min(10).max(200).optional(),
+    targetIndustries: z.array(z.string()).optional(),
+    targetLocation: z.string().optional(),
+  });
+
+  app.get("/api/agent-configs", async (req, res) => {
+    try {
+      const configs = await storage.getAllAgentConfigs();
+      res.json(configs);
+    } catch (error) {
+      console.error("Error fetching agent configs:", error);
+      res.status(500).json({ error: "Failed to fetch agent configs" });
+    }
+  });
+
+  app.get("/api/agent-configs/:agentId", async (req, res) => {
+    try {
+      const config = await storage.getAgentConfig(req.params.agentId);
+      if (!config) {
+        return res.status(404).json({ error: "Agent config not found" });
+      }
+      res.json(config);
+    } catch (error) {
+      console.error("Error fetching agent config:", error);
+      res.status(500).json({ error: "Failed to fetch agent config" });
+    }
+  });
+
+  app.put("/api/agent-configs/:agentId", async (req, res) => {
+    try {
+      const parsed = upsertAgentConfigSchema.safeParse({ ...req.body, agentId: req.params.agentId });
+      if (!parsed.success) {
+        return res.status(400).json({ error: "Invalid agent config data", details: parsed.error.flatten() });
+      }
+      const config = await storage.upsertAgentConfig(parsed.data);
+
+      // Fire AGENT_CONFIG_UPDATED event
+      await storage.createEvent({
+        eventId: randomUUID(),
+        eventType: "AGENT_CONFIG_UPDATED",
+        sourceAgent: req.params.agentId,
+        payload: { agentId: req.params.agentId, config: parsed.data },
+      });
+
+      res.json(config);
+    } catch (error) {
+      console.error("Error saving agent config:", error);
+      res.status(500).json({ error: "Failed to save agent config" });
     }
   });
 

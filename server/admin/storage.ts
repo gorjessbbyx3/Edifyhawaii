@@ -32,6 +32,7 @@ import {
   SampleSite, InsertSampleSite,
   ApprovalEditRequest, InsertApprovalEditRequest,
   ApprovalQueue, InsertApprovalQueue,
+  AgentConfig, InsertAgentConfig,
   agentDefinitions,
 } from "@shared/schema";
 
@@ -251,6 +252,11 @@ export interface IStorage {
 
   // Messages pending approval
   getScheduledMessagesPendingApproval(): Promise<ScheduledMessage[]>;
+
+  // Agent Configs
+  getAgentConfig(agentId: string): Promise<AgentConfig | undefined>;
+  getAllAgentConfigs(): Promise<AgentConfig[]>;
+  upsertAgentConfig(config: InsertAgentConfig): Promise<AgentConfig>;
 }
 
 export class MemStorage implements IStorage {
@@ -286,6 +292,7 @@ export class MemStorage implements IStorage {
   private sampleSites: Map<string, SampleSite> = new Map();
   private approvalQueue: Map<string, ApprovalQueue> = new Map();
   private approvalEditRequests: Map<string, ApprovalEditRequest> = new Map();
+  private agentConfigs: Map<string, AgentConfig> = new Map();
 
   constructor() {
     this.seedData();
@@ -1498,6 +1505,38 @@ export class MemStorage implements IStorage {
   // Messages pending approval
   async getScheduledMessagesPendingApproval(): Promise<ScheduledMessage[]> {
     return Array.from(this.scheduledMessages.values()).filter(m => m.status === "pending_approval");
+  }
+
+  // Agent Configs
+  async getAgentConfig(agentId: string): Promise<AgentConfig | undefined> {
+    return Array.from(this.agentConfigs.values()).find(c => c.agentId === agentId);
+  }
+
+  async getAllAgentConfigs(): Promise<AgentConfig[]> {
+    return Array.from(this.agentConfigs.values());
+  }
+
+  async upsertAgentConfig(config: InsertAgentConfig): Promise<AgentConfig> {
+    const existing = Array.from(this.agentConfigs.values()).find(c => c.agentId === config.agentId);
+    if (existing) {
+      const updated: AgentConfig = { ...existing, ...config, updatedAt: new Date() };
+      this.agentConfigs.set(existing.id, updated);
+      return updated;
+    }
+    const id = randomUUID();
+    const newConfig: AgentConfig = {
+      id,
+      agentId: config.agentId,
+      enabled: config.enabled ?? true,
+      autoRun: config.autoRun ?? false,
+      interval: config.interval ?? 30,
+      maxLeadsPerRun: config.maxLeadsPerRun ?? 50,
+      targetIndustries: config.targetIndustries ?? [],
+      targetLocation: config.targetLocation ?? "Hawaii",
+      updatedAt: new Date(),
+    };
+    this.agentConfigs.set(id, newConfig);
+    return newConfig;
   }
 }
 

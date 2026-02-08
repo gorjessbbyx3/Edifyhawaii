@@ -33,6 +33,7 @@ import {
   SampleSite, InsertSampleSite, sampleSites,
   ApprovalEditRequest, InsertApprovalEditRequest, approvalEditRequests,
   ApprovalQueue, InsertApprovalQueue, approvalQueue,
+  AgentConfig, InsertAgentConfig, agentConfigs,
   agentDefinitions,
 } from "@shared/schema";
 import { IStorage } from "./storage";
@@ -922,5 +923,31 @@ export class DatabaseStorage implements IStorage {
   async getScheduledMessagesPendingApproval(): Promise<ScheduledMessage[]> {
     await this.ensureInitialized();
     return db.select().from(scheduledMessages).where(eq(scheduledMessages.status, "pending_approval"));
+  }
+
+  // Agent Configs
+  async getAgentConfig(agentId: string): Promise<AgentConfig | undefined> {
+    await this.ensureInitialized();
+    const [config] = await db.select().from(agentConfigs).where(eq(agentConfigs.agentId, agentId));
+    return config || undefined;
+  }
+
+  async getAllAgentConfigs(): Promise<AgentConfig[]> {
+    await this.ensureInitialized();
+    return db.select().from(agentConfigs);
+  }
+
+  async upsertAgentConfig(config: InsertAgentConfig): Promise<AgentConfig> {
+    await this.ensureInitialized();
+    const existing = await db.select().from(agentConfigs).where(eq(agentConfigs.agentId, config.agentId));
+    if (existing.length > 0) {
+      const [updated] = await db.update(agentConfigs)
+        .set({ ...config, updatedAt: new Date() })
+        .where(eq(agentConfigs.agentId, config.agentId))
+        .returning();
+      return updated;
+    }
+    const [created] = await db.insert(agentConfigs).values(config).returning();
+    return created;
   }
 }
